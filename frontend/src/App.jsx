@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Drill, SlidersHorizontal, BarChart3,
-  MapPin, AlertTriangle, RefreshCw, ChevronRight, ChevronDown, Map, ArrowLeft
+  MapPin, AlertTriangle, RefreshCw, ChevronRight, ChevronDown, Map, ArrowLeft, ShieldAlert
 } from 'lucide-react';
 
 import RiskGauge       from './components/RiskGauge';
@@ -11,7 +11,9 @@ import TimeToIncident  from './components/TimeToIncident';
 import AnomalyAlert    from './components/AnomalyAlert';
 import ZoneEvidence    from './components/ZoneEvidence';
 import WellMapModal    from './components/WellMapModal';
+import MitigationModal from './components/MitigationModal';
 import LandingPage    from './components/LandingPage';
+import FeaturesPage   from './components/FeaturesPage';
 import SpatialIntelligence from './components/SpatialIntelligence';
 import { computePhysicsRisk } from './utils/physicsRisk';
 
@@ -85,12 +87,15 @@ export default function App() {
   const [loading, setLoading]               = useState(false);
   const [activeScenario, setActiveScenario] = useState('normal');
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
+  const [isMitigationModalOpen, setIsMitigationModalOpen] = useState(false);
   const debounceRef = useRef(null);
 
-  // ── Route / View state (Landing vs Live Dashboard) ────────────────────────
+  // ── Route / View state (Landing vs Features vs Live Dashboard) ─────────────
   const [currentView, setCurrentView] = useState(() => {
-    if (typeof window !== 'undefined' && window.location.hash === '#dashboard') {
-      return 'dashboard';
+    if (typeof window !== 'undefined') {
+      if (window.location.hash === '#dashboard' || window.location.hash.startsWith('#dashboard')) return 'dashboard';
+      if (window.location.hash === '#features' || window.location.hash.startsWith('#features')) return 'features';
+      if (window.location.hash === '#spatial' || window.location.hash.startsWith('#spatial')) return 'spatial';
     }
     return 'landing';
   });
@@ -100,6 +105,8 @@ export default function App() {
       const hash = window.location.hash;
       if (hash === '#dashboard' || hash.startsWith('#dashboard')) {
         setCurrentView('dashboard');
+      } else if (hash === '#features' || hash.startsWith('#features')) {
+        setCurrentView('features');
       } else if (hash === '#spatial' || hash.startsWith('#spatial')) {
         setCurrentView('spatial');
       } else {
@@ -110,9 +117,17 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  const navigateToDashboard = () => {
+  const navigateToDashboard = (options = {}) => {
     window.location.hash = '#dashboard';
     setCurrentView('dashboard');
+    if (options?.openMitigation) {
+      setIsMitigationModalOpen(true);
+    }
+  };
+
+  const navigateToFeatures = () => {
+    window.location.hash = '#features';
+    setCurrentView('features');
   };
 
   const navigateToSpatial = () => {
@@ -209,7 +224,23 @@ export default function App() {
   const riskPercent = prediction?.overall_risk_percent ?? 0;
 
   if (currentView === 'landing') {
-    return <LandingPage onLaunch={navigateToDashboard} onNavigateToSpatial={navigateToSpatial} />;
+    return (
+      <LandingPage 
+        onLaunch={navigateToFeatures} 
+        onNavigateToFeatures={navigateToFeatures}
+        onNavigateToSpatial={navigateToSpatial} 
+      />
+    );
+  }
+
+  if (currentView === 'features') {
+    return (
+      <FeaturesPage
+        onNavigateToLanding={navigateToLanding}
+        onNavigateToDashboard={navigateToDashboard}
+        onNavigateToSpatial={navigateToSpatial}
+      />
+    );
   }
 
   if (currentView === 'spatial') {
@@ -240,7 +271,16 @@ export default function App() {
             title="Return to Landing Page"
           >
             <ArrowLeft size={14} />
-            <span>Landing Page</span>
+            <span>Landing</span>
+          </button>
+          <button
+            type="button"
+            className="topbar-back-btn"
+            onClick={navigateToFeatures}
+            title="Platform Features"
+            style={{ marginLeft: 6 }}
+          >
+            <span>Features</span>
           </button>
           <button
             type="button"
@@ -358,14 +398,26 @@ export default function App() {
                 />
                 <span className="card__title">Expected Hazard Zone &amp; Evidence</span>
               </div>
-              <button
-                type="button"
-                className="view-map-btn"
-                onClick={() => setIsMapModalOpen(true)}
-              >
-                <Map className="view-map-btn__icon" />
-                <span>VIEW ON MAP</span>
-              </button>
+              <div className="card__header-actions">
+                <button
+                  type="button"
+                  className="mitigation-playbook-btn"
+                  onClick={() => setIsMitigationModalOpen(true)}
+                  title="View phased mitigation steps and database evidence"
+                >
+                  <ShieldAlert className="mitigation-playbook-btn__icon" />
+                  <span>MITIGATION STEPS</span>
+                </button>
+
+                <button
+                  type="button"
+                  className="view-map-btn"
+                  onClick={() => setIsMapModalOpen(true)}
+                >
+                  <Map className="view-map-btn__icon" />
+                  <span>VIEW ON MAP</span>
+                </button>
+              </div>
             </div>
             <ZoneEvidence
               wells={prediction?.similar_wells ?? []}
@@ -381,6 +433,15 @@ export default function App() {
             wells={prediction?.similar_wells ?? []}
             params={params}
             riskType={prediction?.risk_type ?? 'normal'}
+          />
+
+          {/* Drilling Risk Mitigation Playbook Modal */}
+          <MitigationModal
+            open={isMitigationModalOpen}
+            onClose={() => setIsMitigationModalOpen(false)}
+            riskType={prediction?.risk_type ?? 'kick_influx'}
+            depth={params?.depth ?? 4200}
+            apiUrl={API}
           />
         </main>
       </div>

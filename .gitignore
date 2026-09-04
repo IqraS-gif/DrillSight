@@ -18,6 +18,10 @@ dist-ssr/
 # Large datasets (>100MB exceeds GitHub limits)
 *.csv
 mlmodel/*.csv
+data/
+*.png
+!frontend/public/*.png
+!frontend/src/**/*.png
 
 # Logs & temp
 *.log

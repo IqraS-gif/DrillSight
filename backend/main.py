@@ -286,3 +286,24 @@ def match_knowledge_context(depth: float = 3842.0, risk_type: str = "stuck_pipe"
         "mongodb_connected": knowledge_repo.is_connected,
         "matches": matches,
     }
+
+
+@app.get("/api/knowledge/mitigation-playbook")
+def get_mitigation_playbook(
+    risk_type: str = "kick_influx",
+    depth: float = 4200.0,
+    q: str = "",
+    mode: str = "keyword",
+    limit: int = 5,
+):
+    """
+    Returns 3-phased mitigation steps (Immediate, After That, Long-Term Prevention)
+    backed by MongoDB Atlas case studies and papers, searchable by keyword or semantic matching.
+    """
+    return knowledge_repo.get_mitigation_playbook(
+        risk_type=risk_type,
+        depth=depth,
+        query=q,
+        search_mode=mode,
+        limit=limit,
+    )

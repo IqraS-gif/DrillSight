@@ -1,0 +1,287 @@
+/* ── Features Page & Neo-Brutalism Cards ── */
+
+.features-page-container {
+  min-height: 100vh;
+  background: #f8fafc;
+  color: #0f172a;
+  display: flex;
+  flex-direction: column;
+}
+
+.features-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 40px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(11, 30, 54, 0.04);
+}
+
+.features-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.brand-logo-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+}
+
+.brand-tagline {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.features-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.nav-btn--ghost {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+}
+
+.nav-btn--ghost:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.nav-btn--primary {
+  background: #0f172a;
+  border: 1px solid #0f172a;
+  color: #ffffff;
+}
+
+.nav-btn--primary:hover {
+  background: #1e293b;
+}
+
+.features-hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 24px 70px;
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: #fff7ed;
+  border: 1px solid #ffedd5;
+  color: #ea580c;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+}
+
+.hero-headline {
+  font-size: 2.3rem;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.2;
+  margin: 0 0 14px 0;
+}
+
+.headline-highlight {
+  background: linear-gradient(135deg, #ea580c, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subline {
+  font-size: 1.05rem;
+  color: #64748b;
+  margin: 0 0 44px 0;
+  max-width: 600px;
+}
+
+.cards-grid {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 36px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+/* ── EXACT NEO-BRUTALISM CARD STYLING FROM USER ── */
+
+.neo-wrapper {
+  display: flex;
+}
+
+.neo-card {
+  width: 310px;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 0.5vmin solid #05060f;
+  box-shadow: 0.45rem 0.45rem #05060f;
+  overflow: hidden;
+  color: #05060f;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.neo-card--green {
+  background: #00ffa0;
+}
+
+.neo-card--purple {
+  background: #bfa7ff;
+}
+
+.neo-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 0.65rem 0.65rem #05060f;
+}
+
+.pricing-block-content {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.pricing-plan {
+  color: #05060f;
+  font-size: 1.25rem;
+  line-height: 1.25;
+  font-weight: 900;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.price-value {
+  display: flex;
+  align-items: baseline;
+  color: #05060f;
+  font-size: 1.8rem;
+  line-height: 1.2;
+  font-weight: 900;
+  gap: 4px;
+}
+
+.price-number {
+  margin: 0;
+  font-weight: 900;
+}
+
+.price-integer {
+  font-weight: 900;
+}
+
+#priceDiscountCent {
+  font-size: 0.95rem;
+  font-weight: 800;
+  opacity: 0.85;
+}
+
+.pricing-note {
+  font-size: 0.82rem;
+  font-weight: 800;
+  opacity: 0.85;
+  color: #05060f;
+  border-bottom: 2px dashed rgba(5, 6, 15, 0.25);
+  padding-bottom: 8px;
+}
+
+.check-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin: 0.5rem 0 1.2rem 0;
+  padding: 0;
+  list-style: none;
+  flex: 1;
+}
+
+.check-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #05060f;
+  line-height: 1.35;
+}
+
+.check-list-item svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.neo-try-btn {
+  margin-top: auto;
+  background: #05060f;
+  color: #ffffff;
+  border: 2px solid #05060f;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 0.92rem;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 3px 3px 0px #05060f;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.neo-try-btn:hover {
+  background: #ffffff;
+  color: #05060f;
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px #05060f;
+}
+
+.neo-try-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #05060f;
+}

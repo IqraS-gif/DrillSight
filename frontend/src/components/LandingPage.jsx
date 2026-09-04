@@ -4,7 +4,7 @@ import {
 } from 'lucide-react';
 import '../landing.css';
 
-export default function LandingPage({ onLaunch, onNavigateToSpatial }) {
+export default function LandingPage({ onLaunch, onNavigateToSpatial, onNavigateToFeatures }) {
   const [activeNav, setActiveNav] = useState('Home');
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
@@ -48,12 +48,18 @@ export default function LandingPage({ onLaunch, onNavigateToSpatial }) {
         </div>
 
         <ul className="landing-nav-links">
-          {['Home', 'Solutions', 'Technology', 'Impact', 'About'].map((item) => (
+          {['Home', 'Features', 'Technology', 'Impact', 'About'].map((item) => (
             <li key={item}>
               <button
                 type="button"
                 className={`landing-nav-link ${activeNav === item ? 'active' : ''}`}
-                onClick={() => setActiveNav(item)}
+                onClick={() => {
+                  if (item === 'Features' && onNavigateToFeatures) {
+                    onNavigateToFeatures();
+                  } else {
+                    setActiveNav(item);
+                  }
+                }}
               >
                 {item}
               </button>
