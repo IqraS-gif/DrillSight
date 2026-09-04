@@ -15,7 +15,7 @@ import LandingPage    from './components/LandingPage';
 import SpatialIntelligence from './components/SpatialIntelligence';
 import { computePhysicsRisk } from './utils/physicsRisk';
 
-const API = 'http://localhost:8000';
+const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const DEFAULT_PARAMS = {
   depth: 2000, wob: 30, rop: 25, torque: 8,

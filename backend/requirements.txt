@@ -9,3 +9,6 @@ lifelines==0.29.0
 fastdtw==0.3.4
 scipy==1.13.1
 python-multipart==0.0.9
+pymongo>=4.6.0
+pypdf>=4.0.0
+python-dotenv>=1.0.0

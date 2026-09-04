@@ -10,6 +10,7 @@ from typing import Optional
 import threading
 
 from pipeline import pipeline, PARAM_META, RISK_TYPE_META, WELL_GEO
+from knowledge_db import knowledge_repo
 
 
 # ── Background training ────────────────────────────────────────────────────────
@@ -217,4 +218,60 @@ def scenarios():
                 "params": {"depth": 2700, "wob": 60, "rop": 12, "torque": 22, "hookload": 115, "mud_in": 1.25, "spp": 9500, "shock": 120, "gas": 0.08, "rpm": 180},
             },
         ]
+    }
+
+
+# ── MongoDB Knowledge Repository Endpoints ("yeh wala voh wala risk sabka alag") ──
+
+@app.get("/api/knowledge/categories")
+def get_knowledge_categories():
+    """Returns all risk categories with counts and metadata."""
+    return {
+        "status": "ok",
+        "mongodb_connected": knowledge_repo.is_connected,
+        "categories": knowledge_repo.get_categories(),
+    }
+
+
+@app.get("/api/knowledge/risks/{category}")
+def get_knowledge_by_category(category: str, limit: int = 50):
+    """
+    Rapid retrieval for a specific risk category ('sabka alag').
+    Categories: stuck_pipe, lost_circulation, kick_influx, excessive_vibration, wellbore_instability, formation_breakdown, casing_cementing.
+    """
+    items = knowledge_repo.get_by_category(category, limit=limit)
+    return {
+        "status": "ok",
+        "category": category,
+        "count": len(items),
+        "mongodb_connected": knowledge_repo.is_connected,
+        "items": items,
+    }
+
+
+@app.get("/api/knowledge/search")
+def search_knowledge(q: str = "", category: Optional[str] = None, limit: int = 25):
+    """Full-text and keyword search across all indexed risk literature."""
+    results = knowledge_repo.search(query=q, category=category, limit=limit)
+    return {
+        "status": "ok",
+        "query": q,
+        "category": category,
+        "count": len(results),
+        "mongodb_connected": knowledge_repo.is_connected,
+        "results": results,
+    }
+
+
+@app.get("/api/knowledge/match")
+def match_knowledge_context(depth: float = 3842.0, risk_type: str = "stuck_pipe", limit: int = 5):
+    """Instant contextual lookup for active well depth and predicted hazard."""
+    matches = knowledge_repo.get_contextual_match(depth=depth, risk_type=risk_type, limit=limit)
+    return {
+        "status": "ok",
+        "depth": depth,
+        "risk_type": risk_type,
+        "count": len(matches),
+        "mongodb_connected": knowledge_repo.is_connected,
+        "matches": matches,
     }
