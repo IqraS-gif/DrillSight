@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# Node
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Large datasets (>100MB exceeds GitHub limits)
+*.csv
+mlmodel/*.csv
+
+# Logs & temp
+*.log
+logs/
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
