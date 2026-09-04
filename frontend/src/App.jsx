@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Drill, SlidersHorizontal, BarChart3,
-  MapPin, AlertTriangle, RefreshCw, ChevronRight, ChevronDown
+  MapPin, AlertTriangle, RefreshCw, ChevronRight, ChevronDown, Map
 } from 'lucide-react';
 
 import RiskGauge       from './components/RiskGauge';
@@ -9,7 +9,8 @@ import RiskBreakdown   from './components/RiskBreakdown';
 import DrillingKnobs   from './components/DrillingKnobs';
 import TimeToIncident  from './components/TimeToIncident';
 import AnomalyAlert    from './components/AnomalyAlert';
-import SimilarWells    from './components/SimilarWells';
+import ZoneEvidence    from './components/ZoneEvidence';
+import WellMapModal    from './components/WellMapModal';
 import { computePhysicsRisk } from './utils/physicsRisk';
 
 const API = 'http://localhost:8000';
@@ -80,7 +81,8 @@ export default function App() {
   const [prediction, setPrediction]         = useState(null);
   const [pipelineReady, setPipelineReady]   = useState(false);
   const [loading, setLoading]               = useState(false);
-  const [activeScenario, setActiveScenario] = useState(null);
+  const [activeScenario, setActiveScenario] = useState('normal');
+  const [isMapModalOpen, setIsMapModalOpen] = useState(false);
   const debounceRef = useRef(null);
 
   // ── Pipeline readiness poll ───────────────────────────────────────────────
@@ -118,10 +120,15 @@ export default function App() {
     }
   }, []);
 
-  const debouncedPredict = useCallback((p) => {
+  const debouncedPredict = useCallback((p, scenarioId = null) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(async () => {
-      const data = await callPredict(p);
+      const physics = computePhysicsRisk(p);
+      const data = await callPredict({
+        ...p,
+        risk_type: physics.risk_type,
+        scenario_id: scenarioId,
+      });
       // ML response: only take similar_wells + time_to_incident, keep physics risk
       if (data) setPrediction(prev => applyPurePhysics(p, { ...prev, ...data }));
     }, 350);
@@ -130,7 +137,7 @@ export default function App() {
   // ── On mount: immediate physics, then ML fills auxiliary cards ───────────
   useEffect(() => {
     setPrediction(applyPurePhysics(DEFAULT_PARAMS, null));
-    debouncedPredict(DEFAULT_PARAMS);
+    debouncedPredict(DEFAULT_PARAMS, null);
   }, []);  // eslint-disable-line
 
   // ── Slider changed: INSTANT pure physics, ML refreshes aux cards in background ─
@@ -139,7 +146,7 @@ export default function App() {
     setParams(next);
     setActiveScenario(null);
     setPrediction(prev => applyPurePhysics(next, prev));
-    debouncedPredict(next);
+    debouncedPredict(next, null);
   };
 
   // ── Scenario chip clicked: set extreme params, instant physics risk ─────────
@@ -149,7 +156,12 @@ export default function App() {
     // Instantly apply physics for the scenario's extreme params
     setPrediction(prev => applyPurePhysics(sc.params, prev ?? {}));
     // ML call gets similar_wells + time_to_incident for these params
-    const data = await callPredict(sc.params);
+    const physics = computePhysicsRisk(sc.params);
+    const data = await callPredict({
+      ...sc.params,
+      risk_type: physics.risk_type,
+      scenario_id: sc.id,
+    });
     if (data) setPrediction(prev => applyPurePhysics(sc.params, { ...prev, ...data }));
   };
 
@@ -264,14 +276,41 @@ export default function App() {
             </div>
           </div>
 
-          {/* Similar wells */}
-          <div className="card">
-            <div className="card__header">
-              <MapPin size={16} className="card__icon" />
-              <span className="card__title">Geologically / Geographically Similar Wells — Historical Incidents</span>
+          {/* Zone evidence */}
+          <div className="card card--zone-evidence">
+            <div className="card__header card__header--zone-evidence">
+              <div className="card__header-left">
+                <img
+                  src="/evidence-icon.png"
+                  alt="Evidence Icon"
+                  className="card__header-icon-img"
+                />
+                <span className="card__title">Expected Hazard Zone &amp; Evidence</span>
+              </div>
+              <button
+                type="button"
+                className="view-map-btn"
+                onClick={() => setIsMapModalOpen(true)}
+              >
+                <Map className="view-map-btn__icon" />
+                <span>VIEW ON MAP</span>
+              </button>
             </div>
-            <SimilarWells wells={prediction?.similar_wells ?? []} />
+            <ZoneEvidence
+              wells={prediction?.similar_wells ?? []}
+              params={params}
+              riskType={prediction?.risk_type ?? 'normal'}
+            />
           </div>
+
+          {/* Interactive Offshore Well Map Modal */}
+          <WellMapModal
+            open={isMapModalOpen}
+            onClose={() => setIsMapModalOpen(false)}
+            wells={prediction?.similar_wells ?? []}
+            params={params}
+            riskType={prediction?.risk_type ?? 'normal'}
+          />
         </main>
       </div>
 
