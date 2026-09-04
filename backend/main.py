@@ -51,6 +51,7 @@ class PredictRequest(BaseModel):
     gas:         Optional[float] = 0.05
     rpm:         Optional[float] = 80.0
     scenario_id: Optional[str]  = None   # when set, pinned probabilities are applied
+    risk_type:   Optional[str]  = None   # active hazard from physics engine
 
 
 # Pinned risk probabilities for preset scenarios.
@@ -130,13 +131,14 @@ def meta():
 @app.post("/api/predict")
 def predict(req: PredictRequest):
     scenario_id = req.scenario_id
+    physics_risk = req.risk_type
 
     if not pipeline.ready:
         # Return a placeholder (or pinned if scenario known) while training
         placeholder = {
             "pipeline_ready": False,
             "risk_level": "normal",
-            "risk_type": "normal",
+            "risk_type": physics_risk or "normal",
             "risk_probabilities": {
                 "normal": 1.0, "stuck_pipe": 0.0,
                 "kick_influx": 0.0, "lost_circulation": 0.0,
@@ -152,16 +154,21 @@ def predict(req: PredictRequest):
             placeholder = _apply_scenario_pins(placeholder, scenario_id)
         return placeholder
 
-    params = {k: v for k, v in req.model_dump().items() if k != "scenario_id"}
-    result = pipeline.predict(params)
+    params = {k: v for k, v in req.model_dump().items() if k not in ("scenario_id", "risk_type")}
+    result = pipeline.predict(params, target_risk=physics_risk)
     result["pipeline_ready"] = True
+    result["_params"] = params
 
     # Inject pinned probabilities if this is a named scenario
     if scenario_id:
-        result["_params"] = params
         result = _apply_scenario_pins(result, scenario_id)
-        result.pop("_params", None)
+    elif physics_risk and pipeline.ready and pipeline.well_risk_cache:
+        result["risk_type"] = physics_risk
+        result["similar_wells"] = pipeline._find_similar_wells(
+            params, physics_risk, result.get("risk_probabilities", {})
+        )
 
+    result.pop("_params", None)
     return result
 
 
