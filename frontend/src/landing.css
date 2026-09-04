@@ -1,0 +1,850 @@
+/* ============================================================
+   DRILLSENSE AI LANDING PAGE — EXACT MATCH TO TARGET DESIGN
+   ============================================================ */
+
+.landing-page {
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  background: #06152b;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Top Navigation Bar ── */
+.landing-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 50px;
+  z-index: 50;
+  background: transparent;
+}
+
+.landing-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.landing-logo-mark {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.landing-brand-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+.landing-brand-tagline {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: #cbd5e1;
+  letter-spacing: 0.01em;
+}
+
+.landing-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.landing-nav-link {
+  color: #cbd5e1;
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-decoration: none;
+  position: relative;
+  padding: 6px 0;
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: color 0.15s ease;
+}
+
+.landing-nav-link:hover {
+  color: #ffffff;
+}
+
+.landing-nav-link.active {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.landing-nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #f59e0b;
+  border-radius: 99px;
+}
+
+.landing-cta-btn {
+  background: #f59e0b;
+  color: #0f172a;
+  border: none;
+  border-radius: 999px;
+  padding: 9px 22px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.landing-cta-btn:hover {
+  background: #fbbf24;
+  transform: translateY(-1px);
+}
+
+/* ── Hero Main Section ── */
+.landing-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  padding: 85px 50px 40px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-image: url('/landing-bg.png');
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  isolation: isolate;
+  box-sizing: border-box;
+}
+
+.landing-hero-body {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 24px;
+}
+
+/* ── Left Content Block ── */
+.hero-left-content {
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #38bdf8;
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-size: clamp(2.8rem, 4vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin: 0 0 18px 0;
+}
+
+.hero-title-accent {
+  color: #f59e0b;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin: 0 0 32px 0;
+  max-width: 440px;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ── Skewed Arrow CTA Button (User Custom Style) ── */
+.explore-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 11px 30px;
+  text-decoration: none;
+  font-family: inherit;
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: white;
+  background: #6225e6;
+  transition: all 0.5s ease;
+  box-shadow: 6px 6px 0 black;
+  transform: skewX(-15deg);
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.explore-cta-btn:focus {
+  outline: none;
+}
+
+.explore-cta-btn:hover {
+  transition: 0.5s;
+  box-shadow: 10px 10px 0 #fbc638;
+}
+
+.explore-cta-btn .second {
+  transition: 0.5s;
+  margin-right: 0px;
+  width: 20px;
+  margin-left: 22px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.explore-cta-btn:hover .second {
+  transition: 0.5s;
+  margin-right: 36px;
+}
+
+.explore-cta-btn .cta-span {
+  transform: skewX(15deg);
+  display: inline-block;
+  letter-spacing: 0.03em;
+}
+
+.explore-cta-btn .one {
+  transition: 0.4s;
+  transform: translateX(-60%);
+}
+
+.explore-cta-btn .two {
+  transition: 0.5s;
+  transform: translateX(-30%);
+}
+
+.explore-cta-btn:hover .three {
+  animation: color_anim 1s infinite 0.2s;
+}
+
+.explore-cta-btn:hover .one {
+  transform: translateX(0%);
+  animation: color_anim 1s infinite 0.6s;
+}
+
+.explore-cta-btn:hover .two {
+  transform: translateX(0%);
+  animation: color_anim 1s infinite 0.4s;
+}
+
+@keyframes color_anim {
+  0% {
+    fill: white;
+  }
+  50% {
+    fill: #fbc638;
+  }
+  100% {
+    fill: white;
+  }
+}
+
+.hero-btn-secondary {
+  background: rgba(15, 30, 50, 0.4);
+  color: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  padding: 11px 24px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hero-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #ffffff;
+}
+
+/* ── 3D Rotating Cards Carousel Widget ── */
+.rotating-card-wrapper {
+  margin-top: 22px;
+  position: relative;
+  z-index: 8;
+  display: inline-block;
+}
+
+.rotating-card-wrapper .wrap_card {
+  position: relative;
+  overflow: hidden;
+  width: var(--w-wrap-card);
+  height: calc(var(--h-card) / 1.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  --w-card: 220px;
+  --h-card: 285px;
+  --rotate-card: 15deg;
+  --insetX-card: 40px;
+  --t-card: calc(var(--insetX-card) * 1.25);
+  --w-wrap-card: calc(var(--w-card) + calc(calc(var(--w-card) / 2) * 2));
+}
+
+.rotating-card-wrapper .content {
+  background-color: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  overflow: hidden;
+  position: relative;
+  width: calc(100% - calc(var(--pd) * 2));
+  height: calc(100% - calc(var(--pd) * 2));
+  border-radius: calc(var(--round) - var(--pd));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 18px;
+  box-sizing: border-box;
+  text-align: center;
+  gap: 16px;
+}
+
+.rotating-card-wrapper .card-icon-bubble {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1.5px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  color: #000000;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.rotating-card-wrapper .card:hover .card-icon-bubble {
+  transform: scale(1.08);
+}
+
+.rotating-card-wrapper .card-center-title {
+  font-size: 1.24rem;
+  font-weight: 900;
+  color: #000000;
+  text-align: center;
+  line-height: 1.24;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  z-index: 10;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.95), 0 0 14px rgba(255, 255, 255, 0.8);
+  pointer-events: none;
+  margin: 0;
+}
+
+.rotating-card-wrapper .card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  overflow: hidden;
+  animation: card_rotating 9s cubic-bezier(0.75, 0, 0, 1.01) infinite 0s;
+  border-radius: var(--round);
+  background: var(--bg);
+  order: var(--order);
+  width: var(--w-card);
+  height: var(--h-card);
+  z-index: var(--z1);
+  top: var(--t1);
+  left: var(--l1);
+  right: var(--r1);
+  transform: var(--trans1);
+  --pd: 4px;
+  --round: 16px;
+  --x1: var(--insetX-card);
+  --x2: calc(var(--w-wrap-card) - calc(var(--w-card) + var(--insetX-card)));
+  --to-left: rotate(calc(var(--rotate-card) * -1));
+  --to-center: calc(var(--w-card) / 2);
+  --to-right: rotate(calc(var(--rotate-card) * 1));
+}
+
+.rotating-card-wrapper .card:nth-child(1) {
+  --order: 2;
+  --bg: radial-gradient(
+    circle,
+    rgba(252, 240, 142, 1) 0%,
+    rgba(246, 173, 32, 1) 40%,
+    rgba(192, 142, 8, 1) 100%
+  );
+  --z1: 2;
+  --t1: 0;
+  --l1: var(--to-center);
+  --r1: var(--to-center);
+  --trans1: rotate(calc(var(--rotate-card) * 0));
+  --z2: 0;
+  --t2: var(--t-card);
+  --l2: var(--x1);
+  --r2: var(--x2);
+  --trans2: var(--to-left);
+  --z3: 0;
+  --t3: var(--t-card);
+  --l3: var(--x2);
+  --r3: var(--x1);
+  --trans3: var(--to-right);
+}
+
+.rotating-card-wrapper .card:nth-child(2) {
+  --order: 3;
+  --bg: radial-gradient(
+    circle,
+    rgba(142, 249, 252, 1) 0%,
+    rgba(32, 164, 246, 1) 40%,
+    rgba(8, 81, 192, 1) 100%
+  );
+  --z1: 0;
+  --t1: var(--t-card);
+  --l1: var(--x2);
+  --r1: var(--x1);
+  --trans1: var(--to-right);
+  --z2: 2;
+  --t2: 0;
+  --l2: var(--to-center);
+  --r2: var(--to-center);
+  --trans2: rotate(calc(var(--rotate-card) * 0));
+  --z3: 0;
+  --t3: var(--t-card);
+  --l3: var(--x1);
+  --r3: var(--x2);
+  --trans3: var(--to-left);
+}
+
+.rotating-card-wrapper .card:nth-child(3) {
+  --order: 1;
+  --bg: radial-gradient(
+    circle,
+    rgba(222, 128, 233, 1) 0%,
+    rgba(213, 32, 246, 1) 40%,
+    rgba(139, 6, 157, 1) 100%
+  );
+  --z1: 0;
+  --t1: var(--t-card);
+  --l1: var(--x1);
+  --r1: var(--x2);
+  --trans1: var(--to-left);
+  --z2: 0;
+  --t2: var(--t-card);
+  --l2: var(--x2);
+  --r2: var(--x1);
+  --trans2: var(--to-right);
+  --z3: 2;
+  --t3: 0;
+  --l3: var(--to-center);
+  --r3: var(--to-center);
+  --trans3: rotate(calc(var(--rotate-card) * 0));
+}
+
+@keyframes card_rotating {
+  0%,
+  99.99% {
+    z-index: var(--z1);
+    top: var(--t1);
+    left: var(--l1);
+    right: var(--r1);
+    transform: var(--trans1);
+  }
+  33.33% {
+    z-index: var(--z2);
+    top: var(--t2);
+    left: var(--l2);
+    right: var(--r2);
+    transform: var(--trans2);
+  }
+  66.66% {
+    z-index: var(--z3);
+    top: var(--t3);
+    left: var(--l3);
+    right: var(--r3);
+    transform: var(--trans3);
+  }
+}
+
+.rotating-card-wrapper .lines {
+  position: absolute;
+  inset: auto 0 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+}
+
+.rotating-card-wrapper .lines::after {
+  content: "";
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  --mask-bg: #e8e8e8;
+  background: var(--mask-bg);
+  mask-image: radial-gradient(
+    50% 200px at top,
+    transparent 20%,
+    var(--mask-bg)
+  );
+  -webkit-mask-image: radial-gradient(
+    50% 200px at top,
+    transparent 20%,
+    var(--mask-bg)
+  );
+}
+
+.rotating-card-wrapper .line {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rotating-card-wrapper .line::before,
+.rotating-card-wrapper .line::after {
+  content: "";
+  position: absolute;
+  inset: auto;
+  background: linear-gradient(
+    to right,
+    var(--gradient-a-line, #0000),
+    var(--gradient-b-line, #0000),
+    var(--gradient-c-line, #0000)
+  );
+  filter: var(--blur-line);
+  width: var(--w-line);
+  height: var(--h-line);
+}
+
+.rotating-card-wrapper .line:nth-child(1)::before {
+  --blur-line: blur(4px);
+  --w-line: 100%;
+  --h-line: 5px;
+  --gradient-b-line: #2f69f2;
+}
+
+.rotating-card-wrapper .line:nth-child(1)::after {
+  --w-line: 100%;
+  --h-line: 1px;
+  --gradient-b-line: #6366f1;
+}
+
+.rotating-card-wrapper .line:nth-child(2)::before {
+  --blur-line: blur(4px);
+  --w-line: 50%;
+  --h-line: 5px;
+  --gradient-b-line: #84ccfc;
+}
+
+.rotating-card-wrapper .line:nth-child(2)::after {
+  --w-line: 50%;
+  --h-line: 1px;
+  --gradient-b-line: #14d3f5;
+}
+
+@media (max-height: 800px) {
+  .rotating-card-wrapper {
+    margin-top: 14px;
+    transform: scale(0.85);
+    transform-origin: top left;
+  }
+}
+
+/* ── Center Floating Card: Live Well Data ── */
+.center-telemetry-widget {
+  width: 270px;
+  background: rgba(14, 34, 60, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+.live-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.live-card-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.live-card-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #22c55e;
+}
+
+.status-pulse-dot {
+  width: 6px;
+  height: 6px;
+  background: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #22c55e;
+}
+
+.live-card-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.metric-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+}
+
+.metric-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #cbd5e1;
+}
+
+.metric-icon {
+  width: 15px;
+  height: 15px;
+  color: #38bdf8;
+}
+
+.metric-right {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.metric-value {
+  font-weight: 700;
+  color: #ffffff;
+  font-feature-settings: "tnum";
+}
+
+.metric-unit {
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.live-card-sparkline {
+  margin: 12px 0 8px 0;
+  height: 32px;
+  width: 100%;
+}
+
+.live-card-footer {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #38bdf8;
+}
+
+/* ── Right Column: Tagline & Risk Prediction ── */
+.hero-right-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 40px;
+  z-index: 10;
+}
+
+.hero-tagline-block {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.hero-tagline-text {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: #cbd5e1;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.hero-tagline-dash {
+  width: 28px;
+  height: 3px;
+  background: #f59e0b;
+  margin-top: 6px;
+  border-radius: 2px;
+}
+
+/* Right Risk Prediction Card */
+.risk-prediction-card {
+  width: 190px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  text-align: center;
+}
+
+.risk-card-header-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin-bottom: 10px;
+}
+
+.risk-radial-wrap {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 8px auto;
+}
+
+.risk-radial-number {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.risk-card-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #22c55e;
+  margin-bottom: 2px;
+}
+
+.risk-card-sub {
+  font-size: 0.68rem;
+  color: #cbd5e1;
+}
+
+/* ── Topbar Back-to-Landing Button in Dashboard ── */
+.topbar-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #f59e0b;
+  color: #0f172a;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  margin-left: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.topbar-back-btn:hover {
+  background: #ea580c;
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.4);
+  transform: translateY(-1px);
+}
+
+.topbar-spatial-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  margin-left: 8px;
+}
+
+.topbar-spatial-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+  border-color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 102, 238, 0.4);
+  transform: translateY(-1px);
+}
+
+/* ── Responsive adjustments ── */
+@media (max-width: 1100px) {
+  .landing-hero-body {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .hero-right-column {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .landing-nav {
+    padding: 0 20px;
+  }
+
+  .landing-nav-links {
+    display: none;
+  }
+
+  .landing-hero {
+    padding: 80px 20px 20px 20px;
+  }
+}

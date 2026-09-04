@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Drill, SlidersHorizontal, BarChart3,
-  MapPin, AlertTriangle, RefreshCw, ChevronRight, ChevronDown, Map
+  MapPin, AlertTriangle, RefreshCw, ChevronRight, ChevronDown, Map, ArrowLeft
 } from 'lucide-react';
 
 import RiskGauge       from './components/RiskGauge';
@@ -11,6 +11,8 @@ import TimeToIncident  from './components/TimeToIncident';
 import AnomalyAlert    from './components/AnomalyAlert';
 import ZoneEvidence    from './components/ZoneEvidence';
 import WellMapModal    from './components/WellMapModal';
+import LandingPage    from './components/LandingPage';
+import SpatialIntelligence from './components/SpatialIntelligence';
 import { computePhysicsRisk } from './utils/physicsRisk';
 
 const API = 'http://localhost:8000';
@@ -84,6 +86,44 @@ export default function App() {
   const [activeScenario, setActiveScenario] = useState('normal');
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
   const debounceRef = useRef(null);
+
+  // ── Route / View state (Landing vs Live Dashboard) ────────────────────────
+  const [currentView, setCurrentView] = useState(() => {
+    if (typeof window !== 'undefined' && window.location.hash === '#dashboard') {
+      return 'dashboard';
+    }
+    return 'landing';
+  });
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      if (hash === '#dashboard' || hash.startsWith('#dashboard')) {
+        setCurrentView('dashboard');
+      } else if (hash === '#spatial' || hash.startsWith('#spatial')) {
+        setCurrentView('spatial');
+      } else {
+        setCurrentView('landing');
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  const navigateToDashboard = () => {
+    window.location.hash = '#dashboard';
+    setCurrentView('dashboard');
+  };
+
+  const navigateToSpatial = () => {
+    window.location.hash = '#spatial';
+    setCurrentView('spatial');
+  };
+
+  const navigateToLanding = () => {
+    window.location.hash = '#';
+    setCurrentView('landing');
+  };
 
   // ── Pipeline readiness poll ───────────────────────────────────────────────
   useEffect(() => {
@@ -168,6 +208,19 @@ export default function App() {
   const risk       = prediction?.risk_level ?? 'normal';
   const riskPercent = prediction?.overall_risk_percent ?? 0;
 
+  if (currentView === 'landing') {
+    return <LandingPage onLaunch={navigateToDashboard} onNavigateToSpatial={navigateToSpatial} />;
+  }
+
+  if (currentView === 'spatial') {
+    return (
+      <SpatialIntelligence
+        onNavigateToDashboard={navigateToDashboard}
+        onNavigateToLanding={navigateToLanding}
+      />
+    );
+  }
+
   return (
     <div className="app">
       {/* ── Topbar ── */}
@@ -177,9 +230,27 @@ export default function App() {
             <Drill size={18} />
           </div>
           <div>
-            <div className="topbar__brand-title">DrillInsight</div>
+            <div className="topbar__brand-title">DrillSight</div>
             <div className="topbar__brand-sub">Oil Well Risk Intelligence</div>
           </div>
+          <button
+            type="button"
+            className="topbar-back-btn"
+            onClick={navigateToLanding}
+            title="Return to Landing Page"
+          >
+            <ArrowLeft size={14} />
+            <span>Landing Page</span>
+          </button>
+          <button
+            type="button"
+            className="topbar-spatial-btn"
+            onClick={navigateToSpatial}
+            title="Open Spatial Intelligence Experience"
+          >
+            <Map size={14} />
+            <span>Spatial Intelligence</span>
+          </button>
         </div>
         <div className="topbar__right">
           <div className="topbar__status">

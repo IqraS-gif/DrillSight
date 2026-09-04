@@ -1,0 +1,1319 @@
+/* ==========================================================================
+   DRILLSIGHT — SPATIAL INTELLIGENCE STYLESHEET (LIGHT THEME)
+   OpenStreetMap-based 2D Spatial Intelligence Experience for Oil & Gas
+   Aligned with DrillSight's Clean Enterprise Industrial AI Light Theme
+   ========================================================================== */
+
+:root {
+  --si-bg: #f1f5f9;
+  --si-surface: #ffffff;
+  --si-surface-raised: #f8fafc;
+  --si-surface-subtle: #f0f4f8;
+  --si-border: #e2e8f0;
+  --si-border-subtle: #edf2f7;
+  --si-border-active: #0066ee;
+  
+  --si-blue-primary: #0066ee;
+  --si-blue-hover: #0052cc;
+  --si-blue-light: #eff6ff;
+  --si-blue-border: #bfdbfe;
+  
+  --si-yellow-geo: #d97706;
+  --si-yellow-light: #fef3c7;
+  --si-yellow-border: #fde68a;
+
+  --si-orange-warn: #ea580c;
+  --si-red-incident: #ef4444;
+  --si-red-light: #fef2f2;
+  --si-red-border: #fecaca;
+
+  --si-green-safe: #10b981;
+  --si-green-light: #ecfdf5;
+  --si-green-border: #a7f3d0;
+
+  --si-text-navy: #0b1e36;
+  --si-text-1: #0f2238;
+  --si-text-2: #475569;
+  --si-text-3: #64748b;
+  --si-text-muted: #94a3b8;
+
+  --si-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --si-mono: 'JetBrains Mono', 'SF Mono', Consolas, Menlo, monospace;
+
+  --si-shadow-sm: 0 1px 3px rgba(11, 30, 54, 0.05), 0 1px 2px rgba(11, 30, 54, 0.03);
+  --si-shadow-md: 0 4px 16px rgba(11, 30, 54, 0.08), 0 1px 4px rgba(11, 30, 54, 0.04);
+  --si-shadow-lg: 0 10px 25px rgba(11, 30, 54, 0.12), 0 2px 6px rgba(11, 30, 54, 0.05);
+}
+
+/* ── Fullscreen Container ── */
+.spatial-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background: var(--si-bg);
+  color: var(--si-text-1);
+  font-family: var(--si-font);
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Top Bar (Clean Crisp Light Theme) ── */
+.si-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 62px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--si-border);
+  box-shadow: 0 1px 4px rgba(11, 30, 54, 0.04);
+  z-index: 1000;
+  flex-shrink: 0;
+  gap: 16px;
+}
+
+.si-topbar__left {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.si-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.si-brand__icon {
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(135deg, #0066ee 0%, #0052cc 100%);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 102, 238, 0.3);
+}
+
+.si-brand__title-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.si-brand__name {
+  font-size: 1.12rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--si-text-navy);
+  line-height: 1.15;
+}
+
+.si-brand__subtitle {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--si-blue-primary);
+  text-transform: uppercase;
+}
+
+/* Back to Home Button */
+.si-back-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  color: var(--si-text-navy);
+  border: 1px solid var(--si-border);
+  border-radius: 8px;
+  padding: 7px 15px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: var(--si-shadow-sm);
+  margin-left: 10px;
+}
+
+.si-back-home-btn:hover {
+  background: var(--si-blue-primary);
+  color: #ffffff;
+  border-color: var(--si-blue-primary);
+  box-shadow: 0 2px 10px rgba(0, 102, 238, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Navigation Links (if used elsewhere) */
+.si-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.si-nav__btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--si-text-2);
+  padding: 6px 14px;
+  border-radius: 7px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.si-nav__btn:hover {
+  color: var(--si-blue-primary);
+  background: #f8fafc;
+}
+
+.si-nav__btn.active {
+  color: var(--si-blue-primary);
+  background: var(--si-blue-light);
+  border-color: var(--si-blue-border);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 102, 238, 0.08);
+}
+
+/* Search and Controls */
+.si-topbar__center {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  max-width: 500px;
+}
+
+.si-search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid var(--si-border);
+  border-radius: 7px;
+  padding: 7px 12px;
+  flex: 1;
+  transition: all 0.15s ease;
+}
+
+.si-search-box:focus-within {
+  border-color: var(--si-blue-primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(0, 102, 238, 0.12);
+}
+
+.si-search-box input {
+  background: transparent;
+  border: none;
+  color: var(--si-text-1);
+  font-size: 0.8rem;
+  font-weight: 500;
+  outline: none;
+  width: 100%;
+}
+
+.si-search-box input::placeholder {
+  color: var(--si-text-muted);
+}
+
+/* Right Section */
+.si-topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.si-feed-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #065f46;
+  background: var(--si-green-light);
+  border: 1px solid var(--si-green-border);
+  padding: 5px 12px;
+  border-radius: 20px;
+}
+
+.si-feed-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--si-green-safe);
+  box-shadow: 0 0 6px var(--si-green-safe);
+  animation: siPulseLight 2s infinite;
+}
+
+@keyframes siPulseLight {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 8px var(--si-green-safe); }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+.si-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding-left: 16px;
+  border-left: 1px solid var(--si-border);
+  cursor: pointer;
+}
+
+.si-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0066ee, #0284c7);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.82rem;
+  box-shadow: 0 1px 4px rgba(11, 30, 54, 0.15);
+}
+
+.si-username {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--si-text-navy);
+}
+
+/* ── Main Workspace: Hero Map (75–80%) + Intelligence Panel (20–25%) ── */
+.si-workspace {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Map Container (Hero 75–80%) ── */
+.si-map-wrapper {
+  flex: 1;
+  position: relative;
+  height: 100%;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+
+.si-leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: #edf2f7 !important;
+}
+
+/* Standard crisp realistic OpenStreetMap tiles without dark filters */
+.si-leaflet-container .leaflet-tile-pane {
+  filter: none;
+}
+
+/* ── Floating Map Controls HUD ── */
+.si-map-hud {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.si-map-hud > * {
+  pointer-events: auto;
+}
+
+/* Layer Filter Card (Crisp White Card) */
+.si-layer-card {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--si-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: var(--si-shadow-md);
+  min-width: 230px;
+}
+
+.si-layer-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 11px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--si-border);
+}
+
+.si-layer-card__title {
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--si-text-navy);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.si-layer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.si-layer-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--si-text-2);
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s ease;
+}
+
+.si-layer-item:hover {
+  color: var(--si-text-navy);
+}
+
+.si-layer-item input[type="checkbox"] {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 4px;
+  background: #ffffff;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.15s ease;
+}
+
+.si-layer-item input[type="checkbox"]:checked {
+  background: var(--si-blue-primary);
+  border-color: var(--si-blue-primary);
+}
+
+.si-layer-item input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 4.5px;
+  top: 1.5px;
+  width: 4px;
+  height: 7px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.si-dot-badge {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.si-dot--current { background: #0066ee; box-shadow: 0 0 6px rgba(0, 102, 238, 0.4); }
+.si-dot--geo { background: #0284c7; box-shadow: 0 0 6px rgba(2, 132, 199, 0.4); }
+.si-dot--formation { background: #f59e0b; box-shadow: 0 0 6px rgba(245, 158, 11, 0.4); }
+.si-dot--incident { background: #ef4444; box-shadow: 0 0 6px rgba(239, 68, 68, 0.4); }
+.si-dot--radius { background: rgba(0, 102, 238, 0.4); border: 1px dashed #0066ee; }
+
+/* Map Tools (Zoom, Reset, Locate) */
+.si-tools-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--si-border);
+  border-radius: 8px;
+  padding: 4px;
+  width: 36px;
+  box-shadow: var(--si-shadow-md);
+}
+
+.si-tool-btn {
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: 5px;
+  color: var(--si-text-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.si-tool-btn:hover {
+  background: #f1f5f9;
+  color: var(--si-blue-primary);
+}
+
+/* Map Footer Status Bar / Coordinates / Scale */
+.si-map-footer-hud {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--si-border);
+  border-radius: 7px;
+  padding: 6px 14px;
+  font-family: var(--si-mono);
+  font-size: 0.72rem;
+  color: var(--si-text-2);
+  box-shadow: var(--si-shadow-sm);
+  pointer-events: auto;
+}
+
+.si-hud-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.si-hud-chip span {
+  color: var(--si-text-navy);
+  font-weight: 700;
+}
+
+/* ── Custom Map Pins (Leaflet DivIcon) ── */
+.si-pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  transform: translate(-50%, -50%);
+  user-select: none;
+}
+
+/* Active Well Pin W-204 */
+.si-pin--active {
+  z-index: 600;
+}
+
+.si-pin-ring {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 102, 238, 0.5);
+  background: rgba(0, 102, 238, 0.12);
+  animation: siRippleLight 2s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes siRippleLight {
+  0% { transform: scale(0.6); opacity: 1; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.si-pin-node {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.72rem;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  border: 2.5px solid #ffffff;
+  transition: transform 0.2s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.si-pin:hover .si-pin-node,
+.si-pin.selected .si-pin-node {
+  transform: scale(1.22);
+}
+
+.si-node--current {
+  background: linear-gradient(135deg, #0066ee 0%, #0052cc 100%);
+  box-shadow: 0 2px 10px rgba(0, 102, 238, 0.5);
+}
+
+.si-node--geo {
+  background: #0284c7;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
+}
+
+.si-node--formation {
+  background: #f59e0b;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
+}
+
+.si-pin-tag {
+  margin-top: 4px;
+  background: #ffffff;
+  border: 1px solid var(--si-border);
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+  color: var(--si-text-navy);
+  box-shadow: 0 2px 8px rgba(11, 30, 54, 0.12);
+  pointer-events: none;
+}
+
+.si-pin-tag--active {
+  border-color: var(--si-blue-primary);
+  color: var(--si-blue-primary);
+  background: #ffffff;
+  font-weight: 800;
+}
+
+/* Incident Marker Badge on Map */
+.si-incident-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--si-red-incident);
+  color: #ffffff;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  font-weight: 800;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 1px 4px rgba(239, 68, 68, 0.4);
+}
+
+/* ── RIGHT-SIDE INTELLIGENCE PANEL (20–25% Light Theme) ── */
+.si-panel {
+  width: 440px;
+  max-width: 32vw;
+  min-width: 380px;
+  background: #ffffff;
+  border-left: 1px solid var(--si-border);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  z-index: 950;
+  box-shadow: -4px 0 20px rgba(11, 30, 54, 0.04);
+}
+
+.si-panel::-webkit-scrollbar {
+  width: 5px;
+}
+
+.si-panel::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+/* Panel Header Card */
+.si-panel__header {
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid var(--si-border);
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.si-well-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.si-well-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.si-well-name {
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: var(--si-text-navy);
+  letter-spacing: -0.02em;
+}
+
+.si-live-badge {
+  background: var(--si-green-light);
+  border: 1px solid var(--si-green-border);
+  color: #065f46;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  letter-spacing: 0.06em;
+}
+
+.si-type-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 5px;
+  letter-spacing: 0.02em;
+}
+
+.si-type-badge--geo {
+  background: var(--si-blue-light);
+  border: 1px solid var(--si-blue-border);
+  color: var(--si-blue-primary);
+}
+
+.si-type-badge--formation {
+  background: var(--si-yellow-light);
+  border: 1px solid var(--si-yellow-border);
+  color: #92400e;
+}
+
+.si-well-specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.si-spec-box {
+  background: #f8fafc;
+  border: 1px solid var(--si-border);
+  border-radius: 7px;
+  padding: 10px 12px;
+}
+
+.si-spec-label {
+  font-size: 0.68rem;
+  color: var(--si-text-3);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 3px;
+}
+
+.si-spec-val {
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: var(--si-text-navy);
+}
+
+/* Risk Zone Section */
+.si-panel__section {
+  padding: 20px 22px;
+  border-bottom: 1px solid var(--si-border);
+}
+
+.si-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.si-section-title {
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--si-text-navy);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* Risk Zone Card (Crisp Light Red Theme) */
+.si-risk-card {
+  background: linear-gradient(135deg, #fef2f2 0%, #fff7ed 100%);
+  border: 1px solid var(--si-red-border);
+  border-left: 4px solid var(--si-red-incident);
+  border-radius: 8px;
+  padding: 16px;
+  position: relative;
+  box-shadow: var(--si-shadow-sm);
+}
+
+.si-risk-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.si-risk-badge {
+  background: var(--si-red-incident);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+}
+
+.si-risk-confidence {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #b91c1c;
+}
+
+.si-risk-hazard {
+  font-size: 1.18rem;
+  font-weight: 900;
+  color: #991b1b;
+  margin-bottom: 4px;
+}
+
+.si-risk-interval {
+  font-size: 0.8rem;
+  font-family: var(--si-mono);
+  font-weight: 600;
+  color: #4b5563;
+}
+
+/* Why is this predicted Section (Crisp Light Theme) */
+.si-why-box {
+  margin-top: 14px;
+  background: #f0f7ff;
+  border: 1px solid var(--si-blue-border);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.si-why-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #1e40af;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.si-why-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.si-why-item {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #334155;
+  line-height: 1.45;
+  position: relative;
+  padding-left: 15px;
+}
+
+.si-why-item::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--si-blue-primary);
+  font-weight: 900;
+  font-size: 0.9rem;
+}
+
+/* Action Buttons */
+.si-action-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 16px;
+}
+
+.si-btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #0066ee 0%, #0052cc 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 7px;
+  padding: 10px 16px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 8px rgba(0, 102, 238, 0.25);
+}
+
+.si-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 102, 238, 0.35);
+}
+
+.si-btn-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+  border-radius: 7px;
+  padding: 10px 16px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.si-btn-secondary:hover {
+  background: #fde68a;
+  color: #78350f;
+}
+
+/* Nearby Well Detail Card */
+.si-detail-card {
+  background: #f8fafc;
+  border: 1px solid var(--si-border);
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.si-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--si-border);
+}
+
+.si-detail-row:last-child {
+  border-bottom: none;
+}
+
+.si-detail-key {
+  font-size: 0.76rem;
+  color: var(--si-text-3);
+  font-weight: 600;
+}
+
+.si-detail-val {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--si-text-navy);
+}
+
+.si-incident-card {
+  background: #fef2f2;
+  border: 1px solid var(--si-red-border);
+  border-radius: 7px;
+  padding: 12px 14px;
+  margin-top: 10px;
+}
+
+.si-incident-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #b91c1c;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.si-incident-desc {
+  font-size: 0.76rem;
+  color: #475569;
+  line-height: 1.45;
+}
+
+/* Return to W-204 button */
+.si-btn-return {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: var(--si-text-navy);
+  padding: 8px 14px;
+  border-radius: 7px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: all 0.15s ease;
+}
+
+.si-btn-return:hover {
+  background: #e2e8f0;
+  color: var(--si-blue-primary);
+}
+
+/* ── OFFSET INTELLIGENCE PROFILE MODAL (Rich Risk Frequency & W-204 Impact) ── */
+.si-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 24, 43, 0.65);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  padding: 24px;
+}
+
+.si-modal-dialog {
+  background: #ffffff;
+  border: 1px solid var(--si-border);
+  border-radius: 14px;
+  width: 720px;
+  max-width: 94vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 50px rgba(11, 30, 54, 0.22);
+  overflow: hidden;
+  animation: siModalIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes siModalIn {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.si-modal-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--si-border);
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.si-modal-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.si-modal-title {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--si-text-navy);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.si-modal-subheading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.76rem;
+  color: var(--si-text-2);
+  flex-wrap: wrap;
+}
+
+.si-modal-badge {
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+}
+
+.si-modal-badge--geo {
+  background: var(--si-blue-light);
+  border: 1px solid var(--si-blue-border);
+  color: var(--si-blue-primary);
+}
+
+.si-modal-badge--formation {
+  background: var(--si-yellow-light);
+  border: 1px solid var(--si-yellow-border);
+  color: var(--si-yellow-geo);
+}
+
+.si-modal-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--si-text-3);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.si-modal-close-btn:hover {
+  background: #f1f5f9;
+  color: var(--si-text-navy);
+}
+
+.si-modal-body {
+  padding: 22px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.si-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.si-modal-body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+/* Modal Section */
+.si-modal-section-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--si-text-navy);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+/* Section 1: Frequently Occurred Risks Cards */
+.si-risk-freq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.si-risk-freq-item {
+  background: #f8fafc;
+  border: 1px solid var(--si-border);
+  border-left: 4px solid var(--si-red-incident);
+  border-radius: 8px;
+  padding: 13px 16px;
+  transition: all 0.15s ease;
+}
+
+.si-risk-freq-item.warning {
+  border-left-color: var(--si-orange-warn);
+}
+
+.si-risk-freq-item.moderate {
+  border-left-color: #f59e0b;
+}
+
+.si-risk-freq-item:hover {
+  background: #ffffff;
+  box-shadow: var(--si-shadow-sm);
+  transform: translateY(-1px);
+}
+
+.si-risk-freq-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.si-risk-freq-title {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--si-text-navy);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.si-risk-count-badge {
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+}
+
+.si-count-badge--red {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
+
+.si-count-badge--orange {
+  background: #ffedd5;
+  color: #c2410c;
+  border: 1px solid #fdba74;
+}
+
+.si-count-badge--amber {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.si-risk-freq-meta {
+  font-size: 0.76rem;
+  font-family: var(--si-mono);
+  color: var(--si-text-3);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.si-risk-freq-desc {
+  font-size: 0.8rem;
+  color: #475569;
+  line-height: 1.5;
+}
+
+/* Section 2: How it is Affecting Our Current Well (W-204) */
+.si-impact-card {
+  background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+  border: 1.5px solid #bfdbfe;
+  border-radius: 10px;
+  padding: 16px 18px;
+  box-shadow: var(--si-shadow-sm);
+  position: relative;
+}
+
+.si-impact-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.si-impact-heading {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #1e3a8a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.si-impact-alert-pill {
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 4px;
+  border: 1px solid #93c5fd;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.si-impact-mechanism {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.5;
+  margin-bottom: 14px;
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 7px;
+  border: 1px solid rgba(191, 219, 254, 0.7);
+}
+
+.si-impact-points-title {
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #1e3a8a;
+  margin-bottom: 8px;
+}
+
+.si-impact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 14px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.si-impact-item {
+  font-size: 0.8rem;
+  color: #334155;
+  line-height: 1.45;
+  position: relative;
+  padding-left: 20px;
+}
+
+.si-impact-item::before {
+  content: '⚡';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 0.85rem;
+  color: #ea580c;
+}
+
+.si-advisories-box {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #d1fae5;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.si-advisories-title {
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #065f46;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.si-advisories-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.si-advisory-item {
+  font-size: 0.78rem;
+  color: #166534;
+  line-height: 1.4;
+  position: relative;
+  padding-left: 18px;
+}
+
+.si-advisory-item::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-weight: 900;
+  color: #10b981;
+}
+
+.si-modal-footer {
+  padding: 14px 24px;
+  border-top: 1px solid var(--si-border);
+  background: #f8fafc;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
