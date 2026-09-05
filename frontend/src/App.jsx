@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Drill, SlidersHorizontal, BarChart3,
-  MapPin, AlertTriangle, RefreshCw, ChevronRight, ChevronDown, Map, ArrowLeft, ShieldAlert, BookOpen
+  MapPin, AlertTriangle, RefreshCw, ChevronRight, ChevronDown, Map, ArrowLeft, ShieldAlert, BookOpen, Sparkles
 } from 'lucide-react';
 
 import RiskGauge       from './components/RiskGauge';
@@ -16,6 +16,7 @@ import LandingPage    from './components/LandingPage';
 import FeaturesPage   from './components/FeaturesPage';
 import SpatialIntelligence from './components/SpatialIntelligence';
 import KnowledgeRepository from './components/KnowledgeRepository';
+import DocumentDigitization from './components/DocumentDigitization';
 import { computePhysicsRisk } from './utils/physicsRisk';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -113,6 +114,8 @@ export default function App() {
         setCurrentView('spatial');
       } else if (hash === '#knowledge' || hash.startsWith('#knowledge')) {
         setCurrentView('knowledge');
+      } else if (hash === '#digitize' || hash.startsWith('#digitize')) {
+        setCurrentView('digitize');
       } else {
         setCurrentView('landing');
       }
@@ -134,14 +137,22 @@ export default function App() {
     setCurrentView('features');
   };
 
+  const [knowledgeNavOptions, setKnowledgeNavOptions] = useState(null);
+
   const navigateToSpatial = () => {
     window.location.hash = '#spatial';
     setCurrentView('spatial');
   };
 
-  const navigateToKnowledge = () => {
+  const navigateToKnowledge = (options = null) => {
+    setKnowledgeNavOptions(options);
     window.location.hash = '#knowledge';
     setCurrentView('knowledge');
+  };
+
+  const navigateToDigitize = () => {
+    window.location.hash = '#digitize';
+    setCurrentView('digitize');
   };
 
   const navigateToLanding = () => {
@@ -239,6 +250,7 @@ export default function App() {
         onNavigateToFeatures={navigateToFeatures}
         onNavigateToSpatial={navigateToSpatial} 
         onNavigateToKnowledge={navigateToKnowledge}
+        onNavigateToDigitize={navigateToDigitize}
       />
     );
   }
@@ -250,6 +262,7 @@ export default function App() {
         onNavigateToDashboard={navigateToDashboard}
         onNavigateToSpatial={navigateToSpatial}
         onNavigateToKnowledge={navigateToKnowledge}
+        onNavigateToDigitize={navigateToDigitize}
       />
     );
   }
@@ -270,8 +283,22 @@ export default function App() {
         onNavigateToFeatures={navigateToFeatures}
         onNavigateToSpatial={navigateToSpatial}
         onNavigateToLanding={navigateToLanding}
+        onNavigateToDigitize={navigateToDigitize}
         activeParams={params}
         activeRiskType={prediction?.risk_type ?? 'lost_circulation'}
+        navOptions={knowledgeNavOptions}
+        onClearNavOptions={() => setKnowledgeNavOptions(null)}
+      />
+    );
+  }
+
+  if (currentView === 'digitize') {
+    return (
+      <DocumentDigitization
+        onNavigateToLanding={navigateToLanding}
+        onNavigateToKnowledge={navigateToKnowledge}
+        onNavigateToDashboard={navigateToDashboard}
+        onNavigateToFeatures={navigateToFeatures}
       />
     );
   }
@@ -329,6 +356,21 @@ export default function App() {
           >
             <BookOpen size={14} />
             <span>Knowledge Base</span>
+          </button>
+          <button
+            type="button"
+            className="topbar-spatial-btn"
+            onClick={navigateToDigitize}
+            title="AI Document Digitization & Knowledge Ingestion"
+            style={{
+              marginLeft: 6,
+              background: 'rgba(124, 58, 237, 0.08)',
+              color: '#7c3aed',
+              borderColor: 'rgba(124, 58, 237, 0.35)',
+            }}
+          >
+            <Sparkles size={14} />
+            <span>AI Digitize</span>
           </button>
         </div>
         <div className="topbar__right">

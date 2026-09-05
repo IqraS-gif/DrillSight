@@ -14,7 +14,7 @@ if _parent_dir not in sys.path:
     sys.path.insert(0, _parent_dir)
 
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File, Header, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
@@ -22,6 +22,7 @@ import threading
 
 from pipeline import pipeline, PARAM_META, RISK_TYPE_META, WELL_GEO
 from knowledge_db import knowledge_repo
+from digitize import run_digitization_pipeline
 
 
 # ── Background training ────────────────────────────────────────────────────────
@@ -307,3 +308,42 @@ def get_mitigation_playbook(
         search_mode=mode,
         limit=limit,
     )
+
+
+# ── AI Document Digitization Endpoint ────────────────────────────────────────
+
+@app.post("/api/digitize")
+async def digitize_document(
+    file: UploadFile = File(...),
+    groq_api_key: Optional[str] = Form(None),
+    x_groq_api_key: Optional[str] = Header(None),
+):
+    """
+    Accepts a PDF or TXT drilling document.
+    Runs the full Groq-powered digitization pipeline:
+      1. Text extraction  2. Relevance filter  3. Groq LLM extraction
+      4. Duplicate check  5. MongoDB save
+    Returns structured extraction results.
+    """
+    allowed = {"application/pdf", "text/plain", "text/csv", "text/markdown"}
+    if file.content_type and file.content_type not in allowed:
+        # Be lenient — browsers sometimes send 'application/octet-stream' for PDFs
+        if not (file.filename or "").lower().endswith((".pdf", ".txt", ".md", ".csv")):
+            raise HTTPException(
+                status_code=415,
+                detail="Unsupported file type. Upload a PDF or TXT document."
+            )
+
+    file_bytes = await file.read()
+    if len(file_bytes) > 20 * 1024 * 1024:   # 20 MB hard cap
+        raise HTTPException(status_code=413, detail="File too large (max 20 MB).")
+
+    api_key_to_use = groq_api_key or x_groq_api_key
+    result = await run_digitization_pipeline(
+        file_bytes=file_bytes,
+        filename=file.filename or "uploaded_document",
+        knowledge_repo=knowledge_repo,
+        api_key=api_key_to_use,
+    )
+
+    return {"status": "ok", **result}

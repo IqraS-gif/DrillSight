@@ -557,5 +557,163 @@
     "category_icon": "cylinder",
     "created_at": "2026-09-04T17:05:28.783152Z",
     "item_id": "risk-kb-013"
+  },
+  {
+    "item_id": "risk-digi-1788591618-00",
+    "title": "Lost Circulation Mitigation Protocol \u2014 enhole Drilling Ahead Anal",
+    "category": "lost_circulation",
+    "subcategory": "lost_circulation",
+    "severity": "moderate",
+    "formation": "enhole Drilling Ahead",
+    "depth_range": {
+      "start_m": 650,
+      "end_m": 950
+    },
+    "symptoms_early_indicators": [
+      "SYMPTOMS / EARLY INDICATORS:",
+      "Rapid decrease in active mud pit volume totalizer (loss of 25 bbl in 20 minutes)",
+      "Differential hydrostatic overbalance against depleted reservoir pore pressure (1.12 SG EMW vs 1.25 SG mud weight)"
+    ],
+    "root_causes": [
+      "Slight drill break with ROP increasing from 12 m/hr to 28 m/hr upon crossing depleted sand interface",
+      "Differential hydrostatic overbalance against depleted reservoir pore pressure (1.12 SG EMW vs 1.25 SG mud weight)",
+      "Permeable thief sandstone with Darcy-scale permeability lacking adequate particulate filter cake seal"
+    ],
+    "mitigation_actions": [
+      "High equivalent circulating density (ECD) exceeding natural fracture breakdown limit of the fault margin",
+      "MITIGATION ACTIONS TAKEN:",
+      "Immediately throttled rig pump rate from 650 gpm down to 420 gpm to lower annular friction and ECD",
+      "Prepared and pumped a 40 bbl high-fluid-loss engineered calcium carbonate LCM pill (25 ppb coarse, 15 ppb medium)"
+    ],
+    "operational_guidelines": "Maintain ECD within approved window and verify pit volume totalizer prior to tripping through enhole Drilling Ahead.",
+    "well_reference": "Digitized Field Operational Report",
+    "source_document": "North_Sea_Well_15_9_F12_Incident.txt",
+    "category_name": "Lost Circulation",
+    "category_color": "#ea580c",
+    "keywords": [
+      "lost circulation",
+      "mitigation",
+      "enhole Drilling Ahead",
+      "drilling risk"
+    ],
+    "created_at": "2026-09-05T07:00:18.609476+00:00",
+    "digitized": true,
+    "digitized_source": "North_Sea_Well_15_9_F12_Incident.txt"
+  },
+  {
+    "item_id": "risk-digi-1788592251-00",
+    "title": "Casing Cementing Mitigation Protocol - abnormally pressured Analy",
+    "category": "casing_cementing",
+    "subcategory": "casing_cementing",
+    "severity": "moderate",
+    "formation": "abnormally pressured",
+    "depth_range": {
+      "start_m": 2850,
+      "end_m": 3400
+    },
+    "symptoms_early_indicators": [
+      "\uf0a7 Protect integrity of the well against",
+      "Intermediate casing Provides protection against caving of weak or abnormally pressured formations and enables the",
+      "pushes against the formation pressure"
+    ],
+    "root_causes": [
+      "Lubricate drill string and BHA and cool the bit. The drill bit and BHA become hot due to friction during",
+      "/3 of hydraulic power due to pressure losses",
+      "Underbalanced Drilling:",
+      "Overbalanced Drilling:"
+    ],
+    "mitigation_actions": [
+      "\uf0a7 Counter circulation losses during drilling,",
+      "Production casing Isolate the zone containing natural gas from other subsurface formations; pump hydraulic",
+      "Production Tubing Allows for production of the reservoir fluids and installation of pump if necessary, protects",
+      "ECD \uf0e0 equivalent circulation density \uf0e0 estimating formation pore and \u201cFrac\u201d pressures"
+    ],
+    "operational_guidelines": "Maintain ECD within approved window and verify pit volume totalizer prior to tripping through abnormally pressured.",
+    "well_reference": "Digitized Field Operational Report",
+    "source_document": "Wittig_Drilling_intro-part_II.pdf",
+    "category_name": "Casing Cementing",
+    "category_color": "#f59e0b",
+    "keywords": [
+      "casing cementing",
+      "mitigation",
+      "abnormally pressured",
+      "drilling risk"
+    ],
+    "created_at": "2026-09-05T07:10:51.932994+00:00",
+    "digitized": true,
+    "digitized_source": "Wittig_Drilling_intro-part_II.pdf"
+  },
+  {
+    "item_id": "risk-digi-1788592779-00",
+    "title": "Casing Collapse",
+    "category": "stuck_pipe",
+    "subcategory": "casing_damage",
+    "severity": "critical",
+    "formation": null,
+    "depth_range": {
+      "start_m": null,
+      "end_m": null
+    },
+    "symptoms_early_indicators": [
+      "increased pressure",
+      "casing deformation"
+    ],
+    "root_causes": [
+      "inadequate casing design",
+      "insufficient cementation"
+    ],
+    "mitigation_actions": [
+      "improve casing design",
+      "enhance cementation procedures"
+    ],
+    "operational_guidelines": "Monitor casing pressure and deformation during drilling and cementation.",
+    "well_reference": "North Sea Field Study",
+    "source_document": "Wittig_Drilling_intro-part_II.pdf",
+    "category_name": "Stuck Pipe",
+    "category_color": "#ef4444",
+    "keywords": [
+      "casing",
+      "collapse",
+      "stuck pipe"
+    ],
+    "created_at": "2026-09-05T07:19:39.481610+00:00",
+    "digitized": true,
+    "digitized_source": "Wittig_Drilling_intro-part_II.pdf"
+  },
+  {
+    "item_id": "risk-digi-1788592779-01",
+    "title": "Lost Circulation",
+    "category": "lost_circulation",
+    "subcategory": "circulation_loss",
+    "severity": "high",
+    "formation": null,
+    "depth_range": {
+      "start_m": null,
+      "end_m": null
+    },
+    "symptoms_early_indicators": [
+      "decrease in mud level",
+      "increase in pump pressure"
+    ],
+    "root_causes": [
+      "fractured formations",
+      "inadequate mud weight"
+    ],
+    "mitigation_actions": [
+      "use LCM",
+      "adjust mud weight"
+    ],
+    "operational_guidelines": "Monitor mud level and pump pressure during drilling.",
+    "well_reference": "North Sea Field Study",
+    "source_document": "Wittig_Drilling_intro-part_II.pdf",
+    "category_name": "Lost Circulation",
+    "category_color": "#ea580c",
+    "keywords": [
+      "lost circulation",
+      "mud loss"
+    ],
+    "created_at": "2026-09-05T07:19:39.481673+00:00",
+    "digitized": true,
+    "digitized_source": "Wittig_Drilling_intro-part_II.pdf"
   }
 ]

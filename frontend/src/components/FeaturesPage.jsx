@@ -10,7 +10,8 @@ export default function FeaturesPage({
   onNavigateToLanding,
   onNavigateToDashboard,
   onNavigateToSpatial,
-  onNavigateToKnowledge
+  onNavigateToKnowledge,
+  onNavigateToDigitize
 }) {
   return (
     <div className="features-page-container">
@@ -48,6 +49,18 @@ export default function FeaturesPage({
               title="Open Searchable Knowledge Repository"
             >
               <span>Knowledge Base</span>
+            </button>
+          )}
+          {onNavigateToDigitize && (
+            <button
+              type="button"
+              className="nav-btn nav-btn--ghost"
+              onClick={onNavigateToDigitize}
+              title="Digitize & Ingest Well Reports via Groq AI"
+              style={{ color: '#7c3aed', borderColor: 'rgba(124, 58, 237, 0.3)' }}
+            >
+              <Sparkles size={14} />
+              <span>AI Digitize</span>
             </button>
           )}
           <button
@@ -215,6 +228,54 @@ export default function FeaturesPage({
                   onClick={() => onNavigateToKnowledge && onNavigateToKnowledge()}
                 >
                   <span>Search Knowledge Base</span>
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* CARD 4: AI Document Digitization & Ingestion */}
+          <div className="rig-card-wrapper">
+            <div className="rig-feature-card">
+              <div className="rig-card-content">
+                <div className="rig-card-badge-row">
+                  <span className="rig-badge" style={{ background: '#f3e8ff', color: '#7c3aed' }}>Groq LLaMA 3.3 AI</span>
+                </div>
+                
+                <h3 className="rig-card-title">AI Document Digitization</h3>
+                
+                <div className="rig-price-row">
+                  <span className="rig-price-val">Automated</span>
+                  <span className="rig-price-sub">/Ingestion</span>
+                </div>
+                
+                <div className="rig-card-note">Turn Raw PDFs &amp; Logs into KB Records</div>
+                
+                <ul className="rig-check-list" role="list">
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Upload well logs, daily reports &amp; SPE PDFs</span>
+                  </li>
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Groq LLaMA 3.3 70B structured extraction</span>
+                  </li>
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Domain relevance filter &amp; duplicate check</span>
+                  </li>
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Direct MongoDB &amp; KB persistence</span>
+                  </li>
+                </ul>
+
+                <button
+                  type="button"
+                  className="rig-try-btn"
+                  onClick={() => onNavigateToDigitize && onNavigateToDigitize()}
+                >
+                  <span>Digitize Documents</span>
                   <ArrowRight size={16} />
                 </button>
               </div>

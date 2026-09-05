@@ -8,6 +8,7 @@ import {
   BarChart3, Check, Crosshair, Cog
 } from 'lucide-react';
 import RAW_KB_BACKUP from '../data/knowledge_backup.json';
+import WellDossierModal from './WellDossierModal';
 import '../knowledge.css';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -966,12 +967,15 @@ export default function KnowledgeRepository({
   onNavigateToFeatures,
   onNavigateToSpatial,
   onNavigateToLanding,
+  onNavigateToDigitize,
   activeParams = { depth: 4200, rop: 65, spp: 400, mud_in: 1.2, wob: 30 },
-  activeRiskType = 'lost_circulation'
+  activeRiskType = 'lost_circulation',
+  navOptions = null,
+  onClearNavOptions = null
 }) {
   // ── States ──
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState('all'); // 'all' | 'reports' | 'wells' | 'risks'
+  const [searchQuery, setSearchQuery] = useState(navOptions?.searchQuery || '');
+  const [activeTab, setActiveTab] = useState(navOptions ? 'reports' : 'all'); // 'all' | 'reports' | 'wells' | 'risks'
   
   // Multi-attribute filters (matching Image 2)
   const [filterRisk, setFilterRisk] = useState('all');
@@ -985,6 +989,8 @@ export default function KnowledgeRepository({
 
   // Modal State for Selected Document (Step C in Diagram)
   const [selectedDoc, setSelectedDoc] = useState(null);
+  // Modal State for Selected Well Dossier & Incidents
+  const [selectedWell, setSelectedWell] = useState(null);
   const [docViewMode, setDocViewMode] = useState('real'); // 'real' (original PDF) | 'structured' (AI synthesis view)
   const [highlightedSection, setHighlightedSection] = useState(null);
   const [activeSourceSection, setActiveSourceSection] = useState(null);
@@ -994,6 +1000,7 @@ export default function KnowledgeRepository({
   const [zoomLevel, setZoomLevel] = useState(100);
 
   const pdfViewportRef = useRef(null);
+  const hasNavHandledRef = useRef(false);
 
   // Sync initial PDF url & reset citations when selectedDoc changes
   useEffect(() => {
@@ -1079,6 +1086,41 @@ export default function KnowledgeRepository({
 
     return merged;
   }, [backendKbItems]);
+
+  // ── Auto-Open Extracted Document when navigating from Digitization ──
+  useEffect(() => {
+    if (!navOptions) return;
+
+    if (navOptions.searchQuery) {
+      setSearchQuery(navOptions.searchQuery);
+    }
+    setActiveTab('reports');
+
+    if (!hasNavHandledRef.current && allDocuments.length > 0) {
+      const targetId = (navOptions.targetItemId || '').toLowerCase().trim();
+      const queryLower = (navOptions.searchQuery || '').toLowerCase().trim();
+
+      const matched = allDocuments.find(d => {
+        if (targetId && (d.id?.toLowerCase() === targetId || d.docCode?.toLowerCase() === targetId)) {
+          return true;
+        }
+        if (queryLower && (d.title.toLowerCase().includes(queryLower) || queryLower.includes(d.title.toLowerCase()))) {
+          return true;
+        }
+        return false;
+      });
+
+      if (matched) {
+        hasNavHandledRef.current = true;
+        if (navOptions.autoOpenDoc) {
+          setSelectedDoc(matched);
+          setDocViewMode(matched.realPdfUrl ? 'real' : 'structured');
+          setShowWellComparison(false);
+          setHighlightedSection(null);
+        }
+      }
+    }
+  }, [navOptions, allDocuments]);
 
   // ── Filtered Documents Calculation ──
   const filteredDocuments = useMemo(() => {
@@ -1276,6 +1318,19 @@ export default function KnowledgeRepository({
             <span>3D Spatial Map</span>
           </button>
 
+          {onNavigateToDigitize && (
+            <button
+              type="button"
+              className="kb-nav-btn kb-nav-btn--ghost"
+              onClick={onNavigateToDigitize}
+              title="Upload and digitize drilling reports via Groq AI"
+              style={{ color: '#7c3aed', borderColor: 'rgba(124, 58, 237, 0.3)', background: 'rgba(124, 58, 237, 0.06)' }}
+            >
+              <Sparkles size={14} />
+              <span>Digitize Reports</span>
+            </button>
+          )}
+
           <button
             type="button"
             className="kb-nav-btn kb-nav-btn--primary"
@@ -1421,6 +1476,43 @@ export default function KnowledgeRepository({
 
       {/* ── Main Results Section ── */}
       <main className="kb-body">
+        {/* Active AI Digitization Navigation Notice */}
+        {navOptions && (
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.09), rgba(59, 130, 246, 0.09))',
+            border: '1.5px solid rgba(124, 58, 237, 0.35)', borderRadius: 10,
+            padding: '12px 18px', marginBottom: 20, flexWrap: 'wrap', gap: 10
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <Sparkles size={18} color="#7c3aed" />
+              <div>
+                <span style={{ fontSize: '0.88rem', fontWeight: 800, color: '#4c1d95', display: 'block' }}>
+                  Digitized Document Active: {navOptions.searchQuery || navOptions.targetItemId}
+                </span>
+                <span style={{ fontSize: '0.76rem', color: '#64748b' }}>
+                  The Knowledge Base is focused on your extracted record. Click any card to inspect its full operational playbook.
+                </span>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                if (onClearNavOptions) onClearNavOptions();
+                setSearchQuery('');
+                setActiveTab('all');
+              }}
+              style={{
+                background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: 7,
+                padding: '6px 14px', fontSize: '0.8rem', fontWeight: 700, color: '#334155',
+                cursor: 'pointer', boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+              }}
+            >
+              Show Full Knowledge Base
+            </button>
+          </div>
+        )}
+
         {/* TAB 1: ALL OR REPORTS & DOCUMENTS (Diagram Step B) */}
         {(activeTab === 'all' || activeTab === 'reports') && filteredDocuments.length > 0 && (
           <div style={{ marginBottom: activeTab === 'all' ? 36 : 0 }}>
@@ -1434,8 +1526,22 @@ export default function KnowledgeRepository({
             <div className="kb-docs-grid">
               {filteredDocuments.map((doc) => {
                 const catMeta = getCardCategoryMeta(doc.category, doc.categoryName);
+                const isTargetMatch = Boolean(
+                  navOptions && (
+                    (navOptions.targetItemId && (doc.id?.toLowerCase() === navOptions.targetItemId.toLowerCase() || doc.docCode?.toLowerCase() === navOptions.targetItemId.toLowerCase())) ||
+                    (navOptions.highlightItemIds && navOptions.highlightItemIds.map(h => h?.toLowerCase()).includes(doc.id?.toLowerCase())) ||
+                    (navOptions.searchQuery && (doc.title.toLowerCase().includes(navOptions.searchQuery.toLowerCase().trim()) || navOptions.searchQuery.toLowerCase().trim().includes(doc.title.toLowerCase())))
+                  )
+                );
                 return (
-                  <div key={doc.id} className="kb-doc-card">
+                  <div
+                    key={doc.id}
+                    className={`kb-doc-card ${isTargetMatch ? 'kb-doc-card--target-highlight' : ''}`}
+                    style={isTargetMatch ? {
+                      border: '2px solid #7c3aed',
+                      boxShadow: '0 0 0 3px rgba(124, 58, 237, 0.2), 0 12px 24px -4px rgba(124, 58, 237, 0.25)'
+                    } : {}}
+                  >
                     {/* Top Hero Photographic Banner */}
                     <div
                       className="kb-card-banner"
@@ -1451,10 +1557,17 @@ export default function KnowledgeRepository({
                         <span>{catMeta.label}</span>
                       </span>
 
-                      <span className="kb-card-relevance-chip">
-                        <Crosshair size={12} />
-                        <span>{doc.relevanceScore}% Relevant</span>
-                      </span>
+                      {isTargetMatch ? (
+                        <span className="kb-card-relevance-chip" style={{ background: '#7c3aed', color: '#ffffff', fontWeight: 800 }}>
+                          <Sparkles size={12} />
+                          <span>✦ Extracted Entry</span>
+                        </span>
+                      ) : (
+                        <span className="kb-card-relevance-chip">
+                          <Crosshair size={12} />
+                          <span>{doc.relevanceScore}% Relevant</span>
+                        </span>
+                      )}
                     </div>
 
                     {/* Card Content Area */}
@@ -1542,7 +1655,12 @@ export default function KnowledgeRepository({
             </h3>
             <div className="kb-wells-grid">
               {filteredWells.map((well) => (
-                <div key={well.id} className="kb-well-card">
+                <div
+                  key={well.id}
+                  className="kb-well-card"
+                  onClick={() => setSelectedWell(well)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <div className="kb-well-card-header">
                     <div>
                       <h4 className="kb-well-name">{well.name}</h4>
@@ -1591,9 +1709,9 @@ export default function KnowledgeRepository({
                   <button
                     type="button"
                     className="kb-card-action-btn"
-                    onClick={() => {
-                      setFilterWell(well.name);
-                      setActiveTab('reports');
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedWell(well);
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -2063,6 +2181,14 @@ export default function KnowledgeRepository({
             </div>
           </div>
         </div>
+      )}
+
+      {/* Historical Well Dossier & Incidents Popup Modal */}
+      {selectedWell && (
+        <WellDossierModal
+          well={selectedWell}
+          onClose={() => setSelectedWell(null)}
+        />
       )}
     </div>
   );
