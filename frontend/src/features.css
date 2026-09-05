@@ -126,6 +126,7 @@
 .headline-highlight {
   background: linear-gradient(135deg, #ea580c, #f59e0b);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
