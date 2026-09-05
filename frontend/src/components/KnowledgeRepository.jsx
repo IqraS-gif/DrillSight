@@ -104,6 +104,8 @@ function getCardCategoryMeta(category, categoryName) {
 
 // ── Transform actual backend MongoDB/backup KB item into rich Document structure ──
 function transformBackendItemToDoc(item) {
+  const isTacit = Boolean(item.is_tacit || item.capture_mode || item.rule_of_thumb || item.retrieval_group);
+
   const steps = (item.mitigation_actions || []).map((action, idx) => {
     const num = String(idx + 1).padStart(2, '0');
     const words = action.split(' ');
@@ -119,7 +121,42 @@ function transformBackendItemToDoc(item) {
     };
   });
 
-  const pdfSections = [
+  const pdfSections = isTacit ? [
+    {
+      id: 'sec-overview',
+      title: `1. Field Tacit Observation & AI Multi-Modal Summary (${item.capture_mode === 'field' ? 'Field Capture' : 'General Rig Wisdom'})`,
+      text: `Field: ${item.field_name || 'Rig Site'} | Date: ${item.capture_date || 'Recent'} | Location: ${item.location || 'Offshore Wellpad'}\nRetrieval Index Group: ${item.retrieval_group || 'Field Heuristics'}\n\n🤖 AI MULTI-MODAL INPUT SYNTHESIS:\n${item.ai_multimodal_summary || 'Multi-modal synthesis processed driller audio, visual inspections, video feeds, and written observations.'}\n\nObserved Drill Notes:\n"${item.raw_driller_notes || item.title}"`
+    },
+    {
+      id: 'sec-action-01',
+      title: '2. Rule of Thumb & Driller Heuristic',
+      text: item.rule_of_thumb ? `💡 DRILLER RULE OF THUMB:\n${item.rule_of_thumb}` : 'Heuristic captured directly from rig floor operations.'
+    },
+    {
+      id: 'sec-action-02',
+      title: '3. Physical Symptoms & Early Rig Indicators',
+      text: (item.symptoms_early_indicators || []).length > 0
+        ? (item.symptoms_early_indicators || []).map((s, i) => `• Physical Signature ${i + 1}: ${s}`).join('\n')
+        : '• Telemetry / physical anomalies observed by rig crew.'
+    },
+    {
+      id: 'sec-action-03',
+      title: '4. Root Cause Analysis & Downhole Geomechanics',
+      text: (item.root_causes || []).length > 0
+        ? (item.root_causes || []).map((c, i) => `• Root Mechanism ${i + 1}: ${c}`).join('\n')
+        : '• Dynamic subsurface formation and mechanical string interaction.'
+    },
+    {
+      id: 'sec-action-04',
+      title: '5. Actionable Mitigation Workarounds & Procedures',
+      text: (item.mitigation_actions || []).map((m, i) => `• Action 0${i + 1}: ${m}`).join('\n')
+    },
+    {
+      id: 'sec-action-05',
+      title: '6. Operational Safety Guidelines',
+      text: item.operational_guidelines || 'Maintain safety barrier envelope and coordinate with rig superintendent.'
+    }
+  ] : [
     {
       id: 'sec-overview',
       title: `1. Case Summary & Well Reference (${item.source_document || 'Research Literature'})`,
@@ -152,29 +189,43 @@ function transformBackendItemToDoc(item) {
     : (item.item_id ? item.item_id.toUpperCase() : 'KB-DOC');
 
   let docType = 'Technical Procedure';
-  if (item.source_document?.toLowerCase().includes('spe')) {
+  if (isTacit) {
+    docType = "Driller's Instinct (Tacit)";
+  } else if (item.source_document?.toLowerCase().includes('spe')) {
     docType = 'SPE Technical Paper';
   } else if (item.source_document?.toLowerCase().includes('fwr')) {
     docType = 'Final Well Report';
   }
+
+  const subtitle = isTacit
+    ? `Field Insight (${item.field_name || 'Rig Site'}) • ${item.capture_date || '2025'} • ${item.retrieval_group || 'Tactical Group'}`
+    : `Literature from ${item.source_document || 'Field Database'} • ${item.well_reference || 'Incident'}`;
+
+  const author = isTacit
+    ? (item.field_name ? `Field Rig Driller (${item.field_name})` : 'Senior Driller / Field Expert')
+    : (item.source_document?.toLowerCase().includes('captain')
+      ? 'North Sea Operator Drilling Team'
+      : (item.source_document?.toLowerCase().includes('spe') ? 'Society of Petroleum Engineers (SPE)' : 'Well Operations Advisory Group'));
+
+  const usedFor = isTacit && item.rule_of_thumb
+    ? `💡 Rule of Thumb: ${item.rule_of_thumb}`
+    : (item.root_causes?.[0] ? `${item.root_causes[0]}. ` : '') + (item.mitigation_actions?.[0] || '');
 
   return {
     id: item.item_id || `kb-${item.category}-${Math.random().toString(36).substring(2, 7)}`,
     category: item.category,
     categoryName: item.category_name || item.category?.replace(/_/g, ' ')?.toUpperCase(),
     title: item.title,
-    subtitle: `Literature from ${item.source_document || 'Field Database'} • ${item.well_reference}`,
+    subtitle: subtitle,
     docType: docType,
-    updatedYear: '2025',
-    author: item.source_document?.toLowerCase().includes('captain')
-      ? 'North Sea Operator Drilling Team'
-      : (item.source_document?.toLowerCase().includes('spe') ? 'Society of Petroleum Engineers (SPE)' : 'Well Operations Advisory Group'),
+    updatedYear: item.capture_date ? item.capture_date.split('-')[0] : '2025',
+    author: author,
     docCode: docCode,
-    usedFor: (item.root_causes?.[0] ? `${item.root_causes[0]}. ` : '') + (item.mitigation_actions?.[0] || ''),
+    usedFor: usedFor,
     severity: item.severity || 'high',
-    formation: item.formation || 'Subsurface Sandstone',
+    formation: item.formation || 'Subsurface Formation',
     operation: 'Drilling Ahead',
-    wellReference: item.well_reference || 'Field Incident',
+    wellReference: item.well_reference || (item.field_name ? `${item.field_name} Rig` : 'Field Incident'),
     depthRange: item.depth_range || { start_m: 2000, end_m: 3500 },
     relevanceScore: item.severity === 'critical' ? 96 : (item.severity === 'high' ? 91 : 86),
     keywords: [
@@ -183,7 +234,9 @@ function transformBackendItemToDoc(item) {
       item.source_document || '',
       item.well_reference || '',
       item.formation || '',
-      item.category_name || ''
+      item.category_name || '',
+      item.rule_of_thumb || '',
+      item.retrieval_group || ''
     ],
     aiSummary: {
       executive: item.operational_guidelines || (item.root_causes || []).join('. '),
@@ -191,16 +244,23 @@ function transformBackendItemToDoc(item) {
     },
     extractedSteps: steps,
     pdfSections: pdfSections,
-    comparisonParams: [
+    comparisonParams: isTacit ? [
+      { param: 'Capture Mode', docVal: item.capture_mode === 'field' ? 'Field Tacit Capture' : 'General Rig Tacit', rigVal: 'Real-time Driller', status: 'exact' },
+      { param: 'Field / Location', docVal: `${item.field_name || 'Rig'} (${item.location || 'Offshore'})`, rigVal: 'Live Rig Site', status: 'exact' },
+      { param: 'Retrieval Group', docVal: item.retrieval_group || 'Field Heuristics', rigVal: 'Fast Retrieval Index', status: 'exact' },
+      { param: 'Media Type', docVal: (item.media_type || 'Text / Voice').toUpperCase(), rigVal: 'Multi-Modal Input', status: 'exact' }
+    ] : [
       { param: 'Formation', docVal: item.formation || 'Target Interval', rigVal: 'Hugin Sandstone', status: item.formation?.toLowerCase().includes('sand') ? 'exact' : 'near' },
       { param: 'Depth (m)', docVal: `${item.depth_range?.start_m || 0} - ${item.depth_range?.end_m || 0} m`, rigVal: '4,200 m', status: 'near' },
       { param: 'Active Hazard', docVal: item.category_name || item.category, rigVal: 'Active Well Hazard', status: 'exact' },
       { param: 'Source Doc', docVal: item.source_document || 'Field Database', rigVal: 'Live Sensor Stream', status: 'exact' }
     ],
     sourceDocument: item.source_document || null,
-    realPdfUrl: item.source_document ? `${PDF_BASE}/${encodeURIComponent(item.source_document)}` : null,
+    realPdfUrl: item.source_document && !isTacit ? `${PDF_BASE}/${encodeURIComponent(item.source_document)}` : null,
     hasSchematic: false,
-    isFromBackendKB: true
+    isFromBackendKB: true,
+    isTacit: isTacit,
+    tacitRecord: isTacit ? item : null
   };
 }
 
@@ -1635,7 +1695,7 @@ export default function KnowledgeRepository({
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                           <FileText size={14} />
-                          <span>{doc.isFromBackendKB ? 'Open Real PDF & Synthesis' : 'View Generated SOP Standard'}</span>
+                          <span>{doc.isTacit ? "Open Driller's Instinct Playbook" : (doc.isFromBackendKB ? 'Open Real PDF & Synthesis' : 'View Generated SOP Standard')}</span>
                         </div>
                         <ArrowRight size={15} />
                       </button>
@@ -1820,7 +1880,11 @@ export default function KnowledgeRepository({
                 <FileText size={18} color="#38bdf8" />
                 <span className="kb-modal-doc-title">{selectedDoc.title}</span>
                 <span className="kb-modal-doc-code">{selectedDoc.docCode}</span>
-                {selectedDoc.isFromBackendKB ? (
+                {selectedDoc.isTacit ? (
+                  <span className="kb-doc-source-tag" style={{ fontSize: '0.68rem', padding: '2px 8px', background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+                    <Sparkles size={11} /> Driller's Instinct (Tacit)
+                  </span>
+                ) : selectedDoc.isFromBackendKB ? (
                   <span className="kb-doc-source-tag kb-doc-source-tag--real" style={{ fontSize: '0.68rem', padding: '2px 8px' }}>
                     <FileText size={11} /> Real Published Literature
                   </span>
@@ -1894,9 +1958,11 @@ export default function KnowledgeRepository({
                     )}
                     {!selectedDoc.realPdfUrl && (
                       <div className="kb-doc-pages">
-                        <span style={{ fontWeight: 700, color: '#f8fafc' }}>Generated Technical SOP</span>
+                        <span style={{ fontWeight: 700, color: selectedDoc.isTacit ? '#34d399' : '#f8fafc' }}>
+                          {selectedDoc.isTacit ? "⚡ Driller's Instinct Playbook" : 'Generated Technical SOP'}
+                        </span>
                         <span>•</span>
-                        <span>Standard A4 Sheet</span>
+                        <span>{selectedDoc.isTacit ? 'Field Driller Synthesis' : 'Standard A4 Sheet'}</span>
                       </div>
                     )}
                   </div>
