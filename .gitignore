@@ -27,6 +27,7 @@ dist-ssr/
 *.joblib
 mlmodel/*.csv
 *.png
+!frontend/public/**/*.png
 !frontend/public/*.png
 !frontend/src/**/*.png
 
