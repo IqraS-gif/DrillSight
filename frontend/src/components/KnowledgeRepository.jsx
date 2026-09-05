@@ -11,6 +11,7 @@ import RAW_KB_BACKUP from '../data/knowledge_backup.json';
 import '../knowledge.css';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const PDF_BASE = import.meta.env.VITE_PDF_BASE_URL || '/pdfs';
 
 // ── Search matching helper with intelligent tokenization ──
 function checkQueryMatch(query, searchSources) {
@@ -196,7 +197,7 @@ function transformBackendItemToDoc(item) {
       { param: 'Source Doc', docVal: item.source_document || 'Field Database', rigVal: 'Live Sensor Stream', status: 'exact' }
     ],
     sourceDocument: item.source_document || null,
-    realPdfUrl: item.source_document ? `/pdfs/${encodeURIComponent(item.source_document)}` : null,
+    realPdfUrl: item.source_document ? `${PDF_BASE}/${encodeURIComponent(item.source_document)}` : null,
     hasSchematic: false,
     isFromBackendKB: true
   };
@@ -224,7 +225,7 @@ const CORPUS_DOCUMENTS = [
     hasSchematic: false,
     isFromBackendKB: false,
     sourceDocument: 'Oil & Gas Field Operations SOPs Guide _ WorkProcedures.pdf',
-    realPdfUrl: '/pdfs/Oil%20%26%20Gas%20Field%20Operations%20SOPs%20Guide%20_%20WorkProcedures.pdf',
+    realPdfUrl: `${PDF_BASE}/Oil%20%26%20Gas%20Field%20Operations%20SOPs%20Guide%20_%20WorkProcedures.pdf`,
     keywords: [
       'lost circulation', 'lcm', 'lcm treatment', 'circulation loss', 'dynamic losses',
       'mud loss', 'pill', 'calcium carbonate', 'depleted', 'hugin sandstone', 'severe circulation loss',

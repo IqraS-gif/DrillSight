@@ -15,10 +15,17 @@ dist/
 dist-ssr/
 *.local
 
-# Large datasets (>100MB exceeds GitHub limits)
+# Large datasets & data folder
+/data/
+/data/**
+!frontend/src/data/**
 *.csv
+*.tsv
+*.parquet
+*.h5
+*.pkl
+*.joblib
 mlmodel/*.csv
-data/
 *.png
 !frontend/public/*.png
 !frontend/src/**/*.png
@@ -28,5 +35,5 @@ data/
 logs/
 .DS_Store
 Thumbs.db
-.vscode/
-.idea/
+# Large PDF assets (hosted on Cloudinary)
+frontend/public/pdfs/
