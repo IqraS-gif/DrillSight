@@ -94,8 +94,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 50px 24px 70px;
-  max-width: 960px;
+  padding: 40px 24px 60px;
+  max-width: 1200px;
   margin: 0 auto;
   text-align: center;
 }
@@ -132,20 +132,200 @@
 .hero-subline {
   font-size: 1.05rem;
   color: #64748b;
-  margin: 0 0 44px 0;
-  max-width: 600px;
+  margin: 0 0 36px 0;
+  max-width: 680px;
 }
 
 .cards-grid {
   display: flex;
   align-items: stretch;
   justify-content: center;
-  gap: 36px;
+  gap: 32px;
   flex-wrap: wrap;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
-/* ── EXACT NEO-BRUTALISM CARD STYLING FROM USER ── */
+/* ── PUMPJACK ILLUSTRATED STICKER CARDS (User Uploaded Design) ── */
+
+.rig-card-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.rig-feature-card {
+  width: 356px;
+  max-width: 92vw;
+  aspect-ratio: 653 / 993;
+  background-image: url('/assets/feature_card_frame.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), filter 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: drop-shadow(0 10px 22px rgba(15, 23, 42, 0.08));
+}
+
+.rig-feature-card:hover {
+  transform: translateY(-8px) scale(1.015);
+  filter: drop-shadow(0 22px 36px rgba(15, 23, 42, 0.18));
+}
+
+.rig-card-content {
+  position: absolute;
+  top: 28.5%;
+  bottom: 11.5%;
+  left: 10.5%;
+  right: 10.5%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  text-align: left;
+  color: #05060f;
+}
+
+.rig-card-badge-row {
+  margin-bottom: 4px;
+}
+
+.rig-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  font-size: 0.65rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: 1.5px solid #05060f;
+  box-shadow: 1.5px 1.5px 0px #05060f;
+}
+
+.rig-badge--orange {
+  background: #ffedd5;
+  color: #ea580c;
+}
+
+.rig-badge--blue {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.rig-badge--amber {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.rig-card-title {
+  color: #05060f;
+  font-size: 1.02rem;
+  line-height: 1.22;
+  font-weight: 900;
+  margin: 2px 0 5px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.rig-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 3px;
+}
+
+.rig-price-val {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #05060f;
+  line-height: 1.15;
+}
+
+.rig-price-sub {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #475569;
+}
+
+.rig-card-note {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #334155;
+  border-bottom: 1.5px dashed rgba(5, 6, 15, 0.22);
+  padding-bottom: 5px;
+  margin-bottom: 8px;
+}
+
+.rig-check-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0 0 10px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rig-check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.32;
+}
+
+.rig-check-item svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.rig-try-btn {
+  margin-top: auto;
+  background: #05060f;
+  color: #ffffff;
+  border: 2px solid #05060f;
+  border-radius: 9px;
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 2.5px 2.5px 0px #05060f;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: all 0.15s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.rig-try-btn:hover {
+  background: #f59e0b;
+  color: #05060f;
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px #05060f;
+}
+
+.rig-try-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #05060f;
+}
+
+@media (max-width: 768px) {
+  .rig-feature-card {
+    width: 320px;
+  }
+  .rig-card-title {
+    font-size: 1rem;
+  }
+  .rig-price-val {
+    font-size: 1.3rem;
+  }
+}
+
+/* ── PREVIOUS NEO-BRUTALISM CARD STYLING (BACKWARD COMPATIBILITY) ── */
 
 .neo-wrapper {
   display: flex;
@@ -171,6 +351,10 @@
 
 .neo-card--purple {
   background: #bfa7ff;
+}
+
+.neo-card--amber {
+  background: #facc15;
 }
 
 .neo-card:hover {

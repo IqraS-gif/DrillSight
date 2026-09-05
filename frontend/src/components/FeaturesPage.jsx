@@ -9,7 +9,8 @@ import '../features.css';
 export default function FeaturesPage({
   onNavigateToLanding,
   onNavigateToDashboard,
-  onNavigateToSpatial
+  onNavigateToSpatial,
+  onNavigateToKnowledge
 }) {
   return (
     <div className="features-page-container">
@@ -39,6 +40,16 @@ export default function FeaturesPage({
             <ArrowLeft size={15} />
             <span>Back to Home</span>
           </button>
+          {onNavigateToKnowledge && (
+            <button
+              type="button"
+              className="nav-btn nav-btn--ghost"
+              onClick={onNavigateToKnowledge}
+              title="Open Searchable Knowledge Repository"
+            >
+              <span>Knowledge Base</span>
+            </button>
+          )}
           <button
             type="button"
             className="nav-btn nav-btn--primary"
@@ -64,33 +75,39 @@ export default function FeaturesPage({
           Explore the core capabilities powering real-time drilling safety and well control.
         </p>
 
-        {/* ── Cards Grid (Neo-Brutalism Cards) ── */}
+        {/* ── Cards Grid (Pumpjack Illustrated Frame Cards) ── */}
         <div className="cards-grid">
           {/* CARD 1: AI Risk Detection & Mitigation */}
-          <div className="neo-wrapper">
-            <div className="neo-card neo-card--green">
-              <div className="pricing-block-content">
-                <p className="pricing-plan">AI Risk Detection &amp; Mitigation</p>
-                <div className="price-value">
-                  <p className="price-number">Real-Time</p>
-                  <div id="priceDiscountCent">/Telemetry</div>
+          <div className="rig-card-wrapper">
+            <div className="rig-feature-card">
+              <div className="rig-card-content">
+                <div className="rig-card-badge-row">
+                  <span className="rig-badge rig-badge--orange">AI &amp; Physics ML</span>
                 </div>
-                <div className="pricing-note">Physics ML &amp; Actionable Playbooks</div>
                 
-                <ul className="check-list" role="list">
-                  <li className="check-list-item">
+                <h3 className="rig-card-title">AI Risk Detection &amp; Mitigation</h3>
+                
+                <div className="rig-price-row">
+                  <span className="rig-price-val">Real-Time</span>
+                  <span className="rig-price-sub">/Telemetry</span>
+                </div>
+                
+                <div className="rig-card-note">Physics ML &amp; Actionable Playbooks</div>
+                
+                <ul className="rig-check-list" role="list">
+                  <li className="rig-check-item">
                     <CheckmarkIcon />
                     <span>Real-time kick &amp; gas influx detection</span>
                   </li>
-                  <li className="check-list-item">
+                  <li className="rig-check-item">
                     <CheckmarkIcon />
                     <span>Stuck pipe &amp; pack-off overpull alerts</span>
                   </li>
-                  <li className="check-list-item">
+                  <li className="rig-check-item">
                     <CheckmarkIcon />
                     <span>Immediate 3-phase emergency mitigation</span>
                   </li>
-                  <li className="check-list-item">
+                  <li className="rig-check-item">
                     <CheckmarkIcon />
                     <span>MongoDB &amp; SPE literature backed evidence</span>
                   </li>
@@ -98,41 +115,47 @@ export default function FeaturesPage({
 
                 <button
                   type="button"
-                  className="neo-try-btn"
+                  className="rig-try-btn"
                   onClick={() => onNavigateToDashboard()}
                 >
-                  <span>Try Now</span>
+                  <span>Launch Live Detection</span>
                   <ArrowRight size={16} />
                 </button>
               </div>
             </div>
           </div>
 
-          {/* CARD 2: 3D Spatial Intelligence & Well Map (Purple) */}
-          <div className="neo-wrapper">
-            <div className="neo-card neo-card--purple">
-              <div className="pricing-block-content">
-                <p className="pricing-plan">3D Spatial Intelligence Map</p>
-                <div className="price-value">
-                  <p className="price-number">3D Subsurface</p>
-                  <div id="priceDiscountCent">/Map</div>
+          {/* CARD 2: 3D Spatial Intelligence & Well Map */}
+          <div className="rig-card-wrapper">
+            <div className="rig-feature-card">
+              <div className="rig-card-content">
+                <div className="rig-card-badge-row">
+                  <span className="rig-badge rig-badge--blue">3D Spatial Map</span>
                 </div>
-                <div className="pricing-note">Offset Well Trajectories &amp; Horizons</div>
                 
-                <ul className="check-list" role="list">
-                  <li className="check-list-item">
+                <h3 className="rig-card-title">3D Spatial Intelligence Map</h3>
+                
+                <div className="rig-price-row">
+                  <span className="rig-price-val">3D Subsurface</span>
+                  <span className="rig-price-sub">/Map</span>
+                </div>
+                
+                <div className="rig-card-note">Offset Well Trajectories &amp; Horizons</div>
+                
+                <ul className="rig-check-list" role="list">
+                  <li className="rig-check-item">
                     <CheckmarkIcon />
                     <span>Interactive 3D directional trajectory viewer</span>
                   </li>
-                  <li className="check-list-item">
+                  <li className="rig-check-item">
                     <CheckmarkIcon />
                     <span>Proximity tracking across offset wells</span>
                   </li>
-                  <li className="check-list-item">
+                  <li className="rig-check-item">
                     <CheckmarkIcon />
                     <span>Stratigraphic formation horizon lithology</span>
                   </li>
-                  <li className="check-list-item">
+                  <li className="rig-check-item">
                     <CheckmarkIcon />
                     <span>Geospatial drill hazard risk zones</span>
                   </li>
@@ -140,10 +163,58 @@ export default function FeaturesPage({
 
                 <button
                   type="button"
-                  className="neo-try-btn"
+                  className="rig-try-btn"
                   onClick={() => onNavigateToSpatial()}
                 >
-                  <span>Try Now</span>
+                  <span>Explore 3D Trajectories</span>
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* CARD 3: Searchable Knowledge Repository */}
+          <div className="rig-card-wrapper">
+            <div className="rig-feature-card">
+              <div className="rig-card-content">
+                <div className="rig-card-badge-row">
+                  <span className="rig-badge rig-badge--amber">Knowledge Corpus</span>
+                </div>
+                
+                <h3 className="rig-card-title">Searchable Knowledge Repository</h3>
+                
+                <div className="rig-price-row">
+                  <span className="rig-price-val">Mitigation</span>
+                  <span className="rig-price-sub">/Repository</span>
+                </div>
+                
+                <div className="rig-card-note">SPE Papers, Well Reports &amp; Playbooks</div>
+                
+                <ul className="rig-check-list" role="list">
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Search by Risk, Formation &amp; Well</span>
+                  </li>
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Split-screen PDF viewer &amp; AI synthesis</span>
+                  </li>
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Extracted 4-phase mitigation playbooks</span>
+                  </li>
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Live rig telemetry 96% relevance matching</span>
+                  </li>
+                </ul>
+
+                <button
+                  type="button"
+                  className="rig-try-btn"
+                  onClick={() => onNavigateToKnowledge && onNavigateToKnowledge()}
+                >
+                  <span>Search Knowledge Base</span>
                   <ArrowRight size={16} />
                 </button>
               </div>

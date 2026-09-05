@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Drill, SlidersHorizontal, BarChart3,
-  MapPin, AlertTriangle, RefreshCw, ChevronRight, ChevronDown, Map, ArrowLeft, ShieldAlert
+  MapPin, AlertTriangle, RefreshCw, ChevronRight, ChevronDown, Map, ArrowLeft, ShieldAlert, BookOpen
 } from 'lucide-react';
 
 import RiskGauge       from './components/RiskGauge';
@@ -15,6 +15,7 @@ import MitigationModal from './components/MitigationModal';
 import LandingPage    from './components/LandingPage';
 import FeaturesPage   from './components/FeaturesPage';
 import SpatialIntelligence from './components/SpatialIntelligence';
+import KnowledgeRepository from './components/KnowledgeRepository';
 import { computePhysicsRisk } from './utils/physicsRisk';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -96,6 +97,7 @@ export default function App() {
       if (window.location.hash === '#dashboard' || window.location.hash.startsWith('#dashboard')) return 'dashboard';
       if (window.location.hash === '#features' || window.location.hash.startsWith('#features')) return 'features';
       if (window.location.hash === '#spatial' || window.location.hash.startsWith('#spatial')) return 'spatial';
+      if (window.location.hash === '#knowledge' || window.location.hash.startsWith('#knowledge')) return 'knowledge';
     }
     return 'landing';
   });
@@ -109,6 +111,8 @@ export default function App() {
         setCurrentView('features');
       } else if (hash === '#spatial' || hash.startsWith('#spatial')) {
         setCurrentView('spatial');
+      } else if (hash === '#knowledge' || hash.startsWith('#knowledge')) {
+        setCurrentView('knowledge');
       } else {
         setCurrentView('landing');
       }
@@ -133,6 +137,11 @@ export default function App() {
   const navigateToSpatial = () => {
     window.location.hash = '#spatial';
     setCurrentView('spatial');
+  };
+
+  const navigateToKnowledge = () => {
+    window.location.hash = '#knowledge';
+    setCurrentView('knowledge');
   };
 
   const navigateToLanding = () => {
@@ -229,6 +238,7 @@ export default function App() {
         onLaunch={navigateToFeatures} 
         onNavigateToFeatures={navigateToFeatures}
         onNavigateToSpatial={navigateToSpatial} 
+        onNavigateToKnowledge={navigateToKnowledge}
       />
     );
   }
@@ -239,6 +249,7 @@ export default function App() {
         onNavigateToLanding={navigateToLanding}
         onNavigateToDashboard={navigateToDashboard}
         onNavigateToSpatial={navigateToSpatial}
+        onNavigateToKnowledge={navigateToKnowledge}
       />
     );
   }
@@ -248,6 +259,19 @@ export default function App() {
       <SpatialIntelligence
         onNavigateToDashboard={navigateToDashboard}
         onNavigateToLanding={navigateToLanding}
+      />
+    );
+  }
+
+  if (currentView === 'knowledge') {
+    return (
+      <KnowledgeRepository
+        onNavigateToDashboard={navigateToDashboard}
+        onNavigateToFeatures={navigateToFeatures}
+        onNavigateToSpatial={navigateToSpatial}
+        onNavigateToLanding={navigateToLanding}
+        activeParams={params}
+        activeRiskType={prediction?.risk_type ?? 'lost_circulation'}
       />
     );
   }
@@ -290,6 +314,21 @@ export default function App() {
           >
             <Map size={14} />
             <span>Spatial Intelligence</span>
+          </button>
+          <button
+            type="button"
+            className="topbar-spatial-btn"
+            onClick={navigateToKnowledge}
+            title="Open Searchable Mitigation Knowledge Repository"
+            style={{
+              marginLeft: 6,
+              background: 'rgba(2, 132, 199, 0.08)',
+              color: '#0284c7',
+              borderColor: 'rgba(2, 132, 199, 0.35)',
+            }}
+          >
+            <BookOpen size={14} />
+            <span>Knowledge Base</span>
           </button>
         </div>
         <div className="topbar__right">

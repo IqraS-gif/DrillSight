@@ -4,7 +4,12 @@ import {
 } from 'lucide-react';
 import '../landing.css';
 
-export default function LandingPage({ onLaunch, onNavigateToSpatial, onNavigateToFeatures }) {
+export default function LandingPage({
+  onLaunch,
+  onNavigateToSpatial,
+  onNavigateToFeatures,
+  onNavigateToKnowledge
+}) {
   const [activeNav, setActiveNav] = useState('Home');
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
@@ -85,6 +90,25 @@ export default function LandingPage({ onLaunch, onNavigateToSpatial, onNavigateT
               title="Launch Spatial Intelligence Map"
             >
               Spatial Intelligence
+            </button>
+          )}
+          {onNavigateToKnowledge && (
+            <button
+              type="button"
+              className="landing-nav-link"
+              style={{
+                color: '#f59e0b',
+                border: '1px solid rgba(245, 158, 11, 0.35)',
+                background: 'rgba(245, 158, 11, 0.08)',
+                padding: '8px 14px',
+                borderRadius: '8px',
+                fontWeight: 700,
+                cursor: 'pointer',
+              }}
+              onClick={onNavigateToKnowledge}
+              title="Open Searchable Mitigation Knowledge Repository"
+            >
+              Knowledge Base
             </button>
           )}
           <button
@@ -183,6 +207,23 @@ export default function LandingPage({ onLaunch, onNavigateToSpatial, onNavigateT
                     </div>
                     <div className="card-center-title">
                       Early Risk<br />Alerts
+                    </div>
+                  </div>
+                </div>
+                <div 
+                  className="card"
+                  onClick={onNavigateToKnowledge}
+                  style={{ cursor: 'pointer' }}
+                  title="Open Searchable Mitigation Knowledge Repository"
+                >
+                  <div className="content">
+                    <div className="card-icon-bubble">
+                      <svg fill="#000000" viewBox="0 0 24 24" height={28} width={28} xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 2H5C3.9 2 3 2.9 3 4v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 16H6c-.55 0-1-.45-1-1s.45-1 1-1h12c.55 0 1 .45 1 1s-.45 1-1 1zm0-4H6c-.55 0-1-.45-1-1s.45-1 1-1h12c.55 0 1 .45 1 1s-.45 1-1 1zm0-4H6c-.55 0-1-.45-1-1s.45-1 1-1h12c.55 0 1 .45 1 1s-.45 1-1 1z" />
+                      </svg>
+                    </div>
+                    <div className="card-center-title">
+                      Mitigation<br />Knowledge
                     </div>
                   </div>
                 </div>
