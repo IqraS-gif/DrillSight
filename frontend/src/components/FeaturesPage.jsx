@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   ArrowLeft, 
   ArrowRight, 
-  Sparkles 
+  Sparkles,
+  ChevronDown
 } from 'lucide-react';
 import '../features.css';
 
@@ -13,6 +14,34 @@ export default function FeaturesPage({
   onNavigateToKnowledge,
   onNavigateToDigitize
 }) {
+  const [isAtBottom, setIsAtBottom] = useState(false);
+  const digitizeCardRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPos = window.scrollY + window.innerHeight;
+      const totalHeight = document.documentElement.scrollHeight;
+      if (totalHeight - scrollPos < 260) {
+        setIsAtBottom(true);
+      } else {
+        setIsAtBottom(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleScrollToggle = () => {
+    if (isAtBottom) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      if (digitizeCardRef.current) {
+        digitizeCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        window.scrollBy({ top: 600, behavior: 'smooth' });
+      }
+    }
+  };
   return (
     <div className="features-page-container">
       {/* ── Top Navigation Bar ── */}
@@ -90,8 +119,9 @@ export default function FeaturesPage({
 
         {/* ── Cards Grid (Pumpjack Illustrated Frame Cards) ── */}
         <div className="cards-grid">
-          {/* CARD 1: AI Risk Detection & Mitigation */}
-          <div className="rig-card-wrapper">
+          <div className="cards-row-primary">
+            {/* CARD 1: AI Risk Detection & Mitigation */}
+            <div className="rig-card-wrapper">
             <div className="rig-feature-card">
               <div className="rig-card-content">
                 <div className="rig-card-badge-row">
@@ -233,9 +263,12 @@ export default function FeaturesPage({
               </div>
             </div>
           </div>
+        </div>
 
+        {/* SECOND ROW: Card 4 (Centered) */}
+        <div className="cards-row-secondary">
           {/* CARD 4: AI Document Digitization & Ingestion */}
-          <div className="rig-card-wrapper">
+          <div className="rig-card-wrapper" ref={digitizeCardRef}>
             <div className="rig-feature-card">
               <div className="rig-card-content">
                 <div className="rig-card-badge-row">
@@ -282,7 +315,30 @@ export default function FeaturesPage({
             </div>
           </div>
         </div>
+      </div>
       </main>
+
+      {/* ── Fixed Animated Scroll Down Indicator (Pinned to Bottom-Left, Always Visible) ── */}
+      <div
+        className="fixed-scroll-indicator"
+        onClick={handleScrollToggle}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleScrollToggle(); }}
+        title={isAtBottom ? "Scroll back to top" : "Scroll down to more features"}
+      >
+        <div className="fixed-scroll-btn">
+          <ChevronDown 
+            size={24} 
+            strokeWidth={3} 
+            className={`fixed-scroll-icon ${isAtBottom ? 'fixed-scroll-icon--up' : 'fixed-scroll-icon--bounce'}`} 
+          />
+        </div>
+        <div className="fixed-scroll-pill">
+          <Sparkles size={13} color="#ea580c" />
+          <span>{isAtBottom ? 'Back to Top ↑' : 'More Features ↓'}</span>
+        </div>
+      </div>
     </div>
   );
 }

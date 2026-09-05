@@ -139,11 +139,121 @@
 
 .cards-grid {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.cards-row-primary {
+  display: flex;
   align-items: stretch;
   justify-content: center;
   gap: 32px;
   flex-wrap: wrap;
-  margin-bottom: 40px;
+  width: 100%;
+}
+
+.cards-row-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  width: 100%;
+  position: relative;
+}
+
+/* ── Fixed Animated Scroll-Down Indicator (Pinned to Bottom-Left) ── */
+.fixed-scroll-indicator {
+  position: fixed;
+  bottom: 32px;
+  left: 36px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  filter: drop-shadow(0 6px 16px rgba(15, 23, 42, 0.16));
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fixed-scroll-indicator:hover {
+  transform: translateY(-3px) scale(1.03);
+}
+
+.fixed-scroll-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #fbbf24;
+  border: 2.5px solid #05060f;
+  box-shadow: 3.5px 3.5px 0px #05060f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #05060f;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fixed-scroll-indicator:hover .fixed-scroll-btn {
+  background: #f59e0b;
+  box-shadow: 4.5px 4.5px 0px #05060f;
+}
+
+.fixed-scroll-icon {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fixed-scroll-icon--bounce {
+  animation: fixedArrowBounce 1.5s ease-in-out infinite;
+}
+
+.fixed-scroll-icon--up {
+  transform: rotate(180deg);
+}
+
+@keyframes fixedArrowBounce {
+  0%, 100% {
+    transform: translateY(-2px);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+.fixed-scroll-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #ffffff;
+  border: 2px solid #05060f;
+  box-shadow: 2.5px 2.5px 0px #05060f;
+  border-radius: 9999px;
+  padding: 8px 16px;
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #05060f;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.fixed-scroll-indicator:hover .fixed-scroll-pill {
+  background: #fef08a;
+  box-shadow: 3.5px 3.5px 0px #05060f;
+}
+
+@media (max-width: 640px) {
+  .fixed-scroll-indicator {
+    bottom: 20px;
+    left: 20px;
+  }
+  .fixed-scroll-pill {
+    display: none;
+  }
 }
 
 /* ── PUMPJACK ILLUSTRATED STICKER CARDS (User Uploaded Design) ── */
