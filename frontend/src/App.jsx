@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Drill, SlidersHorizontal, BarChart3,
-  MapPin, AlertTriangle, RefreshCw, ChevronRight, ChevronDown, Map, ArrowLeft, ShieldAlert, BookOpen, Sparkles
+  MapPin, AlertTriangle, RefreshCw, ChevronRight, ChevronDown, Map, ArrowLeft, ShieldAlert, BookOpen, Sparkles, Mic
 } from 'lucide-react';
 
 import RiskGauge       from './components/RiskGauge';
@@ -17,6 +17,7 @@ import FeaturesPage   from './components/FeaturesPage';
 import SpatialIntelligence from './components/SpatialIntelligence';
 import KnowledgeRepository from './components/KnowledgeRepository';
 import DocumentDigitization from './components/DocumentDigitization';
+import DrillersInstinct from './components/DrillersInstinct';
 import { computePhysicsRisk } from './utils/physicsRisk';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -99,6 +100,8 @@ export default function App() {
       if (window.location.hash === '#features' || window.location.hash.startsWith('#features')) return 'features';
       if (window.location.hash === '#spatial' || window.location.hash.startsWith('#spatial')) return 'spatial';
       if (window.location.hash === '#knowledge' || window.location.hash.startsWith('#knowledge')) return 'knowledge';
+      if (window.location.hash === '#digitize' || window.location.hash.startsWith('#digitize')) return 'digitize';
+      if (window.location.hash === '#instinct' || window.location.hash.startsWith('#instinct') || window.location.hash === '#tacit') return 'instinct';
     }
     return 'landing';
   });
@@ -116,6 +119,8 @@ export default function App() {
         setCurrentView('knowledge');
       } else if (hash === '#digitize' || hash.startsWith('#digitize')) {
         setCurrentView('digitize');
+      } else if (hash === '#instinct' || hash.startsWith('#instinct') || hash === '#tacit') {
+        setCurrentView('instinct');
       } else {
         setCurrentView('landing');
       }
@@ -153,6 +158,11 @@ export default function App() {
   const navigateToDigitize = () => {
     window.location.hash = '#digitize';
     setCurrentView('digitize');
+  };
+
+  const navigateToInstinct = () => {
+    window.location.hash = '#instinct';
+    setCurrentView('instinct');
   };
 
   const navigateToLanding = () => {
@@ -263,6 +273,7 @@ export default function App() {
         onNavigateToSpatial={navigateToSpatial}
         onNavigateToKnowledge={navigateToKnowledge}
         onNavigateToDigitize={navigateToDigitize}
+        onNavigateToInstinct={navigateToInstinct}
       />
     );
   }
@@ -284,6 +295,7 @@ export default function App() {
         onNavigateToSpatial={navigateToSpatial}
         onNavigateToLanding={navigateToLanding}
         onNavigateToDigitize={navigateToDigitize}
+        onNavigateToInstinct={navigateToInstinct}
         activeParams={params}
         activeRiskType={prediction?.risk_type ?? 'lost_circulation'}
         navOptions={knowledgeNavOptions}
@@ -299,6 +311,18 @@ export default function App() {
         onNavigateToKnowledge={navigateToKnowledge}
         onNavigateToDashboard={navigateToDashboard}
         onNavigateToFeatures={navigateToFeatures}
+        onNavigateToInstinct={navigateToInstinct}
+      />
+    );
+  }
+
+  if (currentView === 'instinct') {
+    return (
+      <DrillersInstinct
+        onNavigateToLanding={navigateToLanding}
+        onNavigateToFeatures={navigateToFeatures}
+        onNavigateToKnowledge={navigateToKnowledge}
+        onNavigateToDashboard={navigateToDashboard}
       />
     );
   }
@@ -371,6 +395,21 @@ export default function App() {
           >
             <Sparkles size={14} />
             <span>AI Digitize</span>
+          </button>
+          <button
+            type="button"
+            className="topbar-spatial-btn"
+            onClick={navigateToInstinct}
+            title="Driller's Instinct AI — Tacit Knowledge Capture"
+            style={{
+              marginLeft: 6,
+              background: 'rgba(244, 63, 94, 0.08)',
+              color: '#fb7185',
+              borderColor: 'rgba(244, 63, 94, 0.35)',
+            }}
+          >
+            <Mic size={14} />
+            <span>Instinct AI</span>
           </button>
         </div>
         <div className="topbar__right">
