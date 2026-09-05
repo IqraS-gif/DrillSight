@@ -3,7 +3,8 @@ import {
   ArrowLeft, 
   ArrowRight, 
   Sparkles,
-  ChevronDown
+  ChevronDown,
+  Mic
 } from 'lucide-react';
 import '../features.css';
 
@@ -12,7 +13,8 @@ export default function FeaturesPage({
   onNavigateToDashboard,
   onNavigateToSpatial,
   onNavigateToKnowledge,
-  onNavigateToDigitize
+  onNavigateToDigitize,
+  onNavigateToInstinct
 }) {
   const [isAtBottom, setIsAtBottom] = useState(false);
   const digitizeCardRef = useRef(null);
@@ -90,6 +92,18 @@ export default function FeaturesPage({
             >
               <Sparkles size={14} />
               <span>AI Digitize</span>
+            </button>
+          )}
+          {onNavigateToInstinct && (
+            <button
+              type="button"
+              className="nav-btn nav-btn--ghost"
+              onClick={onNavigateToInstinct}
+              title="Driller's Instinct AI — Tacit Knowledge Capture"
+              style={{ color: '#fb7185', borderColor: 'rgba(244, 63, 94, 0.3)' }}
+            >
+              <Mic size={14} />
+              <span>Instinct AI</span>
             </button>
           )}
           <button
@@ -309,6 +323,55 @@ export default function FeaturesPage({
                   onClick={() => onNavigateToDigitize && onNavigateToDigitize()}
                 >
                   <span>Digitize Documents</span>
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* CARD 5: Driller's Instinct AI (Tacit Knowledge Capture) */}
+          <div className="rig-card-wrapper">
+            <div className="rig-feature-card">
+              <div className="rig-card-content">
+                <div className="rig-card-badge-row">
+                  <span className="rig-badge" style={{ background: '#ffe4e6', color: '#f43f5e' }}>Driller's Instinct AI</span>
+                </div>
+                
+                <h3 className="rig-card-title">Tacit Knowledge Capture</h3>
+                
+                <div className="rig-price-row">
+                  <span className="rig-price-val">Mobile</span>
+                  <span className="rig-price-sub">/Field AI</span>
+                </div>
+                
+                <div className="rig-card-note">Voice, Photo &amp; Video Knowledge Capture</div>
+                
+                <ul className="rig-check-list" role="list">
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Capture tacit knowledge at field with GPS tag</span>
+                  </li>
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Glowing audio orb for live voice recording</span>
+                  </li>
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Mobile camera photo &amp; video evidence capture</span>
+                  </li>
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Fast grouped storage for instant KB retrieval</span>
+                  </li>
+                </ul>
+
+                <button
+                  type="button"
+                  className="rig-try-btn"
+                  onClick={() => onNavigateToInstinct && onNavigateToInstinct()}
+                  style={{ background: '#f43f5e' }}
+                >
+                  <span>Capture Field Instinct</span>
                   <ArrowRight size={16} />
                 </button>
               </div>
