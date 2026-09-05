@@ -4,6 +4,7 @@ main.py — FastAPI entry point for DrillInsight
 
 import os
 import sys
+import base64
 
 # Ensure current directory and root directory are in sys.path
 _current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -23,6 +24,7 @@ import threading
 from pipeline import pipeline, PARAM_META, RISK_TYPE_META, WELL_GEO
 from knowledge_db import knowledge_repo
 from digitize import run_digitization_pipeline
+from tacit_knowledge import process_tacit_knowledge_capture
 
 
 # ── Background training ────────────────────────────────────────────────────────
@@ -347,3 +349,106 @@ async def digitize_document(
     )
 
     return {"status": "ok", **result}
+
+
+# ── Driller's Instinct AI (Tacit Knowledge Capture) ──────────────────────────
+
+@app.post("/api/tacit/capture")
+async def capture_tacit_knowledge(
+    mode: str = Form("field"),
+    notes: str = Form(""),
+    field_name: Optional[str] = Form(None),
+    capture_date: Optional[str] = Form(None),
+    location: Optional[str] = Form(None),
+    media_type: Optional[str] = Form("text"),
+    media_file: Optional[UploadFile] = File(None),
+    audio_file: Optional[UploadFile] = File(None),
+    photo_file: Optional[UploadFile] = File(None),
+    video_file: Optional[UploadFile] = File(None),
+    has_audio: Optional[str] = Form("false"),
+    has_photo: Optional[str] = Form("false"),
+    has_video: Optional[str] = Form("false"),
+    groq_api_key: Optional[str] = Form(None),
+    x_groq_api_key: Optional[str] = Header(None),
+):
+    """
+    Captures driller tacit knowledge from field or general rig observation.
+    Runs Whisper audio transcription, domain relevance filter, Groq AI structuring,
+    duplicate checking, and indexes into database with grouping for fast retrieval.
+    """
+    # Read audio bytes if audio file is present
+    audio_bytes = None
+    audio_filename = None
+    if audio_file:
+        audio_bytes = await audio_file.read()
+        audio_filename = audio_file.filename
+    elif media_file and media_type == "audio":
+        audio_bytes = await media_file.read()
+        audio_filename = media_file.filename
+
+    # Convert photo to Data URL for reliable frontend display & database storage
+    photo_data_url = None
+    if photo_file:
+        try:
+            p_bytes = await photo_file.read()
+            c_type = photo_file.content_type or "image/jpeg"
+            photo_data_url = f"data:{c_type};base64,{base64.b64encode(p_bytes).decode('utf-8')}"
+        except Exception:
+            pass
+
+    # Convert audio to Data URL
+    audio_data_url = None
+    if audio_bytes:
+        try:
+            audio_data_url = f"data:audio/webm;base64,{base64.b64encode(audio_bytes).decode('utf-8')}"
+        except Exception:
+            pass
+
+    photo_fn = photo_file.filename if photo_file else (media_file.filename if media_type == "photo" else None)
+    video_fn = video_file.filename if video_file else (media_file.filename if media_type == "video" else None)
+
+    if not notes.strip() and not audio_bytes and not photo_fn and not video_fn:
+        raise HTTPException(status_code=400, detail="Provide voice notes, observation description, or capture media.")
+
+    api_key = groq_api_key or x_groq_api_key
+
+    result = await process_tacit_knowledge_capture(
+        mode=mode,
+        notes=notes,
+        field_name=field_name,
+        capture_date=capture_date,
+        location=location,
+        media_filename=audio_filename or photo_fn or video_fn or (media_file.filename if media_file else None),
+        media_type=media_type,
+        audio_bytes=audio_bytes,
+        audio_filename=audio_filename,
+        photo_filename=photo_fn,
+        video_filename=video_fn,
+        photo_data_url=photo_data_url,
+        audio_data_url=audio_data_url,
+        has_audio=bool(has_audio == "true" or audio_bytes),
+        has_photo=bool(has_photo == "true" or photo_fn),
+        has_video=bool(has_video == "true" or video_fn),
+        knowledge_repo=knowledge_repo,
+        api_key=api_key,
+    )
+
+    if result.get("status") == "rejected_not_relevant":
+        raise HTTPException(status_code=422, detail=result.get("error"))
+
+    return result
+
+
+@app.get("/api/tacit/recent")
+def get_recent_tacit_knowledge(limit: int = 10):
+    """Fetches recent tacit knowledge entries captured by field drillers."""
+    all_k = knowledge_repo.get_all_knowledge()
+    tacit_items = [k for k in all_k if k.get("is_tacit")]
+    # Sort reverse by timestamp or item_id
+    tacit_items.sort(key=lambda x: x.get("timestamp", 0), reverse=True)
+    return {
+        "status": "ok",
+        "count": len(tacit_items[:limit]),
+        "items": tacit_items[:limit]
+    }
+
