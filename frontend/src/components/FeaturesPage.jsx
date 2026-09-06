@@ -4,7 +4,8 @@ import {
   ArrowRight, 
   Sparkles,
   ChevronDown,
-  Mic
+  Mic,
+  Cpu
 } from 'lucide-react';
 import '../features.css';
 
@@ -14,7 +15,8 @@ export default function FeaturesPage({
   onNavigateToSpatial,
   onNavigateToKnowledge,
   onNavigateToDigitize,
-  onNavigateToInstinct
+  onNavigateToInstinct,
+  onNavigateToWokwi
 }) {
   const [isAtBottom, setIsAtBottom] = useState(false);
   const digitizeCardRef = useRef(null);
@@ -104,6 +106,18 @@ export default function FeaturesPage({
             >
               <Mic size={14} />
               <span>Instinct AI</span>
+            </button>
+          )}
+          {onNavigateToWokwi && (
+            <button
+              type="button"
+              className="nav-btn nav-btn--ghost"
+              onClick={onNavigateToWokwi}
+              title="Rig Simulation Lab — Wokwi Hardware"
+              style={{ color: '#0e7490', borderColor: 'rgba(14, 116, 144, 0.3)' }}
+            >
+              <Cpu size={14} />
+              <span>Sim Lab</span>
             </button>
           )}
           <button
@@ -372,6 +386,55 @@ export default function FeaturesPage({
                   style={{ background: '#f43f5e' }}
                 >
                   <span>Capture Field Instinct</span>
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* CARD 6: Rig Simulation Lab (Wokwi) */}
+          <div className="rig-card-wrapper">
+            <div className="rig-feature-card">
+              <div className="rig-card-content">
+                <div className="rig-card-badge-row">
+                  <span className="rig-badge" style={{ background: '#e0f7fa', color: '#0e7490' }}>Embedded Hardware</span>
+                </div>
+
+                <h3 className="rig-card-title">Rig Simulation Lab</h3>
+
+                <div className="rig-price-row">
+                  <span className="rig-price-val">Wokwi</span>
+                  <span className="rig-price-sub">/Live Sim</span>
+                </div>
+
+                <div className="rig-card-note">ESP32 Hardware in Real-Time Browser</div>
+
+                <ul className="rig-check-list" role="list">
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Full Wokwi embedded simulation in-app</span>
+                  </li>
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>ESP32 / Arduino virtual component I/O</span>
+                  </li>
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Fullscreen mode &amp; live reload controls</span>
+                  </li>
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Open full editor directly in Wokwi</span>
+                  </li>
+                </ul>
+
+                <button
+                  type="button"
+                  className="rig-try-btn"
+                  onClick={() => onNavigateToWokwi && onNavigateToWokwi()}
+                  style={{ background: '#0e7490' }}
+                >
+                  <span>Launch Simulation</span>
                   <ArrowRight size={16} />
                 </button>
               </div>

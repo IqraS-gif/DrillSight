@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Drill, SlidersHorizontal, BarChart3,
-  MapPin, AlertTriangle, RefreshCw, ChevronRight, ChevronDown, Map, ArrowLeft, ShieldAlert, BookOpen, Sparkles, Mic
+  MapPin, AlertTriangle, RefreshCw, ChevronRight, ChevronDown, Map, ArrowLeft, ShieldAlert, BookOpen, Sparkles, Mic, Cpu
 } from 'lucide-react';
 
 import RiskGauge       from './components/RiskGauge';
@@ -18,6 +18,7 @@ import SpatialIntelligence from './components/SpatialIntelligence';
 import KnowledgeRepository from './components/KnowledgeRepository';
 import DocumentDigitization from './components/DocumentDigitization';
 import DrillersInstinct from './components/DrillersInstinct';
+import WokwiSimulation from './components/WokwiSimulation';
 import { computePhysicsRisk } from './utils/physicsRisk';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -102,6 +103,7 @@ export default function App() {
       if (window.location.hash === '#knowledge' || window.location.hash.startsWith('#knowledge')) return 'knowledge';
       if (window.location.hash === '#digitize' || window.location.hash.startsWith('#digitize')) return 'digitize';
       if (window.location.hash === '#instinct' || window.location.hash.startsWith('#instinct') || window.location.hash === '#tacit') return 'instinct';
+      if (window.location.hash === '#wokwi' || window.location.hash.startsWith('#wokwi')) return 'wokwi';
     }
     return 'landing';
   });
@@ -121,6 +123,8 @@ export default function App() {
         setCurrentView('digitize');
       } else if (hash === '#instinct' || hash.startsWith('#instinct') || hash === '#tacit') {
         setCurrentView('instinct');
+      } else if (hash === '#wokwi' || hash.startsWith('#wokwi')) {
+        setCurrentView('wokwi');
       } else {
         setCurrentView('landing');
       }
@@ -163,6 +167,11 @@ export default function App() {
   const navigateToInstinct = () => {
     window.location.hash = '#instinct';
     setCurrentView('instinct');
+  };
+
+  const navigateToWokwi = () => {
+    window.location.hash = '#wokwi';
+    setCurrentView('wokwi');
   };
 
   const navigateToLanding = () => {
@@ -274,6 +283,7 @@ export default function App() {
         onNavigateToKnowledge={navigateToKnowledge}
         onNavigateToDigitize={navigateToDigitize}
         onNavigateToInstinct={navigateToInstinct}
+        onNavigateToWokwi={navigateToWokwi}
       />
     );
   }
@@ -323,6 +333,15 @@ export default function App() {
         onNavigateToFeatures={navigateToFeatures}
         onNavigateToKnowledge={navigateToKnowledge}
         onNavigateToDashboard={navigateToDashboard}
+      />
+    );
+  }
+
+  if (currentView === 'wokwi') {
+    return (
+      <WokwiSimulation
+        onNavigateToLanding={navigateToLanding}
+        onNavigateToFeatures={navigateToFeatures}
       />
     );
   }
@@ -410,6 +429,21 @@ export default function App() {
           >
             <Mic size={14} />
             <span>Instinct AI</span>
+          </button>
+          <button
+            type="button"
+            className="topbar-spatial-btn"
+            onClick={navigateToWokwi}
+            title="Rig Simulation Lab — Wokwi Embedded Hardware"
+            style={{
+              marginLeft: 6,
+              background: 'rgba(14, 116, 144, 0.08)',
+              color: '#0e7490',
+              borderColor: 'rgba(14, 116, 144, 0.35)',
+            }}
+          >
+            <Cpu size={14} />
+            <span>Sim Lab</span>
           </button>
         </div>
         <div className="topbar__right">
