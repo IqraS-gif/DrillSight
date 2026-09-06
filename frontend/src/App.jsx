@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Drill, SlidersHorizontal, BarChart3,
-  MapPin, AlertTriangle, RefreshCw, ChevronRight, ChevronDown, Map, ArrowLeft, ShieldAlert, BookOpen, Sparkles, Mic, Cpu
+  MapPin, AlertTriangle, RefreshCw, ChevronRight, ChevronDown, Map, ArrowLeft, ShieldAlert, BookOpen, Sparkles, Mic, Cpu, GitBranch, Compass
 } from 'lucide-react';
 
 import RiskGauge       from './components/RiskGauge';
@@ -19,6 +19,8 @@ import KnowledgeRepository from './components/KnowledgeRepository';
 import DocumentDigitization from './components/DocumentDigitization';
 import DrillersInstinct from './components/DrillersInstinct';
 import WokwiSimulation from './components/WokwiSimulation';
+import TechnologyPage from './components/TechnologyPage';
+import WellTrajectory3D from './components/WellTrajectory3D';
 import { computePhysicsRisk } from './utils/physicsRisk';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -104,6 +106,8 @@ export default function App() {
       if (window.location.hash === '#digitize' || window.location.hash.startsWith('#digitize')) return 'digitize';
       if (window.location.hash === '#instinct' || window.location.hash.startsWith('#instinct') || window.location.hash === '#tacit') return 'instinct';
       if (window.location.hash === '#wokwi' || window.location.hash.startsWith('#wokwi')) return 'wokwi';
+      if (window.location.hash === '#technology' || window.location.hash.startsWith('#technology')) return 'technology';
+      if (window.location.hash === '#trajectory' || window.location.hash.startsWith('#trajectory')) return 'trajectory';
     }
     return 'landing';
   });
@@ -125,6 +129,10 @@ export default function App() {
         setCurrentView('instinct');
       } else if (hash === '#wokwi' || hash.startsWith('#wokwi')) {
         setCurrentView('wokwi');
+      } else if (hash === '#technology' || hash.startsWith('#technology')) {
+        setCurrentView('technology');
+      } else if (hash === '#trajectory' || hash.startsWith('#trajectory')) {
+        setCurrentView('trajectory');
       } else {
         setCurrentView('landing');
       }
@@ -172,6 +180,16 @@ export default function App() {
   const navigateToWokwi = () => {
     window.location.hash = '#wokwi';
     setCurrentView('wokwi');
+  };
+
+  const navigateToTechnology = () => {
+    window.location.hash = '#technology';
+    setCurrentView('technology');
+  };
+
+  const navigateToTrajectory = () => {
+    window.location.hash = '#trajectory';
+    setCurrentView('trajectory');
   };
 
   const navigateToLanding = () => {
@@ -270,6 +288,8 @@ export default function App() {
         onNavigateToSpatial={navigateToSpatial} 
         onNavigateToKnowledge={navigateToKnowledge}
         onNavigateToDigitize={navigateToDigitize}
+        onNavigateToTechnology={navigateToTechnology}
+        onNavigateToTrajectory={navigateToTrajectory}
       />
     );
   }
@@ -284,6 +304,8 @@ export default function App() {
         onNavigateToDigitize={navigateToDigitize}
         onNavigateToInstinct={navigateToInstinct}
         onNavigateToWokwi={navigateToWokwi}
+        onNavigateToTechnology={navigateToTechnology}
+        onNavigateToTrajectory={navigateToTrajectory}
       />
     );
   }
@@ -342,6 +364,30 @@ export default function App() {
       <WokwiSimulation
         onNavigateToLanding={navigateToLanding}
         onNavigateToFeatures={navigateToFeatures}
+      />
+    );
+  }
+
+  if (currentView === 'technology') {
+    return (
+      <TechnologyPage
+        onNavigateToLanding={navigateToLanding}
+        onNavigateToFeatures={navigateToFeatures}
+        onNavigateToDashboard={navigateToDashboard}
+        onNavigateToWokwi={navigateToWokwi}
+      />
+    );
+  }
+
+  if (currentView === 'trajectory') {
+    return (
+      <WellTrajectory3D
+        onNavigateToLanding={navigateToLanding}
+        onNavigateToFeatures={navigateToFeatures}
+        onNavigateToDashboard={navigateToDashboard}
+        onNavigateToSpatial={navigateToSpatial}
+        onNavigateToKnowledge={navigateToKnowledge}
+        onNavigateToTechnology={navigateToTechnology}
       />
     );
   }
@@ -444,6 +490,36 @@ export default function App() {
           >
             <Cpu size={14} />
             <span>Sim Lab</span>
+          </button>
+          <button
+            type="button"
+            className="topbar-spatial-btn"
+            onClick={navigateToTechnology}
+            title="Technology & ML Pipeline Architecture"
+            style={{
+              marginLeft: 6,
+              background: 'rgba(99, 102, 241, 0.08)',
+              color: '#818cf8',
+              borderColor: 'rgba(99, 102, 241, 0.35)',
+            }}
+          >
+            <GitBranch size={14} />
+            <span>Tech Engine</span>
+          </button>
+          <button
+            type="button"
+            className="topbar-spatial-btn"
+            onClick={navigateToTrajectory}
+            title="3D Well Trajectory & Subsurface Anti-Collision Visualization"
+            style={{
+              marginLeft: 6,
+              background: 'rgba(0, 102, 238, 0.08)',
+              color: '#0066ee',
+              borderColor: 'rgba(0, 102, 238, 0.35)',
+            }}
+          >
+            <Compass size={14} />
+            <span>3D Trajectory</span>
           </button>
         </div>
         <div className="topbar__right">

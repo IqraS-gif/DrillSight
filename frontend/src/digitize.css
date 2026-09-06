@@ -678,3 +678,333 @@
 .digi-list-item::marker {
   color: #0284c7;
 }
+
+/* ── Mode Switcher ── */
+.digi-mode-switch-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  animation: digiFadeIn 0.4s ease;
+}
+
+.digi-mode-switch {
+  display: flex;
+  align-items: center;
+  background: #f1f5f9;
+  padding: 5px;
+  border-radius: 14px;
+  border: 1.5px solid #e2e8f0;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+  gap: 4px;
+}
+
+.digi-mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  padding: 9px 22px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.digi-mode-btn:hover:not(.active) {
+  color: #0f172a;
+}
+
+.digi-mode-btn.active {
+  background: #ffffff;
+  color: #0284c7;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.digi-mode-pill {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #0284c7, #7c3aed);
+  color: white;
+  padding: 2px 7px;
+  border-radius: 6px;
+  letter-spacing: 0.04em;
+}
+
+/* ── Batch Mode Box & List ── */
+.digi-batch-panel {
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  animation: digiFadeIn 0.35s ease;
+}
+
+.digi-batch-queue-card {
+  width: 100%;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+}
+
+.digi-batch-queue-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.digi-batch-queue-title {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.digi-batch-queue-count {
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.digi-batch-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.digi-batch-small-btn {
+  background: none;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.18s ease;
+}
+
+.digi-batch-small-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.digi-batch-small-btn--danger:hover {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.digi-batch-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.digi-batch-file-item {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.digi-batch-file-item--processing {
+  border-color: #0284c7;
+  background: #f0f9ff;
+}
+
+.digi-batch-file-item--done {
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+
+.digi-batch-file-item--duplicate {
+  border-color: #fef08a;
+  background: #fefce8;
+}
+
+.digi-batch-file-item--error {
+  border-color: #fca5a5;
+  background: #fef2f2;
+}
+
+.digi-batch-file-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.digi-batch-file-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.digi-batch-filename {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.digi-batch-filemeta {
+  font-size: 0.72rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.digi-batch-status-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.digi-batch-status-pill--pending {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.digi-batch-status-pill--processing {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.digi-batch-status-pill--done {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.digi-batch-status-pill--duplicate {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.digi-batch-status-pill--error {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.digi-batch-item-del {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.digi-batch-item-del:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* Progress card */
+.digi-batch-progress {
+  width: 100%;
+  background: #ffffff;
+  border: 1.5px solid #bae6fd;
+  border-radius: 12px;
+  padding: 14px 18px;
+  box-sizing: border-box;
+}
+
+.digi-batch-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0369a1;
+}
+
+.digi-batch-progress-track {
+  width: 100%;
+  height: 8px;
+  background: #e0f2fe;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 8px 0 4px;
+}
+
+.digi-batch-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0284c7, #7c3aed);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+/* Batch Summary Stats */
+.digi-batch-summary-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.digi-batch-stat-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  text-align: center;
+}
+
+.digi-batch-stat-val {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.digi-batch-stat-lbl {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+

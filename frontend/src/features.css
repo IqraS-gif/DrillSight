@@ -1,11 +1,18 @@
 /* ── Features Page & Neo-Brutalism Cards ── */
 
+html, body {
+  overflow-y: auto !important;
+  scroll-behavior: smooth;
+}
+
 .features-page-container {
   min-height: 100vh;
   background: #f8fafc;
   color: #0f172a;
   display: flex;
   flex-direction: column;
+  overflow-y: visible;
+  padding-bottom: 24px;
 }
 
 .features-nav {
@@ -93,9 +100,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 40px 24px 60px;
-  max-width: 1200px;
+  justify-content: flex-start;
+  padding: 40px 24px 20px;
+  max-width: 1240px;
   margin: 0 auto;
   text-align: center;
 }
@@ -143,7 +150,7 @@
   align-items: center;
   gap: 36px;
   width: 100%;
-  margin-bottom: 40px;
+  margin-bottom: 16px;
 }
 
 .cards-row-primary {
@@ -162,6 +169,7 @@
   gap: 32px;
   width: 100%;
   position: relative;
+  flex-wrap: wrap;
 }
 
 /* ── Fixed Animated Scroll-Down Indicator (Pinned to Bottom-Left) ── */

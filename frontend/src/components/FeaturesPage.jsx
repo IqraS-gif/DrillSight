@@ -5,7 +5,8 @@ import {
   Sparkles,
   ChevronDown,
   Mic,
-  Cpu
+  Cpu,
+  Compass
 } from 'lucide-react';
 import '../features.css';
 
@@ -16,34 +17,45 @@ export default function FeaturesPage({
   onNavigateToKnowledge,
   onNavigateToDigitize,
   onNavigateToInstinct,
-  onNavigateToWokwi
+  onNavigateToWokwi,
+  onNavigateToTechnology,
+  onNavigateToTrajectory
 }) {
   const [isAtBottom, setIsAtBottom] = useState(false);
   const digitizeCardRef = useRef(null);
 
   useEffect(() => {
+    // Explicitly unlock body and html scrolling
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
+
     const handleScroll = () => {
       const scrollPos = window.scrollY + window.innerHeight;
       const totalHeight = document.documentElement.scrollHeight;
-      if (totalHeight - scrollPos < 260) {
+      if (totalHeight - scrollPos < 60) {
         setIsAtBottom(true);
       } else {
         setIsAtBottom(false);
       }
     };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const handleScrollToggle = () => {
-    if (isAtBottom) {
+    const scrollPos = window.scrollY + window.innerHeight;
+    const totalHeight = document.documentElement.scrollHeight;
+
+    if (isAtBottom || totalHeight - scrollPos < 70) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      if (digitizeCardRef.current) {
-        digitizeCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      } else {
-        window.scrollBy({ top: 600, behavior: 'smooth' });
-      }
+      // Smoothly scroll down by viewport segment
+      window.scrollBy({ top: 580, behavior: 'smooth' });
     }
   };
   return (
@@ -118,6 +130,30 @@ export default function FeaturesPage({
             >
               <Cpu size={14} />
               <span>Sim Lab</span>
+            </button>
+          )}
+          {onNavigateToTechnology && (
+            <button
+              type="button"
+              className="nav-btn nav-btn--ghost"
+              onClick={onNavigateToTechnology}
+              title="Technology & ML Pipeline Architecture"
+              style={{ color: '#818cf8', borderColor: 'rgba(99, 102, 241, 0.35)' }}
+            >
+              <Sparkles size={14} />
+              <span>Technology</span>
+            </button>
+          )}
+          {onNavigateToTrajectory && (
+            <button
+              type="button"
+              className="nav-btn nav-btn--ghost"
+              onClick={onNavigateToTrajectory}
+              title="Interactive 3D Well Trajectory Visualization"
+              style={{ color: '#0066ee', borderColor: 'rgba(0, 102, 238, 0.35)' }}
+            >
+              <Compass size={14} />
+              <span>3D Trajectory</span>
             </button>
           )}
           <button
@@ -293,8 +329,57 @@ export default function FeaturesPage({
           </div>
         </div>
 
-        {/* SECOND ROW: Card 4 (Centered) */}
+        {/* SECOND ROW: Specialized Rig & Subsurface Capabilities */}
         <div className="cards-row-secondary">
+          {/* CARD: 3D Well Trajectory & Anti-Collision Engine */}
+          <div className="rig-card-wrapper">
+            <div className="rig-feature-card">
+              <div className="rig-card-content">
+                <div className="rig-card-badge-row">
+                  <span className="rig-badge rig-badge--blue" style={{ background: '#e0f2fe', color: '#0066ee' }}>Interactive WebGL 3D</span>
+                </div>
+                
+                <h3 className="rig-card-title">3D Well Trajectory &amp; Anti-Collision</h3>
+                
+                <div className="rig-price-row">
+                  <span className="rig-price-val">Directional</span>
+                  <span className="rig-price-sub">/Trajectory</span>
+                </div>
+                
+                <div className="rig-card-note">Planned Corridor, Offset Proximity &amp; Horizons</div>
+                
+                <ul className="rig-check-list" role="list">
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Real-time directional wellbore &amp; planned corridor</span>
+                  </li>
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Offset well proximity &amp; anti-collision safety factor</span>
+                  </li>
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Subsurface geological horizons &amp; target penetration</span>
+                  </li>
+                  <li className="rig-check-item">
+                    <CheckmarkIcon />
+                    <span>Interactive depth timeline with historical risk intervals</span>
+                  </li>
+                </ul>
+
+                <button
+                  type="button"
+                  className="rig-try-btn"
+                  onClick={() => onNavigateToTrajectory && onNavigateToTrajectory()}
+                  style={{ background: '#0066ee' }}
+                >
+                  <span>Launch 3D Trajectory</span>
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+            </div>
+          </div>
+
           {/* CARD 4: AI Document Digitization & Ingestion */}
           <div className="rig-card-wrapper" ref={digitizeCardRef}>
             <div className="rig-feature-card">

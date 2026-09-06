@@ -1,0 +1,1129 @@
+/* ── 3D Well Trajectory Engineering System — DrillSight Geological Block Theme ── */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+.traj-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: #f1f5f9;
+  color: #0f172a;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  user-select: none;
+}
+
+/* ── Top Header Navigation Bar ── */
+.traj-topbar {
+  height: 56px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  flex-shrink: 0;
+  z-index: 50;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.traj-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.traj-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.traj-brand-icon-wrapper {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0066ee;
+}
+
+.traj-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.traj-brand-title {
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #0b1e36;
+  line-height: 1.1;
+}
+
+.traj-brand-subtitle {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.01em;
+}
+
+/* Nav Links in Topbar */
+.traj-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 12px;
+}
+
+.traj-nav-link {
+  padding: 6px 13px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #64748b;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.traj-nav-link:hover {
+  color: #0f172a;
+  background: #f8fafc;
+}
+
+.traj-nav-link.active {
+  color: #0066ee;
+  background: #eff6ff;
+  font-weight: 700;
+}
+
+/* Topbar Right Area */
+.traj-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Back to Features Button */
+.traj-back-features-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  border-radius: 9px;
+  border: 1.5px solid #e2e8f0;
+  background: #ffffff;
+  color: #0f172a;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: all 0.15s ease;
+}
+
+.traj-back-features-btn:hover {
+  background: #eff6ff;
+  border-color: #0066ee;
+  color: #0066ee;
+  box-shadow: 0 2px 8px rgba(0, 102, 238, 0.12);
+  transform: translateY(-1px);
+}
+
+.traj-search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 6px 12px;
+  width: 240px;
+  transition: all 0.2s ease;
+}
+
+.traj-search-box:focus-within {
+  background: #ffffff;
+  border-color: #0066ee;
+  box-shadow: 0 0 0 3px rgba(0, 102, 238, 0.12);
+}
+
+.traj-search-input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.78rem;
+  color: #0f172a;
+  width: 100%;
+}
+
+.traj-search-input::placeholder {
+  color: #94a3b8;
+}
+
+.traj-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.traj-icon-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.traj-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.traj-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #dbeafe;
+  color: #0066ee;
+  font-size: 0.78rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #bfdbfe;
+}
+
+.traj-username {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+/* ── Main Workspace Body ── */
+.traj-workspace {
+  position: relative;
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  background: #f1f5f9;
+}
+
+/* ── Left Engineering Panel: "Visualization Controls" ── */
+.traj-left-panel {
+  width: 260px;
+  flex-shrink: 0;
+  background: #ffffff;
+  border-right: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  z-index: 30;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.02);
+  overflow-y: auto;
+}
+
+.traj-panel-header {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+}
+
+.traj-panel-title {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.traj-panel-section {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.traj-section-subtitle {
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #334155;
+  margin-bottom: 10px;
+}
+
+/* Well Layers Checklist */
+.traj-layers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.traj-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #334155;
+  transition: color 0.15s ease;
+}
+
+.traj-checkbox-item:hover {
+  color: #0f172a;
+}
+
+.traj-checkbox-box {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid #cbd5e1;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.traj-checkbox-box.checked {
+  background: #0066ee;
+  border-color: #0066ee;
+  color: #ffffff;
+}
+
+.traj-checkbox-box.checked.risk {
+  background: #ea580c;
+  border-color: #ea580c;
+}
+
+/* View Mode Segmented Buttons */
+.traj-view-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.traj-view-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 6px;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.traj-view-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.traj-view-btn.active {
+  background: #ffffff;
+  border-color: #0066ee;
+  color: #0066ee;
+  box-shadow: 0 1px 4px rgba(0, 102, 238, 0.15);
+}
+
+/* Display Options Toggle Switches */
+.traj-switch-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+}
+
+.traj-switch-item:last-child {
+  margin-bottom: 0;
+}
+
+.traj-switch-pill {
+  position: relative;
+  width: 32px;
+  height: 18px;
+  background: #cbd5e1;
+  border-radius: 20px;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.traj-switch-pill.on {
+  background: #0066ee;
+}
+
+.traj-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.traj-switch-pill.on .traj-switch-thumb {
+  transform: translateX(14px);
+}
+
+/* Opacity Sliders */
+.traj-slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.traj-slider-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.traj-slider-label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #475569;
+  width: 95px;
+  flex-shrink: 0;
+}
+
+.traj-slider-bar {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  background: #e2e8f0;
+  border-radius: 5px;
+  outline: none;
+}
+
+.traj-slider-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #0066ee;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 102, 238, 0.4);
+  border: 2px solid #ffffff;
+}
+
+.traj-slider-val {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #64748b;
+  width: 32px;
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Reset View Button */
+.traj-reset-btn {
+  margin: 14px 16px 18px;
+  padding: 8px 12px;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.traj-reset-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+/* ── Central 3D Viewport ── */
+.traj-viewport-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #f8fafc 0%, #edf2f7 100%);
+}
+
+.traj-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  outline: none;
+  cursor: grab;
+}
+
+.traj-canvas:active {
+  cursor: grabbing;
+}
+
+.traj-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  touch-action: none !important;
+  outline: none !important;
+}
+
+/* 3D Orientation Cube Gizmo */
+.traj-gizmo-box {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  width: 70px;
+  height: 70px;
+  perspective: 350px;
+  z-index: 25;
+  pointer-events: auto;
+}
+
+.traj-gizmo-cube {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  margin: 13px;
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
+  cursor: pointer;
+}
+
+.traj-gizmo-face {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1.5px solid #cbd5e1;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #334155;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.04);
+  backface-visibility: hidden;
+  user-select: none;
+}
+
+.traj-gizmo-face:hover {
+  background: #eff6ff;
+  border-color: #0066ee;
+  color: #0066ee;
+}
+
+.traj-gizmo-front  { transform: translateZ(22px); }
+.traj-gizmo-back   { transform: rotateY(180deg) translateZ(22px); }
+.traj-gizmo-right  { transform: rotateY(90deg) translateZ(22px); }
+.traj-gizmo-left   { transform: rotateY(-90deg) translateZ(22px); }
+.traj-gizmo-top    { transform: rotateX(90deg) translateZ(22px); }
+.traj-gizmo-bottom { transform: rotateX(-90deg) translateZ(22px); }
+
+.traj-gizmo-compass-text {
+  position: absolute;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #64748b;
+  pointer-events: none;
+}
+
+.traj-gizmo-north { top: -14px; left: 27px; color: #0066ee; }
+.traj-gizmo-east  { top: 26px; right: -14px; }
+.traj-gizmo-south { bottom: -14px; left: 28px; }
+.traj-gizmo-west  { top: 26px; left: -14px; }
+
+/* Scale & Exaggeration Overlays */
+.traj-scale-bar {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.traj-scale-ticks {
+  display: flex;
+  justify-content: space-between;
+  width: 90px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #64748b;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 2px;
+}
+
+.traj-scale-line {
+  width: 90px;
+  height: 3px;
+  background: #64748b;
+  border-left: 2px solid #64748b;
+  border-right: 2px solid #64748b;
+  position: relative;
+}
+
+.traj-scale-mid-tick {
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  height: 5px;
+  width: 1px;
+  background: #64748b;
+}
+
+.traj-exaggeration-badge {
+  position: absolute;
+  bottom: 16px;
+  right: 20px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #64748b;
+  pointer-events: none;
+  z-index: 20;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Floating 3D Risk Zone Tooltip Callout */
+.traj-risk-callout {
+  position: absolute;
+  background: #451a03;
+  color: #ffffff;
+  border: 1.5px solid #f97316;
+  border-radius: 8px;
+  padding: 6px 12px;
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.35);
+  pointer-events: none;
+  z-index: 22;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  transform: translate(-50%, -100%);
+  animation: floatCallout 2.5s infinite ease-in-out;
+}
+
+.traj-risk-callout-title {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #fdba74;
+  letter-spacing: 0.02em;
+}
+
+.traj-risk-callout-depth {
+  font-size: 0.78rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  color: #ffffff;
+}
+
+@keyframes floatCallout {
+  0%, 100% { transform: translate(-50%, -100%) translateY(0); }
+  50% { transform: translate(-50%, -100%) translateY(-4px); }
+}
+
+/* 3D Wellhead Badges */
+.traj-wellhead-badge {
+  position: absolute;
+  transform: translate(-50%, -120%);
+  pointer-events: none;
+  z-index: 21;
+}
+
+.traj-wellhead-badge--current {
+  background: #0066ee;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  border-radius: 6px;
+  padding: 3px 8px;
+  box-shadow: 0 2px 8px rgba(0, 102, 238, 0.4);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.traj-wellhead-badge--offset {
+  background: rgba(255, 255, 255, 0.9);
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  font-size: 0.68rem;
+  font-weight: 800;
+  border-radius: 4px;
+  padding: 2px 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Right Intelligence Panel ── */
+.traj-right-panel {
+  width: 320px;
+  flex-shrink: 0;
+  background: #ffffff;
+  border-left: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  z-index: 30;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.02);
+  overflow-y: auto;
+}
+
+/* Top Segmented Tab Switcher */
+.traj-tab-header {
+  display: flex;
+  padding: 10px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  background: #f8fafc;
+}
+
+.traj-tab-btn {
+  flex: 1;
+  padding: 6px 10px;
+  border: none;
+  background: transparent;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.traj-tab-btn.active {
+  background: #ffffff;
+  color: #0066ee;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  font-weight: 800;
+}
+
+/* Well Identity Header Card */
+.traj-info-card {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.traj-info-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.traj-rig-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #eff6ff;
+  border: 1.5px solid #bfdbfe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0066ee;
+}
+
+.traj-well-title-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.traj-well-row1 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.traj-well-title {
+  font-size: 1.12rem;
+  font-weight: 900;
+  color: #0b1e36;
+  letter-spacing: -0.01em;
+}
+
+.traj-live-badge {
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.traj-live-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #16a34a;
+}
+
+.traj-well-sub {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* Metadata Grid */
+.traj-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+}
+
+.traj-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.74rem;
+}
+
+.traj-meta-lbl {
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.traj-meta-val {
+  font-weight: 700;
+  color: #0f172a;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Trajectory Corridor Status */
+.traj-safety-status-box {
+  margin: 12px 16px;
+  padding: 10px 12px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.traj-safety-status-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #15803d;
+}
+
+/* Predicted Risk Zone Card */
+.traj-predicted-card {
+  margin: 0 16px 12px;
+  padding: 12px;
+  background: #fff7ed;
+  border: 1.5px solid #fed7aa;
+  border-radius: 10px;
+}
+
+.traj-predicted-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.traj-predicted-title {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #c2410c;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.traj-confidence-pill {
+  font-size: 0.65rem;
+  font-weight: 800;
+  background: #ffedd5;
+  color: #9a3412;
+  border: 1px solid #fdba74;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.traj-predicted-depth {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #9a3412;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 8px;
+}
+
+.traj-risk-desc-block {
+  margin-bottom: 8px;
+}
+
+.traj-risk-lbl {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #7c2d12;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.traj-risk-val {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #431407;
+}
+
+.traj-historical-events {
+  margin-top: 8px;
+  border-top: 1px dashed #fed7aa;
+  padding-top: 8px;
+}
+
+.traj-history-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: #431407;
+  margin-bottom: 4px;
+}
+
+.traj-history-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Action Buttons in Right Panel */
+.traj-actions-container {
+  padding: 0 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.traj-btn-primary {
+  width: 100%;
+  padding: 10px 14px;
+  background: #0066ee;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 102, 238, 0.25);
+  transition: all 0.15s ease;
+}
+
+.traj-btn-primary:hover {
+  background: #0052cc;
+}
+
+.traj-btn-outline {
+  width: 100%;
+  padding: 9px 14px;
+  background: #ffffff;
+  color: #334155;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.traj-btn-outline:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+/* ── Bottom Depth Profile & Formations Panel ── */
+.traj-depth-panel {
+  height: 128px;
+  background: #ffffff;
+  border-top: 1.5px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 20px 10px;
+  flex-shrink: 0;
+  z-index: 40;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.traj-depth-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.traj-depth-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.traj-depth-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.traj-depth-select {
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #334155;
+  background: #ffffff;
+  outline: none;
+}
+
+/* Depth Graphic Layout */
+.traj-chart-container {
+  position: relative;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.traj-formation-track {
+  display: flex;
+  width: 100%;
+  height: 18px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #cbd5e1;
+}
+
+.traj-formation-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.64rem;
+  font-weight: 800;
+  color: #334155;
+  border-right: 1px solid rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 4px;
+}
+
+/* 2D Trajectory SVG Canvas Curve */
+.traj-2d-curve-area {
+  position: relative;
+  width: 100%;
+  height: 24px;
+}
+
+.traj-svg-curve {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Active Bit Depth Cursor Badge */
+.traj-depth-cursor-badge {
+  position: absolute;
+  top: -12px;
+  transform: translateX(-50%);
+  background: #0066ee;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  box-shadow: 0 2px 6px rgba(0, 102, 238, 0.35);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.traj-depth-cursor-line {
+  position: absolute;
+  top: 10px;
+  bottom: -4px;
+  width: 1.5px;
+  background: #0066ee;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 9;
+}
+
+/* Axis Ticks */
+.traj-axis-ticks {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.62rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: #94a3b8;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* Bottom Legend */
+.traj-bottom-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.traj-legend-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.traj-legend-swatch {
+  border-radius: 2px;
+}

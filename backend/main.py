@@ -18,7 +18,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, UploadFile, File, Header, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 import threading
 
 from pipeline import pipeline, PARAM_META, RISK_TYPE_META, WELL_GEO
@@ -349,6 +349,81 @@ async def digitize_document(
     )
 
     return {"status": "ok", **result}
+
+
+@app.post("/api/digitize/batch")
+async def digitize_documents_batch(
+    files: List[UploadFile] = File(...),
+    groq_api_key: Optional[str] = Form(None),
+    x_groq_api_key: Optional[str] = Header(None),
+):
+    """
+    Accepts multiple drilling documents (PDF, TXT, CSV, MD).
+    Runs the full Groq-powered digitization pipeline on each document.
+    Returns per-file results and aggregate stats.
+    """
+    allowed = {"application/pdf", "text/plain", "text/csv", "text/markdown"}
+    api_key_to_use = groq_api_key or x_groq_api_key
+    file_results = []
+    total_saved = 0
+    total_extracted = 0
+    total_duplicates = 0
+
+    for file in files:
+        fname = file.filename or "uploaded_document"
+        if file.content_type and file.content_type not in allowed:
+            if not fname.lower().endswith((".pdf", ".txt", ".md", ".csv")):
+                file_results.append({
+                    "filename": fname,
+                    "status": "error",
+                    "error": "Unsupported file type. Upload a PDF, TXT, CSV, or MD document."
+                })
+                continue
+
+        try:
+            file_bytes = await file.read()
+            if len(file_bytes) > 20 * 1024 * 1024:
+                file_results.append({
+                    "filename": fname,
+                    "status": "error",
+                    "error": "File too large (max 20 MB)."
+                })
+                continue
+
+            res = await run_digitization_pipeline(
+                file_bytes=file_bytes,
+                filename=fname,
+                knowledge_repo=knowledge_repo,
+                api_key=api_key_to_use,
+            )
+            saved_cnt = len(res.get("items_saved", []))
+            ext_cnt = len(res.get("items_extracted", []))
+            dup_cnt = res.get("duplicate_of", 0)
+
+            total_saved += saved_cnt
+            total_extracted += ext_cnt
+            total_duplicates += dup_cnt
+
+            file_results.append({
+                "filename": fname,
+                "status": "ok",
+                **res
+            })
+        except Exception as ex:
+            file_results.append({
+                "filename": fname,
+                "status": "error",
+                "error": str(ex)
+            })
+
+    return {
+        "status": "ok",
+        "total_files": len(files),
+        "total_saved": total_saved,
+        "total_extracted": total_extracted,
+        "total_duplicates": total_duplicates,
+        "results": file_results
+    }
 
 
 # ── Driller's Instinct AI (Tacit Knowledge Capture) ──────────────────────────

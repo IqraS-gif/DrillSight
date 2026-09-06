@@ -9,7 +9,9 @@ export default function LandingPage({
   onNavigateToSpatial,
   onNavigateToFeatures,
   onNavigateToKnowledge,
-  onNavigateToDigitize
+  onNavigateToDigitize,
+  onNavigateToTechnology,
+  onNavigateToTrajectory
 }) {
   const [activeNav, setActiveNav] = useState('Home');
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
@@ -23,28 +25,25 @@ export default function LandingPage({
   });
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTelemetry(prev => ({
-        hookLoad: +(245 + (Math.random() * 0.6 - 0.3)).toFixed(1),
-        pumpPressure: Math.round(3118 + Math.random() * 8),
-        rotarySpeed: Math.round(119 + Math.random() * 2),
-        mudFlow: Math.round(539 + Math.random() * 3),
-      }));
-    }, 2500);
-    return () => clearInterval(interval);
+    const timer = setInterval(() => {
+      setTelemetry({
+        hookLoad: +(245 + Math.random() * 2 - 1).toFixed(1),
+        pumpPressure: Math.floor(3120 + Math.random() * 30 - 15),
+        rotarySpeed: Math.floor(120 + Math.random() * 4 - 2),
+        mudFlow: Math.floor(540 + Math.random() * 8 - 4),
+      });
+    }, 2000);
+    return () => clearInterval(timer);
   }, []);
 
   return (
-    <div className="landing-page">
+    <div className="landing-container">
       {/* ── Top Navigation Bar ── */}
       <nav className="landing-nav">
         <div className="landing-brand" onClick={() => setActiveNav('Home')}>
-          <div className="landing-logo-mark">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-              <polygon points="18,3 31,23 18,16" fill="#fbbf24" />
-              <polygon points="18,3 18,16 5,23" fill="#f59e0b" />
-              <polygon points="18,16 31,23 23,33 18,27" fill="#0284c7" />
-              <polygon points="18,16 18,27 13,33 5,23" fill="#38bdf8" />
+          <div className="landing-brand-logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="landing-drill-svg">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
             </svg>
           </div>
           <div className="landing-brand-text">
@@ -54,7 +53,7 @@ export default function LandingPage({
         </div>
 
         <ul className="landing-nav-links">
-          {['Home', 'Features', 'Technology', 'Impact', 'About'].map((item) => (
+          {['Home', 'Features', '3D Trajectory', 'Technology', 'Impact', 'About'].map((item) => (
             <li key={item}>
               <button
                 type="button"
@@ -62,6 +61,10 @@ export default function LandingPage({
                 onClick={() => {
                   if (item === 'Features' && onNavigateToFeatures) {
                     onNavigateToFeatures();
+                  } else if (item === '3D Trajectory' && onNavigateToTrajectory) {
+                    onNavigateToTrajectory();
+                  } else if (item === 'Technology' && onNavigateToTechnology) {
+                    onNavigateToTechnology();
                   } else {
                     setActiveNav(item);
                   }
