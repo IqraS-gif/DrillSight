@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🛢️ DrillSight
+# <img src="docs/assets/logo.png" alt="Logo" width="42" style="vertical-align: middle; margin-right: 6px;" /> DrillSight
 ### eRTMAC-NWIS — Predictive Drilling Intelligence
 *Preventing costly downtime before it happens.*
 
