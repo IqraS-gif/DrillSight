@@ -638,115 +638,7 @@ export default function TechnologyPage({
             )}
           </div>
 
-          {/* RIGHT: Multi-Stage ML Pipeline */}
-          <div className="tech-card">
-            <div className="tech-card__header">
-              <div className="tech-card__title-row">
-                <div className="tech-card__icon-badge" style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#c084fc' }}>
-                  <GitBranch size={20} />
-                </div>
-                <div>
-                  <h3 className="tech-card__title">Multi-Stage ML Pipeline</h3>
-                  <p className="tech-card__subtitle">5-Tiered Physics-Informed Inference Architecture</p>
-                </div>
-              </div>
-
-              <span className="tech-pill" style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#c084fc' }}>
-                End-to-End Edge &amp; Cloud
-              </span>
-            </div>
-
-            {/* Interactive Run Simulation Control */}
-            <div className="pipeline-sim-bar">
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontSize: '0.78rem', color: '#cbd5e1', fontWeight: 600 }}>
-                  {isSimulating ? `Processing Stage ${simStep} / 5...` : 'Interactive Pipeline Inspector'}
-                </span>
-                {isSimulating && (
-                  <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981', display: 'inline-block', boxShadow: '0 0 8px #10b981' }} />
-                )}
-              </div>
-
-              <button
-                type="button"
-                className="pipeline-run-btn"
-                onClick={runPipelineSimulation}
-                disabled={isSimulating}
-              >
-                <Play size={12} />
-                <span>{isSimulating ? 'Simulating Signal Flow...' : 'Simulate Pipeline Run'}</span>
-              </button>
-            </div>
-
-            {/* 5 Pipeline Stages with modern Stepper Flow UI */}
-            <div className="pipeline-stepper-list">
-              {PIPELINE_STAGES.map((stage, idx) => {
-                const IconComponent = stage.icon;
-                const isCurrentActive = activeStage === stage.id;
-                const isCurrentlySim = simStep === stage.id;
-
-                return (
-                  <div
-                    key={stage.id}
-                    className={`pipeline-step-item ${isCurrentActive ? 'active' : ''} ${isCurrentlySim ? 'simulating' : ''}`}
-                    onClick={() => setActiveStage(stage.id)}
-                    style={{
-                      '--step-accent': stage.badgeColor,
-                      '--step-bg': stage.accentBg
-                    }}
-                  >
-                    {/* Stepper Node & Vertical Connecting Line */}
-                    <div className="pipeline-step-track">
-                      <div className="pipeline-step-node">
-                        <IconComponent size={14} />
-                      </div>
-                      {idx < PIPELINE_STAGES.length - 1 && <div className="pipeline-step-line" />}
-                    </div>
-
-                    {/* Step Card Content */}
-                    <div className="pipeline-step-card">
-                      <div className="pipeline-step-header">
-                        <div className="pipeline-step-title-group">
-                          <span className="pipeline-step-tag">STEP {stage.stepNum}</span>
-                          <h4 className="pipeline-step-name">{stage.name}</h4>
-                          <span className="pipeline-step-role">· {stage.role}</span>
-                        </div>
-
-                        <span className="pipeline-step-latency">
-                          <Zap size={11} />
-                          {stage.latency}
-                        </span>
-                      </div>
-
-                      <p className="pipeline-step-desc">{stage.description}</p>
-
-                      {/* Real-World Drilling Example */}
-                      <div className="pipeline-step-example">
-                        <div className="pipeline-example-header">
-                          <Zap size={12} color={stage.badgeColor} />
-                          <span>Real Drilling Scenario:</span>
-                        </div>
-                        <p className="pipeline-example-content">"{stage.example}"</p>
-                      </div>
-
-                      <div className="pipeline-step-meta">
-                        <span className="pipeline-focus-tag">{stage.tag}</span>
-                        <span className="pipeline-active-indicator">
-                          {isCurrentActive ? '● Currently Selected' : 'Click to inspect stage'}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* ── BOTTOM ROW: Model Metrics (Left) + Validation Pipeline (Right) ── */}
-        <div className="tech-grid-2col">
-
-          {/* BOTTOM LEFT: Model Performance & Benchmark Metrics (UI matching Image 1) */}
+          {/* RIGHT: Model Performance & Benchmark Metrics */}
           <div className="tech-card tech-card--benchmark">
             {/* Header */}
             <div className="benchmark-header">
@@ -877,6 +769,114 @@ export default function TechnologyPage({
                 <Drill size={14} color="#94a3b8" />
                 <span>SAFER OPERATIONS. DEEPER INSIGHTS.</span>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── BOTTOM ROW: Multi-Stage ML Pipeline (Left) + Validation Pipeline (Right) ── */}
+        <div className="tech-grid-2col">
+
+          {/* BOTTOM LEFT: Multi-Stage ML Pipeline */}
+          <div className="tech-card">
+            <div className="tech-card__header">
+              <div className="tech-card__title-row">
+                <div className="tech-card__icon-badge" style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#c084fc' }}>
+                  <GitBranch size={20} />
+                </div>
+                <div>
+                  <h3 className="tech-card__title">Multi-Stage ML Pipeline</h3>
+                  <p className="tech-card__subtitle">5-Tiered Physics-Informed Inference Architecture</p>
+                </div>
+              </div>
+
+              <span className="tech-pill" style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#c084fc' }}>
+                End-to-End Edge &amp; Cloud
+              </span>
+            </div>
+
+            {/* Interactive Run Simulation Control */}
+            <div className="pipeline-sim-bar">
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ fontSize: '0.78rem', color: '#cbd5e1', fontWeight: 600 }}>
+                  {isSimulating ? `Processing Stage ${simStep} / 5...` : 'Interactive Pipeline Inspector'}
+                </span>
+                {isSimulating && (
+                  <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981', display: 'inline-block', boxShadow: '0 0 8px #10b981' }} />
+                )}
+              </div>
+
+              <button
+                type="button"
+                className="pipeline-run-btn"
+                onClick={runPipelineSimulation}
+                disabled={isSimulating}
+              >
+                <Play size={12} />
+                <span>{isSimulating ? 'Simulating Signal Flow...' : 'Simulate Pipeline Run'}</span>
+              </button>
+            </div>
+
+            {/* 5 Pipeline Stages with modern Stepper Flow UI */}
+            <div className="pipeline-stepper-list">
+              {PIPELINE_STAGES.map((stage, idx) => {
+                const IconComponent = stage.icon;
+                const isCurrentActive = activeStage === stage.id;
+                const isCurrentlySim = simStep === stage.id;
+
+                return (
+                  <div
+                    key={stage.id}
+                    className={`pipeline-step-item ${isCurrentActive ? 'active' : ''} ${isCurrentlySim ? 'simulating' : ''}`}
+                    onClick={() => setActiveStage(stage.id)}
+                    style={{
+                      '--step-accent': stage.badgeColor,
+                      '--step-bg': stage.accentBg
+                    }}
+                  >
+                    {/* Stepper Node & Vertical Connecting Line */}
+                    <div className="pipeline-step-track">
+                      <div className="pipeline-step-node">
+                        <IconComponent size={14} />
+                      </div>
+                      {idx < PIPELINE_STAGES.length - 1 && <div className="pipeline-step-line" />}
+                    </div>
+
+                    {/* Step Card Content */}
+                    <div className="pipeline-step-card">
+                      <div className="pipeline-step-header">
+                        <div className="pipeline-step-title-group">
+                          <span className="pipeline-step-tag">STEP {stage.stepNum}</span>
+                          <h4 className="pipeline-step-name">{stage.name}</h4>
+                          <span className="pipeline-step-role">· {stage.role}</span>
+                        </div>
+
+                        <span className="pipeline-step-latency">
+                          <Zap size={11} />
+                          {stage.latency}
+                        </span>
+                      </div>
+
+                      <p className="pipeline-step-desc">{stage.description}</p>
+
+                      {/* Real-World Drilling Example */}
+                      <div className="pipeline-step-example">
+                        <div className="pipeline-example-header">
+                          <Zap size={12} color={stage.badgeColor} />
+                          <span>Real Drilling Scenario:</span>
+                        </div>
+                        <p className="pipeline-example-content">"{stage.example}"</p>
+                      </div>
+
+                      <div className="pipeline-step-meta">
+                        <span className="pipeline-focus-tag">{stage.tag}</span>
+                        <span className="pipeline-active-indicator">
+                          {isCurrentActive ? '● Currently Selected' : 'Click to inspect stage'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
