@@ -5,6 +5,7 @@ import {
   BookOpen, FileText, Database, Sparkles, ChevronRight, Activity,
   Files, Trash2, Plus, RefreshCw, Eye, FolderPlus
 } from 'lucide-react';
+import UnifiedNavbar from './UnifiedNavbar';
 import '../digitize.css';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -248,39 +249,11 @@ export default function DocumentDigitization({
   return (
     <div className="digi-page" onDrop={handleBatchDrop} onDragOver={(e) => e.preventDefault()}>
       {/* ── Topbar ── */}
-      <header className="digi-topbar">
-        <button type="button" className="digi-back-btn" onClick={onNavigateToLanding}>
-          <ArrowLeft size={14} />
-          <span>Home</span>
-        </button>
-
-        {onNavigateToFeatures && (
-          <button type="button" className="digi-back-btn" onClick={onNavigateToFeatures}>
-            <span>Features</span>
-          </button>
-        )}
-
-        {onNavigateToDashboard && (
-          <button type="button" className="digi-back-btn" onClick={onNavigateToDashboard}>
-            <span>Live Telemetry</span>
-          </button>
-        )}
-
-        <div className="digi-title">
-          <Sparkles size={18} color="#7c3aed" />
-          <h1>AI Document Digitization</h1>
-        </div>
-
-        <button
-          type="button"
-          className="digi-back-btn"
-          onClick={onNavigateToKnowledge}
-          style={{ marginLeft: 'auto', color: '#0284c7', borderColor: '#bae6fd' }}
-        >
-          <BookOpen size={14} />
-          <span>Knowledge Base</span>
-        </button>
-      </header>
+      <UnifiedNavbar
+        onNavigateToFeatures={onNavigateToFeatures}
+        onNavigateToLanding={onNavigateToLanding}
+        activePage="digitize"
+      />
 
       {/* ── Main Content Container ── */}
       <main className="digi-content">

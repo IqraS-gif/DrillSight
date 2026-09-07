@@ -88,6 +88,107 @@ body {
   background: var(--bg);
 }
 
+/* ── Unified Consistent Topbar across all pages ── */
+.unified-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, #0066ee 0%, #0052cc 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 24px;
+  box-shadow: 0 2px 10px rgba(0, 82, 204, 0.25);
+  height: 58px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.unified-topbar__brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  color: #ffffff;
+  box-shadow: none;
+  width: 100%;
+}
+
+.unified-topbar__brand-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  margin-right: 6px;
+}
+
+.unified-topbar__icon {
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.unified-topbar__titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.unified-topbar__title {
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.unified-topbar__sub {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.unified-topbar__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f59e0b;
+  color: #0f172a;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  margin-left: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  text-decoration: none;
+  line-height: 1;
+}
+
+.unified-topbar__btn:hover {
+  background: #ea580c;
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.4);
+  transform: translateY(-1px);
+}
+
+.unified-topbar__btn--active {
+  background: #ea580c;
+  color: #ffffff;
+}
+
 /* ── Topbar with subtle fluid wave effect ── */
 .topbar {
   position: sticky;

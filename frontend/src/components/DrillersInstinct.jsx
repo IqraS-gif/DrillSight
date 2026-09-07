@@ -5,6 +5,7 @@ import {
   BookOpen, ChevronRight, Compass, ShieldAlert, Layers, Droplets,
   Flame, Zap, Anchor, Activity, FileText
 } from 'lucide-react';
+import UnifiedNavbar from './UnifiedNavbar';
 import '../instinct.css';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -224,34 +225,11 @@ export default function DrillersInstinct({
   return (
     <div className="instinct-page">
       {/* ── Topbar ── */}
-      <header className="instinct-topbar">
-        <button type="button" className="instinct-back-btn" onClick={onNavigateToLanding}>
-          <ArrowLeft size={14} />
-          <span>Home</span>
-        </button>
-
-        {onNavigateToFeatures && (
-          <button type="button" className="instinct-back-btn" onClick={onNavigateToFeatures}>
-            <span>Features</span>
-          </button>
-        )}
-
-        <div className="instinct-title-block">
-          <Mic size={18} color="#e11d48" />
-          <h1>Driller's Instinct AI</h1>
-          <span className="instinct-badge-tacit">Tacit Knowledge</span>
-        </div>
-
-        <button
-          type="button"
-          className="instinct-back-btn"
-          onClick={onNavigateToKnowledge}
-          style={{ marginLeft: 'auto', color: '#0284c7', borderColor: '#bae6fd', background: '#f0f9ff' }}
-        >
-          <BookOpen size={14} />
-          <span>Knowledge Base</span>
-        </button>
-      </header>
+      <UnifiedNavbar
+        onNavigateToFeatures={onNavigateToFeatures}
+        onNavigateToLanding={onNavigateToLanding}
+        activePage="instinct"
+      />
 
       {/* ── Main Container ── */}
       <main className="instinct-container">

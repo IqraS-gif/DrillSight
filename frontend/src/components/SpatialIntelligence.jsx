@@ -23,6 +23,7 @@ import {
   Droplets,
   MapPin,
 } from 'lucide-react';
+import UnifiedNavbar from './UnifiedNavbar';
 import '../spatial.css';
 
 // ── Donut Progress Ring for Match Percentage ──
@@ -484,6 +485,7 @@ const NEARBY_WELLS = [
 export default function SpatialIntelligence({
   onNavigateToDashboard,
   onNavigateToLanding,
+  onNavigateToFeatures,
 }) {
   const [activeNav, setActiveNav] = useState('Spatial Intelligence');
   const [selectedWell, setSelectedWell] = useState(CURRENT_WELL);
@@ -752,106 +754,11 @@ export default function SpatialIntelligence({
   return (
     <div className="spatial-page">
       {/* ── Top Bar ── */}
-      <header className="si-topbar">
-        <div className="si-topbar__left">
-          {/* Brand */}
-          <div className="si-brand" onClick={onNavigateToLanding} title="Return to Home">
-            <div className="si-brand__icon">
-              <Drill size={18} />
-            </div>
-            <div className="si-brand__title-row">
-              <span className="si-brand__name">DRILLSIGHT</span>
-              <span className="si-brand__subtitle">Nearby Wells Intelligence System</span>
-            </div>
-          </div>
-
-          {/* Back to Home Button */}
-          <button
-            type="button"
-            className="si-back-home-btn"
-            onClick={onNavigateToLanding}
-            title="Return to DrillSight Home Page"
-          >
-            <ArrowLeft size={15} />
-            <span>Back to Home</span>
-          </button>
-        </div>
-
-        {/* Center: Search Fields */}
-        <div className="si-topbar__center">
-          <div className="si-search-box" style={{ position: 'relative' }}>
-            <Search size={14} color="#94a3b8" />
-            <input
-              type="text"
-              placeholder="Search well (e.g. W-201, W-187)..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            {searchResults.length > 0 && (
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '100%',
-                  left: 0,
-                  right: 0,
-                  background: '#ffffff',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: 8,
-                  marginTop: 4,
-                  zIndex: 2000,
-                  boxShadow: '0 8px 24px rgba(11, 30, 54, 0.12)',
-                  overflow: 'hidden',
-                }}
-              >
-                {searchResults.map((w) => (
-                  <div
-                    key={w.id}
-                    onClick={() => {
-                      handleSelectWell(w);
-                      setSearchQuery('');
-                    }}
-                    style={{
-                      padding: '9px 14px',
-                      cursor: 'pointer',
-                      borderBottom: '1px solid #f1f5f9',
-                      fontSize: '0.8rem',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <span style={{ fontWeight: 800, color: '#0b1e36' }}>{w.name}</span>
-                    <span style={{ color: '#64748b', fontSize: '0.72rem' }}>{w.formation}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="si-search-box">
-            <Compass size={14} color="#94a3b8" />
-            <input
-              type="text"
-              placeholder="Search location..."
-              value={locationQuery}
-              onChange={(e) => setLocationQuery(e.target.value)}
-            />
-          </div>
-        </div>
-
-        {/* Right Section */}
-        <div className="si-topbar__right">
-          <div className="si-feed-status">
-            <span className="si-feed-pulse" />
-            <span>Live Spatial Feed Connected</span>
-          </div>
-
-          <div className="si-user-profile" title="Signed in as Iqra S.">
-            <div className="si-avatar">I</div>
-            <span className="si-username">Iqra S.</span>
-          </div>
-        </div>
-      </header>
+      <UnifiedNavbar
+        onNavigateToFeatures={onNavigateToFeatures}
+        onNavigateToLanding={onNavigateToLanding}
+        activePage="spatial"
+      />
 
       {/* ── Main Workspace: Hero Map (75–80%) + Right Intelligence Panel (20–25%) ── */}
       <main className="si-workspace">

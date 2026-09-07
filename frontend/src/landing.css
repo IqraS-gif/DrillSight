@@ -282,9 +282,92 @@
   }
 }
 
+/* ── Uiverse Stylized Animated Button (Watch Demo) ── */
+.uiverse-watch-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 24px;
+  background-color: #006aff;
+  border: 5px solid #c0dfff;
+  color: #ffffff;
+  gap: 10px;
+  border-radius: 50px;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(0, 106, 255, 0.28);
+}
+
+.uiverse-watch-btn .text {
+  font-size: 1.08rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.uiverse-watch-btn .svg {
+  display: inline-flex;
+  align-items: center;
+  padding-top: 2px;
+  height: 100%;
+  width: fit-content;
+}
+
+.uiverse-watch-btn .svg svg {
+  width: 44px;
+  height: 22px;
+  display: block;
+}
+
+.uiverse-watch-btn:hover {
+  border: 5px solid #b1d8ff;
+  background-color: #1b7aff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 106, 255, 0.45);
+}
+
+.uiverse-watch-btn:active {
+  border: 4px solid #c0dfff;
+  transform: translateY(0);
+}
+
+.uiverse-watch-btn:hover .svg svg {
+  animation: jello-vertical 0.9s both;
+  transform-origin: left;
+}
+
+@keyframes jello-vertical {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  40% {
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  50% {
+    transform: scale3d(0.85, 1.15, 1);
+  }
+  65% {
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  75% {
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
 .hero-btn-secondary {
   background: rgba(15, 30, 50, 0.4);
   color: #ffffff;
+  text-decoration: none;
   border: 1.5px solid rgba(255, 255, 255, 0.45);
   border-radius: 999px;
   padding: 11px 24px;

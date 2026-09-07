@@ -36,6 +36,7 @@ import {
   ShieldCheck,
   Navigation
 } from 'lucide-react';
+import UnifiedNavbar from './UnifiedNavbar';
 import '../trajectory.css';
 
 // ── Survey Station & Well Data ────────────────────────────────────────────────
@@ -1288,36 +1289,11 @@ export default function WellTrajectory3D({
   return (
     <div className="traj-page">
       {/* ── Top Header Navigation Bar ── */}
-      <header className="traj-topbar">
-        <div className="traj-topbar-left">
-          <div className="traj-brand" onClick={onNavigateToLanding}>
-            <div className="traj-brand-icon-wrapper">
-              <Drill size={22} color="#0066ee" />
-            </div>
-            <div className="traj-brand-text">
-              <span className="traj-brand-title">DRILLSIGHT</span>
-              <span className="traj-brand-subtitle">Nearby Wells Intelligence System</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="traj-topbar-right">
-          <button
-            type="button"
-            className="traj-back-features-btn"
-            onClick={onNavigateToFeatures}
-            title="Back to Features"
-          >
-            <ArrowLeft size={16} />
-            <span>Back to Features</span>
-          </button>
-
-          <div className="traj-user-profile">
-            <div className="traj-avatar">IS</div>
-            <span className="traj-username">Iqra S.</span>
-          </div>
-        </div>
-      </header>
+      <UnifiedNavbar
+        onNavigateToFeatures={onNavigateToFeatures}
+        onNavigateToLanding={onNavigateToLanding}
+        activePage="trajectory"
+      />
 
       {/* ── Main Workspace: 3 Columns ── */}
       <div className="traj-workspace">

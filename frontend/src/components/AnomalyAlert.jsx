@@ -189,7 +189,7 @@ export default function AnomalyAlert({
 
           {hours != null && hours < 999 && (
             <span className="anomaly-alert__badge anomaly-alert__badge--time">
-              WINDOW: {hours}H
+              WINDOW: {hours < 2 ? `${Math.round(hours * 60)}M` : `${hours}H`}
             </span>
           )}
 

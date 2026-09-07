@@ -192,12 +192,53 @@ export function computePhysicsRisk(params) {
   }
   probs.normal = +Math.max(0, 1 - KEYS.reduce((s, k) => s + probs[k], 0)).toFixed(4);
 
+  const riskType = overallPct < 5 ? 'normal' : dominantKey;
+  const timeToIncidentHours = computePhysicsTimeToIncidentHours(
+    overallPct < 25 ? 'normal' : dominantKey,
+    overallPct
+  );
+
   return {
-    risk_probabilities:   probs,
-    risk_type:            overallPct < 5 ? 'normal' : dominantKey,
-    overall_risk_percent: overallPct,
-    risk_level:           riskLevel,
+    risk_probabilities:     probs,
+    risk_type:              riskType,
+    overall_risk_percent:   overallPct,
+    risk_level:             riskLevel,
+    time_to_incident_hours: timeToIncidentHours,
   };
+}
+
+/**
+ * Baseline nominal time-to-incident in minutes for preset hazards:
+ *  - stuck_pipe:          26 minutes (at nominal preset overall risk 65.2%)
+ *  - kick_influx:         19 minutes (at nominal preset overall risk 69.2%)
+ *  - lost_circulation:    32 minutes (at nominal preset overall risk 61.7%)
+ *  - excessive_vibration: 35 minutes (at nominal preset overall risk 69.6%)
+ *
+ * Dynamically scales as the user manipulates drilling parameters:
+ *  - Higher severity / risk% -> minutes decrease (incident becomes imminent)
+ *  - Lower severity -> minutes increase smoothly
+ *  - Safe envelope (<25% risk) -> returns 999.0 hours (safe range)
+ */
+const HAZARD_TIME_SPECS = {
+  stuck_pipe:          { baseMinutes: 26, nominalRisk: 65.2 },
+  kick_influx:         { baseMinutes: 19, nominalRisk: 69.2 },
+  lost_circulation:    { baseMinutes: 32, nominalRisk: 61.7 },
+  excessive_vibration: { baseMinutes: 35, nominalRisk: 69.6 },
+};
+
+export function computePhysicsTimeToIncidentHours(dominantRisk, overallRiskPct) {
+  if (!dominantRisk || dominantRisk === 'normal' || overallRiskPct < 25) {
+    return 999.0;
+  }
+
+  const spec = HAZARD_TIME_SPECS[dominantRisk] || { baseMinutes: 30, nominalRisk: 65.0 };
+  
+  // Power-law scaling: As risk percent increases above nominal, minutes drop.
+  // When overallRiskPct == nominalRisk, minutes == baseMinutes EXACTLY (e.g. 26, 19, 32, 35).
+  const ratio = spec.nominalRisk / Math.max(10, overallRiskPct);
+  const minutes = Math.max(5, Math.round(spec.baseMinutes * Math.pow(ratio, 1.4)));
+  
+  return +(minutes / 60.0).toFixed(4);
 }
 
 /**

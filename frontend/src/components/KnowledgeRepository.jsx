@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import RAW_KB_BACKUP from '../data/knowledge_backup.json';
 import WellDossierModal from './WellDossierModal';
+import UnifiedNavbar from './UnifiedNavbar';
 import '../knowledge.css';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -1343,64 +1344,11 @@ export default function KnowledgeRepository({
   return (
     <div className="kb-container">
       {/* ── Top Navigation Bar (Consistent with all platform pages) ── */}
-      <nav className="kb-navbar">
-        <div className="kb-brand" onClick={onNavigateToLanding}>
-          <div className="brand-logo-mark">
-            <svg width="34" height="34" viewBox="0 0 36 36" fill="none">
-              <polygon points="18,3 31,23 18,16" fill="#fbbf24" />
-              <polygon points="18,3 18,16 5,23" fill="#f59e0b" />
-              <polygon points="18,16 31,23 23,33 18,27" fill="#0284c7" />
-              <polygon points="18,16 18,27 13,33 5,23" fill="#38bdf8" />
-            </svg>
-          </div>
-          <div className="brand-text">
-            <span className="brand-title">DrillSight</span>
-            <span className="brand-tagline">Knowledge Base</span>
-          </div>
-        </div>
-
-        <div className="kb-nav-actions">
-          <button
-            type="button"
-            className="kb-nav-btn kb-nav-btn--ghost"
-            onClick={onNavigateToFeatures}
-          >
-            <ArrowLeft size={14} />
-            <span>All Features</span>
-          </button>
-          
-          <button
-            type="button"
-            className="kb-nav-btn kb-nav-btn--ghost"
-            onClick={onNavigateToSpatial}
-          >
-            <Compass size={14} />
-            <span>3D Spatial Map</span>
-          </button>
-
-          {onNavigateToDigitize && (
-            <button
-              type="button"
-              className="kb-nav-btn kb-nav-btn--ghost"
-              onClick={onNavigateToDigitize}
-              title="Upload and digitize drilling reports via Groq AI"
-              style={{ color: '#7c3aed', borderColor: 'rgba(124, 58, 237, 0.3)', background: 'rgba(124, 58, 237, 0.06)' }}
-            >
-              <Sparkles size={14} />
-              <span>Digitize Reports</span>
-            </button>
-          )}
-
-          <button
-            type="button"
-            className="kb-nav-btn kb-nav-btn--primary"
-            onClick={onNavigateToDashboard}
-          >
-            <span>Live Rig Telemetry</span>
-            <ArrowRight size={14} />
-          </button>
-        </div>
-      </nav>
+      <UnifiedNavbar
+        onNavigateToFeatures={onNavigateToFeatures}
+        onNavigateToLanding={onNavigateToLanding}
+        activePage="knowledge"
+      />
 
       {/* ── Hero Banner Section (Faithful to Image 2) ── */}
       <header className="kb-hero">

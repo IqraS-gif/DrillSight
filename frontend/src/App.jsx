@@ -21,6 +21,7 @@ import DrillersInstinct from './components/DrillersInstinct';
 import WokwiSimulation from './components/WokwiSimulation';
 import TechnologyPage from './components/TechnologyPage';
 import WellTrajectory3D from './components/WellTrajectory3D';
+import UnifiedNavbar from './components/UnifiedNavbar';
 import { computePhysicsRisk } from './utils/physicsRisk';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -77,7 +78,7 @@ function applyPurePhysics(params, mlResult) {
   return {
     // Keep ML-sourced auxiliary data if available
     similar_wells:          mlResult?.similar_wells          ?? [],
-    time_to_incident_hours: mlResult?.time_to_incident_hours ?? 999,
+    time_to_incident_hours: physics.time_to_incident_hours   ?? 999,
     anomaly_score:          mlResult?.anomaly_score          ?? 0,
     is_anomaly:             mlResult?.is_anomaly             ?? false,
     pipeline_ready:         mlResult?.pipeline_ready         ?? false,
@@ -315,6 +316,7 @@ export default function App() {
       <SpatialIntelligence
         onNavigateToDashboard={navigateToDashboard}
         onNavigateToLanding={navigateToLanding}
+        onNavigateToFeatures={navigateToFeatures}
       />
     );
   }
@@ -394,149 +396,12 @@ export default function App() {
 
   return (
     <div className="app">
-      {/* ── Topbar ── */}
-      <header className="topbar">
-        <div className="topbar__brand">
-          <div className="topbar__brand-icon">
-            <Drill size={18} />
-          </div>
-          <div>
-            <div className="topbar__brand-title">DrillSight</div>
-            <div className="topbar__brand-sub">Oil Well Risk Intelligence</div>
-          </div>
-          <button
-            type="button"
-            className="topbar-back-btn"
-            onClick={navigateToLanding}
-            title="Return to Landing Page"
-          >
-            <ArrowLeft size={14} />
-            <span>Landing</span>
-          </button>
-          <button
-            type="button"
-            className="topbar-back-btn"
-            onClick={navigateToFeatures}
-            title="Platform Features"
-            style={{ marginLeft: 6 }}
-          >
-            <span>Features</span>
-          </button>
-          <button
-            type="button"
-            className="topbar-spatial-btn"
-            onClick={navigateToSpatial}
-            title="Open Spatial Intelligence Experience"
-          >
-            <Map size={14} />
-            <span>Spatial Intelligence</span>
-          </button>
-          <button
-            type="button"
-            className="topbar-spatial-btn"
-            onClick={navigateToKnowledge}
-            title="Open Searchable Mitigation Knowledge Repository"
-            style={{
-              marginLeft: 6,
-              background: 'rgba(2, 132, 199, 0.08)',
-              color: '#0284c7',
-              borderColor: 'rgba(2, 132, 199, 0.35)',
-            }}
-          >
-            <BookOpen size={14} />
-            <span>Knowledge Base</span>
-          </button>
-          <button
-            type="button"
-            className="topbar-spatial-btn"
-            onClick={navigateToDigitize}
-            title="AI Document Digitization & Knowledge Ingestion"
-            style={{
-              marginLeft: 6,
-              background: 'rgba(124, 58, 237, 0.08)',
-              color: '#7c3aed',
-              borderColor: 'rgba(124, 58, 237, 0.35)',
-            }}
-          >
-            <Sparkles size={14} />
-            <span>AI Digitize</span>
-          </button>
-          <button
-            type="button"
-            className="topbar-spatial-btn"
-            onClick={navigateToInstinct}
-            title="Driller's Instinct AI — Tacit Knowledge Capture"
-            style={{
-              marginLeft: 6,
-              background: 'rgba(244, 63, 94, 0.08)',
-              color: '#fb7185',
-              borderColor: 'rgba(244, 63, 94, 0.35)',
-            }}
-          >
-            <Mic size={14} />
-            <span>Instinct AI</span>
-          </button>
-          <button
-            type="button"
-            className="topbar-spatial-btn"
-            onClick={navigateToWokwi}
-            title="Rig Simulation Lab — Wokwi Embedded Hardware"
-            style={{
-              marginLeft: 6,
-              background: 'rgba(14, 116, 144, 0.08)',
-              color: '#0e7490',
-              borderColor: 'rgba(14, 116, 144, 0.35)',
-            }}
-          >
-            <Cpu size={14} />
-            <span>Sim Lab</span>
-          </button>
-          <button
-            type="button"
-            className="topbar-spatial-btn"
-            onClick={navigateToTechnology}
-            title="Technology & ML Pipeline Architecture"
-            style={{
-              marginLeft: 6,
-              background: 'rgba(99, 102, 241, 0.08)',
-              color: '#818cf8',
-              borderColor: 'rgba(99, 102, 241, 0.35)',
-            }}
-          >
-            <GitBranch size={14} />
-            <span>Tech Engine</span>
-          </button>
-          <button
-            type="button"
-            className="topbar-spatial-btn"
-            onClick={navigateToTrajectory}
-            title="3D Well Trajectory & Subsurface Anti-Collision Visualization"
-            style={{
-              marginLeft: 6,
-              background: 'rgba(0, 102, 238, 0.08)',
-              color: '#0066ee',
-              borderColor: 'rgba(0, 102, 238, 0.35)',
-            }}
-          >
-            <Compass size={14} />
-            <span>3D Trajectory</span>
-          </button>
-        </div>
-        <div className="topbar__right">
-          <div className="topbar__status">
-            <span className={`status-dot ${pipelineReady ? 'ready' : 'loading'}`} />
-            {pipelineReady ? 'Pipeline Ready' : 'Training ML Pipeline…'}
-            {loading && (
-              <RefreshCw size={13} style={{ animation: 'spin 1s linear infinite', marginLeft: 4 }} />
-            )}
-          </div>
-          <div className="topbar__user">
-            <div className="topbar__avatar">I</div>
-            <span className="topbar__username">Iqra S.</span>
-            <ChevronDown size={14} className="topbar__chevron" />
-          </div>
-        </div>
-      </header>
+      {/* ── Consistent Navigation Bar ── */}
+      <UnifiedNavbar
+        onNavigateToFeatures={navigateToFeatures}
+        onNavigateToLanding={navigateToLanding}
+        activePage="dashboard"
+      />
 
       {/* ── Main layout ── */}
       <div className="main-layout">

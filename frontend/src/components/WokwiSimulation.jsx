@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { Drill, ArrowLeft, WifiOff, RefreshCw, ExternalLink, Cpu } from 'lucide-react';
+import UnifiedNavbar from './UnifiedNavbar';
 
 const WOKWI_URL   = 'https://wokwi.com/projects/473704194812138497';
 const WOKWI_EMBED = 'https://wokwi.com/projects/473704194812138497?embed=1';
@@ -21,28 +22,11 @@ export default function WokwiSimulation({ onNavigateToLanding, onNavigateToFeatu
     <div style={pageStyle}>
 
       {/* ── Top bar ─────────────────────────────────────────── */}
-      <header style={headerStyle}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-          {/* DrillSight brand */}
-          <div style={dsBrandStyle} onClick={onNavigateToLanding} title="Return to DrillSight Home">
-            <img
-              src="/gold-rig-logo.png"
-              alt="DrillSight 3D Rig Logo"
-              style={{ width: 40, height: 40, objectFit: 'contain', flexShrink: 0 }}
-            />
-            <div>
-              <div style={dsTitleStyle}>DRILLSIGHT</div>
-              <div style={dsSubStyle}>NEARBY WELLS INTELLIGENCE SYSTEM</div>
-            </div>
-          </div>
-
-          {/* Back to Features */}
-          <button style={backBtnStyle} onClick={onNavigateToFeatures} title="Back to Features">
-            <ArrowLeft size={15} />
-            <span>Back to Features</span>
-          </button>
-        </div>
-      </header>
+      <UnifiedNavbar
+        onNavigateToFeatures={onNavigateToFeatures}
+        onNavigateToLanding={onNavigateToLanding}
+        activePage="wokwi"
+      />
 
       {/* ── Body: info panel + sim ──────────────────────────── */}
       <div style={bodyStyle}>

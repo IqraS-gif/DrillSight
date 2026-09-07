@@ -26,6 +26,7 @@ import {
   TrendingUp,
   ChevronRight
 } from 'lucide-react';
+import UnifiedNavbar from './UnifiedNavbar';
 import '../technology.css';
 
 // ── Authentic sample rows with ALL 17 columns from multiwell_from_real_volve.csv ──
@@ -376,63 +377,11 @@ export default function TechnologyPage({
   return (
     <div className="tech-page">
       {/* ── Top Navigation Bar ─────────────────────────────────────────── */}
-      <nav className="tech-navbar">
-        <div className="tech-navbar__left">
-          <div className="tech-brand" onClick={onNavigateToLanding} title="Return to DrillSight Home">
-            <div className="tech-brand__icon">
-              <Drill size={18} />
-            </div>
-            <div className="tech-brand__titles">
-              <span className="tech-brand__name">DRILLSIGHT</span>
-              <span className="tech-brand__sub">Technology &amp; ML Architecture</span>
-            </div>
-          </div>
-
-          <button
-            type="button"
-            className="tech-nav-btn tech-nav-btn--ghost"
-            onClick={onNavigateToLanding}
-          >
-            <ArrowLeft size={14} />
-            <span>Home</span>
-          </button>
-
-          {onNavigateToFeatures && (
-            <button
-              type="button"
-              className="tech-nav-btn tech-nav-btn--ghost"
-              onClick={onNavigateToFeatures}
-            >
-              <span>Features</span>
-            </button>
-          )}
-
-          {onNavigateToWokwi && (
-            <button
-              type="button"
-              className="tech-nav-btn tech-nav-btn--ghost"
-              onClick={onNavigateToWokwi}
-              style={{ color: '#38bdf8' }}
-            >
-              <Cpu size={14} />
-              <span>Sim Lab</span>
-            </button>
-          )}
-        </div>
-
-        <div className="tech-navbar__actions">
-          {onNavigateToDashboard && (
-            <button
-              type="button"
-              className="tech-nav-btn tech-nav-btn--primary"
-              onClick={onNavigateToDashboard}
-            >
-              <span>Launch Live Platform</span>
-              <ArrowRight size={14} />
-            </button>
-          )}
-        </div>
-      </nav>
+      <UnifiedNavbar
+        onNavigateToFeatures={onNavigateToFeatures}
+        onNavigateToLanding={onNavigateToLanding}
+        activePage="technology"
+      />
 
       {/* ── Top Hero Banner matching User Screenshot ───────────────────────── */}
       <div className="tech-hero-banner">

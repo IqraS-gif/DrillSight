@@ -12,8 +12,8 @@ function describeArc(cx, cy, r, startAngle, endAngle) {
 
 function formatHours(h) {
   if (h >= 999) return { value: '∞', unit: '', sub: 'Parameters within safe range', isImminent: false };
-  if (h < 1)   return { value: `${Math.round(h * 60)}`, unit: 'minutes', sub: 'Incident may be imminent', isImminent: true };
-  if (h < 24)  return { value: h.toFixed(1), unit: 'hours', sub: 'Estimated time to incident', isImminent: h <= 6 };
+  if (h < 3.0)  return { value: `${Math.round(h * 60)}`, unit: 'minutes', sub: 'Estimated time to incident', isImminent: true };
+  if (h < 24)   return { value: h.toFixed(1), unit: 'hours', sub: 'Estimated time to incident', isImminent: h <= 6 };
   const days = (h / 24).toFixed(1);
   return { value: days, unit: 'days', sub: 'Estimated time to incident', isImminent: false };
 }
@@ -23,6 +23,14 @@ export default function TimeToIncident({ hours = 999, riskLevel = 'normal' }) {
 
   const isHigh = riskLevel === 'high' || (hours < 24 && hours > 0);
   const isMed  = riskLevel === 'medium';
+
+  const totalMins = hours < 999 ? Math.round(hours * 60) : 0;
+  // Urgency ratio: 15 min or less = full warning arc (~210°), 60+ min = ~60°, safe = 0
+  const urgencyFrac = hours >= 999
+    ? 0
+    : Math.max(0.18, Math.min(1.0, 1 - (totalMins - 15) / 75));
+  const startAngle = -30;
+  const endAngle = startAngle + urgencyFrac * 210;
 
   return (
     <div className="tti-card-inner">
@@ -102,14 +110,27 @@ export default function TimeToIncident({ hours = 999, riskLevel = 'normal' }) {
             />
 
             {/* Active Vibrant Orange/Amber Arc */}
-            <path
-              d={describeArc(50, 50, 36, -30, 155)}
-              fill="none"
-              stroke="url(#ringGradient)"
-              strokeWidth="8"
-              strokeLinecap="round"
-              filter="url(#ringGlow)"
-            />
+            {hours < 999 ? (
+              <path
+                d={describeArc(50, 50, 36, startAngle, endAngle)}
+                fill="none"
+                stroke="url(#ringGradient)"
+                strokeWidth="8"
+                strokeLinecap="round"
+                filter="url(#ringGlow)"
+              />
+            ) : (
+              <circle
+                cx="50"
+                cy="50"
+                r="36"
+                fill="none"
+                stroke="#10b981"
+                strokeWidth="3.5"
+                strokeDasharray="4 5"
+                strokeOpacity="0.4"
+              />
+            )}
 
             {/* Center Disc with Soft Shadow */}
             <circle

@@ -339,48 +339,27 @@ html, body {
 
 .rig-card-title {
   color: #05060f;
-  font-size: 1.02rem;
-  line-height: 1.22;
+  font-size: 1.05rem;
+  line-height: 1.25;
   font-weight: 900;
-  margin: 2px 0 5px 0;
+  margin: 6px 0 16px 0;
   text-transform: uppercase;
   letter-spacing: 0.01em;
 }
 
 .rig-price-row {
-  display: flex;
-  align-items: baseline;
-  gap: 4px;
-  margin-bottom: 3px;
-}
-
-.rig-price-val {
-  font-size: 1.35rem;
-  font-weight: 900;
-  color: #05060f;
-  line-height: 1.15;
-}
-
-.rig-price-sub {
-  font-size: 0.82rem;
-  font-weight: 800;
-  color: #475569;
+  display: none;
 }
 
 .rig-card-note {
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: #334155;
-  border-bottom: 1.5px dashed rgba(5, 6, 15, 0.22);
-  padding-bottom: 5px;
-  margin-bottom: 8px;
+  display: none;
 }
 
 .rig-check-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin: 0 0 10px 0;
+  gap: 8px;
+  margin: 0 0 16px 0;
   padding: 0;
   list-style: none;
 }
@@ -388,11 +367,11 @@ html, body {
 .rig-check-item {
   display: flex;
   align-items: flex-start;
-  gap: 7px;
-  font-size: 0.75rem;
+  gap: 8px;
+  font-size: 0.78rem;
   font-weight: 700;
   color: #0f172a;
-  line-height: 1.32;
+  line-height: 1.35;
 }
 
 .rig-check-item svg {

@@ -100,6 +100,15 @@ SCENARIO_RISK_PINS: dict[str, dict] = {
 }
 
 
+SCENARIO_TIME_PINS: dict[str, float] = {
+    "stuck_pipe": round(26.0 / 60.0, 4),  # 26 minutes
+    "kick":       round(19.0 / 60.0, 4),  # 19 minutes
+    "lost_circ":  round(32.0 / 60.0, 4),  # 32 minutes
+    "vibration":  round(35.0 / 60.0, 4),  # 35 minutes
+    "normal":     999.0,
+}
+
+
 def _apply_scenario_pins(result: dict, scenario_id: str) -> dict:
     """Overwrite risk_probabilities and derived fields with pinned values."""
     if scenario_id not in SCENARIO_RISK_PINS:
@@ -117,6 +126,8 @@ def _apply_scenario_pins(result: dict, scenario_id: str) -> dict:
     result["risk_type"]            = dominant
     result["overall_risk_percent"] = overall_pct
     result["risk_level"]           = risk_level
+    if scenario_id in SCENARIO_TIME_PINS:
+        result["time_to_incident_hours"] = SCENARIO_TIME_PINS[scenario_id]
 
     # Keep similar wells lookup aligned to the pinned dominant risk
     if pipeline.ready and pipeline.well_risk_cache:

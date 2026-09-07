@@ -8,6 +8,7 @@ import {
   Cpu,
   Compass
 } from 'lucide-react';
+import UnifiedNavbar from './UnifiedNavbar';
 import '../features.css';
 
 export default function FeaturesPage({
@@ -58,475 +59,211 @@ export default function FeaturesPage({
       window.scrollBy({ top: 580, behavior: 'smooth' });
     }
   };
+  const features = [
+    {
+      id: 'ai-risk',
+      badge: 'AI & Physics ML',
+      badgeClass: 'rig-badge--orange',
+      title: 'AI Risk Detection & Mitigation',
+      items: [
+        'Real-time kick & gas influx detection',
+        'Stuck pipe & pack-off overpull alerts',
+        'Immediate 3-phase emergency mitigation',
+        'MongoDB & SPE literature backed evidence',
+      ],
+      btnText: 'Launch Live Detection',
+      onClick: () => onNavigateToDashboard(),
+    },
+    {
+      id: 'trajectory',
+      badge: 'Interactive WebGL 3D',
+      badgeStyle: { background: '#e0f2fe', color: '#0066ee' },
+      title: '3D Well Trajectory & Anti-Collision',
+      items: [
+        'Real-time directional wellbore & planned corridor',
+        'Offset well proximity & anti-collision safety factor',
+        'Subsurface geological horizons & target penetration',
+        'Interactive depth timeline with historical risk intervals',
+      ],
+      btnText: 'Launch 3D Trajectory',
+      btnStyle: { background: '#0066ee' },
+      onClick: () => onNavigateToTrajectory && onNavigateToTrajectory(),
+    },
+    {
+      id: 'knowledge',
+      badge: 'Knowledge Corpus',
+      badgeClass: 'rig-badge--amber',
+      title: 'Searchable Knowledge Repository',
+      items: [
+        'Search by Risk, Formation & Well',
+        'Split-screen PDF viewer & AI synthesis',
+        'Extracted 4-phase mitigation playbooks',
+        'Live rig telemetry 96% relevance matching',
+      ],
+      btnText: 'Search Knowledge Base',
+      onClick: () => onNavigateToKnowledge && onNavigateToKnowledge(),
+    },
+    {
+      id: 'wokwi',
+      badge: 'Edge AI & Hardware',
+      badgeStyle: { background: '#e0f7fa', color: '#0e7490' },
+      title: 'Rig Simulation Lab',
+      items: [
+        'Full Wokwi embedded simulation in-app',
+        'ESP32 / Arduino virtual component I/O',
+        'Fullscreen mode & live reload controls',
+        'Open full editor directly in Wokwi',
+      ],
+      btnText: 'Launch Simulation',
+      btnStyle: { background: '#0e7490' },
+      onClick: () => onNavigateToWokwi && onNavigateToWokwi(),
+    },
+    {
+      id: 'spatial',
+      badge: 'Proactive Spatial Map',
+      badgeClass: 'rig-badge--blue',
+      title: 'Proactive Visualization Maps',
+      items: [
+        'Geospatial drill hazard & proactive risk zone mapping',
+        'Offset well proximity tracking & similarity analysis',
+        'Stratigraphic formation horizons & lithology overlay',
+        'Historical incident buffers & interactive spatial layers',
+      ],
+      btnText: 'Explore Proactive Maps',
+      onClick: () => onNavigateToSpatial(),
+    },
+    {
+      id: 'digitize',
+      ref: digitizeCardRef,
+      badge: 'Groq LLaMA 3.3 AI',
+      badgeStyle: { background: '#f3e8ff', color: '#7c3aed' },
+      title: 'AI Document Digitization',
+      items: [
+        'Upload well logs, daily reports & SPE PDFs',
+        'Groq LLaMA 3.3 70B structured extraction',
+        'Domain relevance filter & duplicate check',
+        'Direct MongoDB & KB persistence',
+      ],
+      btnText: 'Digitize Documents',
+      onClick: () => onNavigateToDigitize && onNavigateToDigitize(),
+    },
+    {
+      id: 'instinct',
+      badge: "Driller's Instinct AI",
+      badgeStyle: { background: '#ffe4e6', color: '#f43f5e' },
+      title: 'Tacit Knowledge Capture',
+      items: [
+        'Capture tacit knowledge at field with GPS tag',
+        'Glowing audio orb for live voice recording',
+        'Mobile camera photo & video evidence capture',
+        'Fast grouped storage for instant KB retrieval',
+      ],
+      btnText: 'Capture Field Instinct',
+      btnStyle: { background: '#f43f5e' },
+      onClick: () => onNavigateToInstinct && onNavigateToInstinct(),
+    },
+  ];
+
   return (
     <div className="features-page-container">
       {/* ── Top Navigation Bar ── */}
-      <nav className="features-nav">
-        <div className="features-brand" onClick={onNavigateToLanding}>
-          <div className="brand-logo-mark">
-            <svg width="34" height="34" viewBox="0 0 36 36" fill="none">
-              <polygon points="18,3 31,23 18,16" fill="#fbbf24" />
-              <polygon points="18,3 18,16 5,23" fill="#f59e0b" />
-              <polygon points="18,16 31,23 23,33 18,27" fill="#0284c7" />
-              <polygon points="18,16 18,27 13,33 5,23" fill="#38bdf8" />
-            </svg>
-          </div>
-          <div className="brand-text">
-            <span className="brand-title">DrillSight</span>
-            <span className="brand-tagline">Core Capabilities</span>
-          </div>
-        </div>
-
-        <div className="features-nav-actions">
-          <button
-            type="button"
-            className="nav-btn nav-btn--ghost"
-            onClick={onNavigateToLanding}
-          >
-            <ArrowLeft size={15} />
-            <span>Back to Home</span>
-          </button>
-          {onNavigateToKnowledge && (
-            <button
-              type="button"
-              className="nav-btn nav-btn--ghost"
-              onClick={onNavigateToKnowledge}
-              title="Open Searchable Knowledge Repository"
-            >
-              <span>Knowledge Base</span>
-            </button>
-          )}
-          {onNavigateToDigitize && (
-            <button
-              type="button"
-              className="nav-btn nav-btn--ghost"
-              onClick={onNavigateToDigitize}
-              title="Digitize & Ingest Well Reports via Groq AI"
-              style={{ color: '#7c3aed', borderColor: 'rgba(124, 58, 237, 0.3)' }}
-            >
-              <Sparkles size={14} />
-              <span>AI Digitize</span>
-            </button>
-          )}
-          {onNavigateToInstinct && (
-            <button
-              type="button"
-              className="nav-btn nav-btn--ghost"
-              onClick={onNavigateToInstinct}
-              title="Driller's Instinct AI — Tacit Knowledge Capture"
-              style={{ color: '#fb7185', borderColor: 'rgba(244, 63, 94, 0.3)' }}
-            >
-              <Mic size={14} />
-              <span>Instinct AI</span>
-            </button>
-          )}
-          {onNavigateToWokwi && (
-            <button
-              type="button"
-              className="nav-btn nav-btn--ghost"
-              onClick={onNavigateToWokwi}
-              title="Rig Simulation Lab — Wokwi Hardware"
-              style={{ color: '#0e7490', borderColor: 'rgba(14, 116, 144, 0.3)' }}
-            >
-              <Cpu size={14} />
-              <span>Sim Lab</span>
-            </button>
-          )}
-          {onNavigateToTechnology && (
-            <button
-              type="button"
-              className="nav-btn nav-btn--ghost"
-              onClick={onNavigateToTechnology}
-              title="Technology & ML Pipeline Architecture"
-              style={{ color: '#818cf8', borderColor: 'rgba(99, 102, 241, 0.35)' }}
-            >
-              <Sparkles size={14} />
-              <span>Technology</span>
-            </button>
-          )}
-          {onNavigateToTrajectory && (
-            <button
-              type="button"
-              className="nav-btn nav-btn--ghost"
-              onClick={onNavigateToTrajectory}
-              title="Interactive 3D Well Trajectory Visualization"
-              style={{ color: '#0066ee', borderColor: 'rgba(0, 102, 238, 0.35)' }}
-            >
-              <Compass size={14} />
-              <span>3D Trajectory</span>
-            </button>
-          )}
-          <button
-            type="button"
-            className="nav-btn nav-btn--primary"
-            onClick={() => onNavigateToDashboard()}
-          >
-            <span>Live Dashboard</span>
-            <ArrowRight size={15} />
-          </button>
-        </div>
-      </nav>
+      <UnifiedNavbar
+        onNavigateToFeatures={() => {}}
+        onNavigateToLanding={onNavigateToLanding}
+        activePage="features"
+      />
 
       {/* ── Main Content ── */}
       <main className="features-hero">
         <div className="hero-badge">
           <Sparkles size={14} />
-          <span>DRILLSIGHT PLATFORM CAPABILITIES</span>
+          <span>DRILLSIGHT PLATFORM ({features.length} CAPABILITIES)</span>
         </div>
 
         <h1 className="hero-headline">
-          Intelligent Pillars for <span className="headline-highlight">Zero-NPT</span> Drilling
+          <span className="headline-highlight">{features.length}</span> Intelligent Pillars for <span className="headline-highlight">Zero-NPT</span> Drilling
         </h1>
         <p className="hero-subline">
-          Explore the core capabilities powering real-time drilling safety and well control.
+          Explore the {features.length} core capabilities powering real-time drilling safety and well control.
         </p>
 
         {/* ── Cards Grid (Pumpjack Illustrated Frame Cards) ── */}
         <div className="cards-grid">
           <div className="cards-row-primary">
-            {/* CARD 1: AI Risk Detection & Mitigation */}
-            <div className="rig-card-wrapper">
-            <div className="rig-feature-card">
-              <div className="rig-card-content">
-                <div className="rig-card-badge-row">
-                  <span className="rig-badge rig-badge--orange">AI &amp; Physics ML</span>
-                </div>
-                
-                <h3 className="rig-card-title">AI Risk Detection &amp; Mitigation</h3>
-                
-                <div className="rig-price-row">
-                  <span className="rig-price-val">Real-Time</span>
-                  <span className="rig-price-sub">/Telemetry</span>
-                </div>
-                
-                <div className="rig-card-note">Physics ML &amp; Actionable Playbooks</div>
-                
-                <ul className="rig-check-list" role="list">
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Real-time kick &amp; gas influx detection</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Stuck pipe &amp; pack-off overpull alerts</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Immediate 3-phase emergency mitigation</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>MongoDB &amp; SPE literature backed evidence</span>
-                  </li>
-                </ul>
+            {features.slice(0, 3).map((card) => (
+              <div key={card.id} className="rig-card-wrapper" ref={card.ref}>
+                <div className="rig-feature-card">
+                  <div className="rig-card-content">
+                    <div className="rig-card-badge-row">
+                      <span className={`rig-badge ${card.badgeClass || ''}`} style={card.badgeStyle}>
+                        {card.badge}
+                      </span>
+                    </div>
 
-                <button
-                  type="button"
-                  className="rig-try-btn"
-                  onClick={() => onNavigateToDashboard()}
-                >
-                  <span>Launch Live Detection</span>
-                  <ArrowRight size={16} />
-                </button>
+                    <h3 className="rig-card-title">{card.title}</h3>
+
+                    <ul className="rig-check-list" role="list">
+                      {card.items.map((item, idx) => (
+                        <li key={idx} className="rig-check-item">
+                          <CheckmarkIcon />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <button
+                      type="button"
+                      className="rig-try-btn"
+                      onClick={card.onClick}
+                      style={card.btnStyle}
+                    >
+                      <span>{card.btnText}</span>
+                      <ArrowRight size={16} />
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
 
-          {/* CARD 2: 3D Spatial Intelligence & Well Map */}
-          <div className="rig-card-wrapper">
-            <div className="rig-feature-card">
-              <div className="rig-card-content">
-                <div className="rig-card-badge-row">
-                  <span className="rig-badge rig-badge--blue">3D Spatial Map</span>
-                </div>
-                
-                <h3 className="rig-card-title">3D Spatial Intelligence Map</h3>
-                
-                <div className="rig-price-row">
-                  <span className="rig-price-val">3D Subsurface</span>
-                  <span className="rig-price-sub">/Map</span>
-                </div>
-                
-                <div className="rig-card-note">Offset Well Trajectories &amp; Horizons</div>
-                
-                <ul className="rig-check-list" role="list">
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Interactive 3D directional trajectory viewer</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Proximity tracking across offset wells</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Stratigraphic formation horizon lithology</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Geospatial drill hazard risk zones</span>
-                  </li>
-                </ul>
+          {/* SECOND ROW: Specialized Rig & Subsurface Capabilities */}
+          <div className="cards-row-secondary">
+            {features.slice(3).map((card) => (
+              <div key={card.id} className="rig-card-wrapper" ref={card.ref}>
+                <div className="rig-feature-card">
+                  <div className="rig-card-content">
+                    <div className="rig-card-badge-row">
+                      <span className={`rig-badge ${card.badgeClass || ''}`} style={card.badgeStyle}>
+                        {card.badge}
+                      </span>
+                    </div>
 
-                <button
-                  type="button"
-                  className="rig-try-btn"
-                  onClick={() => onNavigateToSpatial()}
-                >
-                  <span>Explore 3D Trajectories</span>
-                  <ArrowRight size={16} />
-                </button>
+                    <h3 className="rig-card-title">{card.title}</h3>
+
+                    <ul className="rig-check-list" role="list">
+                      {card.items.map((item, idx) => (
+                        <li key={idx} className="rig-check-item">
+                          <CheckmarkIcon />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <button
+                      type="button"
+                      className="rig-try-btn"
+                      onClick={card.onClick}
+                      style={card.btnStyle}
+                    >
+                      <span>{card.btnText}</span>
+                      <ArrowRight size={16} />
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-
-          {/* CARD 3: Searchable Knowledge Repository */}
-          <div className="rig-card-wrapper">
-            <div className="rig-feature-card">
-              <div className="rig-card-content">
-                <div className="rig-card-badge-row">
-                  <span className="rig-badge rig-badge--amber">Knowledge Corpus</span>
-                </div>
-                
-                <h3 className="rig-card-title">Searchable Knowledge Repository</h3>
-                
-                <div className="rig-price-row">
-                  <span className="rig-price-val">Mitigation</span>
-                  <span className="rig-price-sub">/Repository</span>
-                </div>
-                
-                <div className="rig-card-note">SPE Papers, Well Reports &amp; Playbooks</div>
-                
-                <ul className="rig-check-list" role="list">
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Search by Risk, Formation &amp; Well</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Split-screen PDF viewer &amp; AI synthesis</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Extracted 4-phase mitigation playbooks</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Live rig telemetry 96% relevance matching</span>
-                  </li>
-                </ul>
-
-                <button
-                  type="button"
-                  className="rig-try-btn"
-                  onClick={() => onNavigateToKnowledge && onNavigateToKnowledge()}
-                >
-                  <span>Search Knowledge Base</span>
-                  <ArrowRight size={16} />
-                </button>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
-
-        {/* SECOND ROW: Specialized Rig & Subsurface Capabilities */}
-        <div className="cards-row-secondary">
-          {/* CARD: 3D Well Trajectory & Anti-Collision Engine */}
-          <div className="rig-card-wrapper">
-            <div className="rig-feature-card">
-              <div className="rig-card-content">
-                <div className="rig-card-badge-row">
-                  <span className="rig-badge rig-badge--blue" style={{ background: '#e0f2fe', color: '#0066ee' }}>Interactive WebGL 3D</span>
-                </div>
-                
-                <h3 className="rig-card-title">3D Well Trajectory &amp; Anti-Collision</h3>
-                
-                <div className="rig-price-row">
-                  <span className="rig-price-val">Directional</span>
-                  <span className="rig-price-sub">/Trajectory</span>
-                </div>
-                
-                <div className="rig-card-note">Planned Corridor, Offset Proximity &amp; Horizons</div>
-                
-                <ul className="rig-check-list" role="list">
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Real-time directional wellbore &amp; planned corridor</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Offset well proximity &amp; anti-collision safety factor</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Subsurface geological horizons &amp; target penetration</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Interactive depth timeline with historical risk intervals</span>
-                  </li>
-                </ul>
-
-                <button
-                  type="button"
-                  className="rig-try-btn"
-                  onClick={() => onNavigateToTrajectory && onNavigateToTrajectory()}
-                  style={{ background: '#0066ee' }}
-                >
-                  <span>Launch 3D Trajectory</span>
-                  <ArrowRight size={16} />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* CARD 4: AI Document Digitization & Ingestion */}
-          <div className="rig-card-wrapper" ref={digitizeCardRef}>
-            <div className="rig-feature-card">
-              <div className="rig-card-content">
-                <div className="rig-card-badge-row">
-                  <span className="rig-badge" style={{ background: '#f3e8ff', color: '#7c3aed' }}>Groq LLaMA 3.3 AI</span>
-                </div>
-                
-                <h3 className="rig-card-title">AI Document Digitization</h3>
-                
-                <div className="rig-price-row">
-                  <span className="rig-price-val">Automated</span>
-                  <span className="rig-price-sub">/Ingestion</span>
-                </div>
-                
-                <div className="rig-card-note">Turn Raw PDFs &amp; Logs into KB Records</div>
-                
-                <ul className="rig-check-list" role="list">
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Upload well logs, daily reports &amp; SPE PDFs</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Groq LLaMA 3.3 70B structured extraction</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Domain relevance filter &amp; duplicate check</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Direct MongoDB &amp; KB persistence</span>
-                  </li>
-                </ul>
-
-                <button
-                  type="button"
-                  className="rig-try-btn"
-                  onClick={() => onNavigateToDigitize && onNavigateToDigitize()}
-                >
-                  <span>Digitize Documents</span>
-                  <ArrowRight size={16} />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* CARD 5: Driller's Instinct AI (Tacit Knowledge Capture) */}
-          <div className="rig-card-wrapper">
-            <div className="rig-feature-card">
-              <div className="rig-card-content">
-                <div className="rig-card-badge-row">
-                  <span className="rig-badge" style={{ background: '#ffe4e6', color: '#f43f5e' }}>Driller's Instinct AI</span>
-                </div>
-                
-                <h3 className="rig-card-title">Tacit Knowledge Capture</h3>
-                
-                <div className="rig-price-row">
-                  <span className="rig-price-val">Mobile</span>
-                  <span className="rig-price-sub">/Field AI</span>
-                </div>
-                
-                <div className="rig-card-note">Voice, Photo &amp; Video Knowledge Capture</div>
-                
-                <ul className="rig-check-list" role="list">
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Capture tacit knowledge at field with GPS tag</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Glowing audio orb for live voice recording</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Mobile camera photo &amp; video evidence capture</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Fast grouped storage for instant KB retrieval</span>
-                  </li>
-                </ul>
-
-                <button
-                  type="button"
-                  className="rig-try-btn"
-                  onClick={() => onNavigateToInstinct && onNavigateToInstinct()}
-                  style={{ background: '#f43f5e' }}
-                >
-                  <span>Capture Field Instinct</span>
-                  <ArrowRight size={16} />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* CARD 6: Rig Simulation Lab (Wokwi) */}
-          <div className="rig-card-wrapper">
-            <div className="rig-feature-card">
-              <div className="rig-card-content">
-                <div className="rig-card-badge-row">
-                  <span className="rig-badge" style={{ background: '#e0f7fa', color: '#0e7490' }}>Embedded Hardware</span>
-                </div>
-
-                <h3 className="rig-card-title">Rig Simulation Lab</h3>
-
-                <div className="rig-price-row">
-                  <span className="rig-price-val">Wokwi</span>
-                  <span className="rig-price-sub">/Live Sim</span>
-                </div>
-
-                <div className="rig-card-note">ESP32 Hardware in Real-Time Browser</div>
-
-                <ul className="rig-check-list" role="list">
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Full Wokwi embedded simulation in-app</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>ESP32 / Arduino virtual component I/O</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Fullscreen mode &amp; live reload controls</span>
-                  </li>
-                  <li className="rig-check-item">
-                    <CheckmarkIcon />
-                    <span>Open full editor directly in Wokwi</span>
-                  </li>
-                </ul>
-
-                <button
-                  type="button"
-                  className="rig-try-btn"
-                  onClick={() => onNavigateToWokwi && onNavigateToWokwi()}
-                  style={{ background: '#0e7490' }}
-                >
-                  <span>Launch Simulation</span>
-                  <ArrowRight size={16} />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       </main>
 
       {/* ── Fixed Animated Scroll Down Indicator (Pinned to Bottom-Left, Always Visible) ── */}
