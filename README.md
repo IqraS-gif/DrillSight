@@ -1,4 +1,3 @@
-```markdown
 <div align="center">
 
 # 🛢️ DrillSight
@@ -12,9 +11,9 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg?style=for-the-badge)](#)
 
----
-
 </div>
+
+---
 
 > **ONGC, 2024:** ONGC targeted a 20% boost in efficiency and a 20% cut in costs, flagging offshore drilling as especially cost-intensive — with 37 offshore and 66 onshore rigs, and single exploration wells running ₹600–800 crore when complications hit. [Source ↗](#references--real-world-sources)  
 >
@@ -25,16 +24,17 @@ With drilling efficiency directly driving these costs, **eRTMAC-NWIS** uses less
 ---
 
 ## 📑 Table of Contents
-* [What is DrillSight?](#-what-is-drillsight-in-plain-english)
-* [Human & Financial Stakes](#-the-human--financial-stakes)
-* [Key Benefits & USPs](#-key-benefits--usps-why-drillsight-stands-out)
-* [Field-Validated Evidence](#-field-validated-evidence-north-sea-volve-benchmark)
-* [Core Platform Pillars](#-the-7-core-pillars-of-the-platform)
-* [Quickstart](#-quickstart-guide)
-* [References](#-references--real-world-sources)
+* [What is DrillSight?](#what-is-drillsight-in-plain-english)
+* [Human & Financial Stakes](#the-human--financial-stakes)
+* [Key Benefits & USPs](#key-benefits--usps-why-drillsight-stands-out)
+* [Field-Validated Evidence](#field-validated-evidence-north-sea-volve-benchmark)
+* [Core Platform Pillars](#the-7-core-pillars-of-the-platform)
+* [Quickstart](#quickstart-guide)
+* [References](#references--real-world-sources)
 
 ---
 
+<a id="what-is-drillsight-in-plain-english"></a>
 ## 🧭 What is DrillSight in Plain English?
 
 Imagine drilling thousands of meters beneath the ocean floor into pitch-black rock under massive pressure — you can't see what's happening at the drill bit.
@@ -45,6 +45,7 @@ Today, rig crews rely on sensors that sound alarms after trouble has already beg
 
 ---
 
+<a id="the-human--financial-stakes"></a>
 ## 💡 The Human & Financial Stakes
 
 * **🛟 Protecting rig crews:** A sudden gas influx ("kick") or equipment failure puts lives at risk. Proactive warnings safeguard the crew on the drill floor.
@@ -53,6 +54,7 @@ Today, rig crews rely on sensors that sound alarms after trouble has already beg
 
 ---
 
+<a id="key-benefits--usps-why-drillsight-stands-out"></a>
 ## 🌟 Key Benefits & USPs (Why DrillSight Stands Out)
 
 | Capability | Traditional Rig Monitoring | DrillSight Advantage | Impact |
@@ -65,6 +67,7 @@ Today, rig crews rely on sensors that sound alarms after trouble has already beg
 
 ---
 
+<a id="field-validated-evidence-north-sea-volve-benchmark"></a>
 ## 📈 Field-Validated Evidence (North Sea Volve Benchmark)
 
 DrillSight was evaluated on **2.9 million data points** from authentic offshore operations in the North Sea (Equinor Volve dataset).
@@ -75,7 +78,9 @@ DrillSight was evaluated on **2.9 million data points** from authentic offshore 
 
 DrillSight models torque and drag along the entire drillstring, spotting abnormal friction spikes before the pipe binds against the borehole wall.
 
-`docs/assets/pino_actual_vs_predicted_torque.png`
+<p align="center">
+  <img src="docs/assets/pino_actual_vs_predicted_torque.png" alt="Actual vs Predicted Torque" width="100%" />
+</p>
 </details>
 
 <details>
@@ -84,7 +89,9 @@ DrillSight models torque and drag along the entire drillstring, spotting abnorma
 
 Before the bit enters a new layer of rock, DrillSight generates a predictive risk heatmap from historical trouble encountered by adjacent wells at those exact depths.
 
-`docs/assets/nwis_risk_heatmap.png`
+<p align="center">
+  <img src="docs/assets/nwis_risk_heatmap.png" alt="NWIS Predictive Risk Heatmap" width="100%" />
+</p>
 </details>
 
 <details>
@@ -93,7 +100,9 @@ Before the bit enters a new layer of rock, DrillSight generates a predictive ris
 
 The hybrid physics-AI engine trains smoothly and stays stable across hundreds of iterations — zero false panic on the rig floor.
 
-`docs/assets/pino_training_loss.png`
+<p align="center">
+  <img src="docs/assets/pino_training_loss.png" alt="PINO Training Loss" width="100%" />
+</p>
 </details>
 
 ### ⏱️ Early Warning Windows Delivered
@@ -108,6 +117,7 @@ The hybrid physics-AI engine trains smoothly and stays stable across hundreds of
 
 ---
 
+<a id="the-7-core-pillars-of-the-platform"></a>
 ## 🧭 The 7 Core Pillars of the Platform
 
 * **⚠️ AI Risk Detection & Mitigation** — Real-time risk dials, audible hazard alerts, step-by-step 3-phase emergency playbooks based on SPE standards.
@@ -120,6 +130,7 @@ The hybrid physics-AI engine trains smoothly and stays stable across hundreds of
 
 ---
 
+<a id="quickstart-guide"></a>
 ## 🚀 Quickstart Guide
 
 ### Prerequisites
@@ -131,28 +142,30 @@ The hybrid physics-AI engine trains smoothly and stays stable across hundreds of
 cd backend
 pip install -r requirements.txt
 python -m uvicorn main:app --reload --port 8000
-
 ```
 
 ### 2. Launch Frontend (React + Vite)
-
 ```bash
 cd frontend
 npm install
 npm run dev
-
 ```
 
 Visit `http://localhost:5173` in your browser.
 
 ---
 
+<a id="references--real-world-sources"></a>
 ## 📚 References & Real-World Sources
 
-* **ONGC Operational Benchmark (2024)** — ONGC to boost efficiency by 20%, cut costs amid soaring rig rates. *Economic Times Energy*
-* **Springer Nature Study on Offshore Non-Productive Time (2026)** — Statistical evaluation of 279 offshore wells and $369.6M NPT financial exposure. *Discover Geoscience / Springer Nature*
+* **ONGC Operational Benchmark (2024)** — ONGC to boost efficiency by 20%, cut costs amid soaring rig rates. [*Economic Times Energy*](https://energy.economictimes.indiatimes.com/amp/news/oil-and-gas/ongc-to-boost-efficiency-by-20-cut-costs-amid-soaring-rig-rates-aims-for-strategic-partnerships/107539551)
+* **Springer Nature Study on Offshore Non-Productive Time (2026)** — Statistical evaluation of 279 offshore wells and $369.6M NPT financial exposure. [*Discover Geoscience / Springer Nature*](https://link.springer.com/article/10.1186/s44147-026-01049-9)
 * **Equinor Volve Field Dataset** — Open offshore drilling telemetry and geological well reports from the North Sea.
 
 ---
 
+<div align="center">
+
 **DrillSight (eRTMAC-NWIS)** — *Predictive Drilling Intelligence*
+
+</div>
