@@ -30,6 +30,8 @@ mlmodel/*.csv
 !frontend/public/**/*.png
 !frontend/public/*.png
 !frontend/src/**/*.png
+!docs/**/*.png
+!docs/*.png
 
 # Logs & temp
 *.log
