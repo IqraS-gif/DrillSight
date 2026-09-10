@@ -149,16 +149,16 @@ def _apply_scenario_pins(result: dict, scenario_id: str) -> dict:
 
 # ── Routes ────────────────────────────────────────────────────────────────────
 # ── Minute / Minimal Health Checks (Bare minimum 2-byte payload 'ok') ────────
-@app.get("/ping", response_class=PlainTextResponse)
-@app.get("/healthz", response_class=PlainTextResponse)
-@app.get("/api/ping", response_class=PlainTextResponse)
-@app.get("/api/health/minimal", response_class=PlainTextResponse)
+@app.api_route("/ping", methods=["GET", "HEAD"], response_class=PlainTextResponse)
+@app.api_route("/healthz", methods=["GET", "HEAD"], response_class=PlainTextResponse)
+@app.api_route("/api/ping", methods=["GET", "HEAD"], response_class=PlainTextResponse)
+@app.api_route("/api/health/minimal", methods=["GET", "HEAD"], response_class=PlainTextResponse)
 def ping():
     """Returns the absolute minimum payload ('ok', 2 bytes) for uptime monitors & keep-alive pings."""
     return "ok"
 
 
-@app.get("/api/health")
+@app.api_route("/api/health", methods=["GET", "HEAD"])
 def health(minimal: bool = False):
     if minimal:
         return {"ok": 1}
