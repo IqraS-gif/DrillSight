@@ -388,7 +388,7 @@ export default function MitigationModal({
           {loading ? (
             <div className="mitigation-loading-state">
               <div className="mitigation-spinner" />
-              <span>Querying MongoDB Atlas via Elasticsearch &amp; Semantic AI...</span>
+              <span>Querying Atlas via Elasticsearch &amp; Semantic AI...</span>
             </div>
           ) : (
             <>
@@ -542,7 +542,7 @@ export default function MitigationModal({
                   <div className="mitigation-phase-banner mitigation-phase-banner--blue">
                     <Database size={18} color="#0066ee" />
                     <div>
-                      <strong>HISTORICAL WELL INCIDENT CASES (FROM MONGODB ATLAS)</strong>
+                      <strong>HISTORICAL WELL INCIDENT CASES (FROM ATLAS)</strong>
                       <p>Matched reports and SPE publications retrieved via Elasticsearch &amp; Semantic AI.</p>
                     </div>
                   </div>
@@ -587,7 +587,7 @@ export default function MitigationModal({
 
                       <div className="mitigation-case-footer">
                         <span>Source: <strong>{c.source_document}</strong></span>
-                        <span className="mitigation-db-badge">Indexed in MongoDB Atlas</span>
+                        <span className="mitigation-db-badge">Indexed in Atlas</span>
                       </div>
                     </div>
                   ))}
@@ -600,7 +600,7 @@ export default function MitigationModal({
         {/* Footer */}
         <div className="mitigation-modal-footer">
           <span className="mitigation-footer-text">
-            Search: <strong>Elasticsearch + Semantic AI</strong> · Real-time data from MongoDB Atlas
+            Search: <strong>Elasticsearch + Semantic AI</strong> · Real-time data from Atlas
           </span>
           <button 
             type="button" 

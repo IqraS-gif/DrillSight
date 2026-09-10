@@ -10,6 +10,7 @@ import {
 import RAW_KB_BACKUP from '../data/knowledge_backup.json';
 import WellDossierModal from './WellDossierModal';
 import UnifiedNavbar from './UnifiedNavbar';
+import VoiceOrb from './VoiceOrb';
 import '../knowledge.css';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -103,7 +104,7 @@ function getCardCategoryMeta(category, categoryName) {
   };
 }
 
-// ── Transform actual backend MongoDB/backup KB item into rich Document structure ──
+// ── Transform actual backend KB item into rich Document structure ──
 function transformBackendItemToDoc(item) {
   const isTacit = Boolean(item.is_tacit || item.capture_mode || item.rule_of_thumb || item.retrieval_group);
 
@@ -2204,6 +2205,9 @@ export default function KnowledgeRepository({
           onClose={() => setSelectedWell(null)}
         />
       )}
+
+      {/* Floating Voice KB Assistant */}
+      <VoiceOrb />
     </div>
   );
 }

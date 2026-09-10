@@ -20,6 +20,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List
 import threading
+import httpx
 
 from pipeline import pipeline, PARAM_META, RISK_TYPE_META, WELL_GEO
 from knowledge_db import knowledge_repo
@@ -97,15 +98,22 @@ SCENARIO_RISK_PINS: dict[str, dict] = {
         "lost_circulation":     0.02,
         "excessive_vibration":  0.54,
     },
+    "casing_cementing": {
+        "stuck_pipe":           0.08,
+        "kick_influx":          0.05,
+        "lost_circulation":     0.69,
+        "excessive_vibration":  0.02,
+    },
 }
 
 
 SCENARIO_TIME_PINS: dict[str, float] = {
-    "stuck_pipe": round(26.0 / 60.0, 4),  # 26 minutes
-    "kick":       round(19.0 / 60.0, 4),  # 19 minutes
-    "lost_circ":  round(32.0 / 60.0, 4),  # 32 minutes
-    "vibration":  round(35.0 / 60.0, 4),  # 35 minutes
-    "normal":     999.0,
+    "stuck_pipe":       round(26.0 / 60.0, 4),  # 26 minutes
+    "kick":             round(19.0 / 60.0, 4),  # 19 minutes
+    "lost_circ":        round(32.0 / 60.0, 4),  # 32 minutes
+    "vibration":        round(35.0 / 60.0, 4),  # 35 minutes
+    "casing_cementing": round(48.0 / 60.0, 4),  # 48 minutes — casing shoe reached
+    "normal":           999.0,
 }
 
 
@@ -241,6 +249,12 @@ def scenarios():
                 "label": "Excessive Vibration — Medium Risk",
                 "description": "High shock peak, bit bounce, unstable WOB.",
                 "params": {"depth": 2700, "wob": 60, "rop": 12, "torque": 22, "hookload": 115, "mud_in": 1.25, "spp": 9500, "shock": 120, "gas": 0.08, "rpm": 180},
+            },
+            {
+                "id": "casing_cementing",
+                "label": "Casing / Cementing Risk",
+                "description": "Heavy mud ECD fracturing formation near casing shoe depth, SPP drop indicating seal compromise.",
+                "params": {"depth": 2450, "wob": 20, "rop": 14, "torque": 6, "hookload": 78, "mud_in": 1.92, "spp": 1200, "shock": 2, "gas": 0.3, "rpm": 60},
             },
         ]
     }
@@ -538,3 +552,134 @@ def get_recent_tacit_knowledge(limit: int = 10):
         "items": tacit_items[:limit]
     }
 
+
+# ── Voice Knowledge Assistant ─────────────────────────────────────────────────
+
+class VoiceQueryRequest(BaseModel):
+    query: str
+    limit: int = 5
+
+
+@app.post("/api/voice-query")
+async def voice_query(req: VoiceQueryRequest):
+    """
+    Searches the Knowledge Repository for relevant items, then calls Groq LLaMA
+    to synthesize a grounded, conversational answer for the Voice KB Assistant.
+    Falls back to a structured KB summary if Groq is unavailable.
+    """
+    query = req.query.strip()
+    if not query:
+        raise HTTPException(status_code=400, detail="Query cannot be empty.")
+
+    # 1. Retrieve relevant KB items
+    results = knowledge_repo.search(query=query, limit=req.limit)
+    if not results:
+        # Try contextual match as second pass
+        results = knowledge_repo.get_all_knowledge()[:req.limit]
+
+    sources = [r.get("title") or r.get("source_document", "") for r in results[:3] if r]
+    sources = [s for s in sources if s]
+
+    # 2. Build KB context block for Groq
+    kb_context = ""
+    for i, item in enumerate(results[:4], 1):
+        title = item.get("title", "Untitled")
+        category = item.get("category_name") or item.get("category", "")
+        symptoms = "; ".join((item.get("symptoms_early_indicators") or [])[:3])
+        causes = "; ".join((item.get("root_causes") or [])[:3])
+        actions = "; ".join((item.get("mitigation_actions") or [])[:4])
+        kb_context += (
+            f"[KB-{i}] {title} ({category})\n"
+            f"Early Signs: {symptoms or 'N/A'}\n"
+            f"Root Causes: {causes or 'N/A'}\n"
+            f"Mitigation: {actions or 'N/A'}\n\n"
+        )
+
+    # 3. Call Groq for a grounded answer
+    groq_api_key = os.getenv("GROQ_API_KEY", "")
+    groq_model = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+
+    if groq_api_key:
+        try:
+            system_prompt = (
+                "You are DrillSight's operations assistant. "
+                "Your goal is to give practical, crystal-clear, and easy-to-understand advice "
+                "grounded strictly in the Knowledge Base context provided.\n\n"
+                "CRITICAL RULES:\n"
+                "- STRICT LENGTH LIMIT: Keep the ENTIRE response STRICTLY UNDER 170 WORDS.\n"
+                "- Structure as 3 to 4 concise bullet points starting with '• '.\n"
+                "- Start each bullet with a bold action heading, e.g. '• **Shut in and seal:** ...'\n"
+                "- Explain technical acronyms simply (e.g. 'annular BOP (blowout preventer valve)', 'SIDPP (drill pipe pressure)').\n"
+                "- Write in plain, direct English so anyone can immediately understand and act.\n"
+                "- Cite key operational numbers from the context (e.g. psi, mud weight, gpm).\n"
+                "- Do NOT mention document or KB record labels."
+            )
+            user_msg = (
+                f"Question: {query}\n\n"
+                f"Knowledge Base Context:\n{kb_context}"
+                f"Provide concise, easy-to-understand mitigation steps. STRICT LIMIT: Under 170 words total."
+            )
+
+            async with httpx.AsyncClient(timeout=15.0) as client:
+                resp = await client.post(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {groq_api_key}",
+                        "Content-Type": "application/json",
+                    },
+                    json={
+                        "model": groq_model,
+                        "messages": [
+                            {"role": "system", "content": system_prompt},
+                            {"role": "user",   "content": user_msg},
+                        ],
+                        "max_tokens": 1000,
+                        "temperature": 0.3,
+                    },
+                )
+                if resp.status_code == 200:
+                    data = resp.json()
+                    answer = (data["choices"][0]["message"].get("content") or "").strip()
+                    if answer:
+                        # Enforce strict 170 words maximum
+                        words = answer.split()
+                        if len(words) > 170:
+                            trimmed_lines = []
+                            count = 0
+                            for line in answer.splitlines():
+                                line_words = line.split()
+                                if count + len(line_words) <= 170:
+                                    trimmed_lines.append(line)
+                                    count += len(line_words)
+                                else:
+                                    rem = 170 - count
+                                    if rem > 6:
+                                        trimmed_lines.append(" ".join(line_words[:rem]).rstrip(".,;:-") + "...")
+                                    break
+                            answer = "\n".join(trimmed_lines).strip()
+                        return {"status": "ok", "answer": answer, "sources": sources}
+                    print("[voice-query] Groq returned empty content, falling back to KB records.")
+                else:
+                    print(f"[voice-query] Groq HTTP {resp.status_code}: {resp.text}")
+        except Exception as ex:
+            print(f"[voice-query] Groq call failed: {ex}")
+
+    # 4. Fallback: build clean, readable bullet-pointed answer from KB data directly
+    if results:
+        top = results[0]
+        actions = (top.get("mitigation_actions") or [])[:4]
+        symptoms = (top.get("symptoms_early_indicators") or [])[:2]
+        category = top.get("category_name") or top.get("category", "drilling risk")
+        bullets = [f"**Case Protocol:** {top.get('title', 'Knowledge Record')} ({category})"]
+        if symptoms:
+            bullets.append(f"**Warning Signs:** {', '.join(symptoms)}.")
+        for idx, a in enumerate(actions, 1):
+            bullets.append(f"**Step {idx}:** {a}")
+        answer = "\n".join(f"• {b}" for b in bullets)
+    else:
+        answer = (
+            "• No specific match found in the Knowledge Repository for that query.\n"
+            "• Try terms like 'stuck pipe', 'mud loss', 'kick influx', or a formation name."
+        )
+
+    return {"status": "ok", "answer": answer, "sources": sources}

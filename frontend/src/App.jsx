@@ -65,6 +65,12 @@ const SCENARIOS = [
     color: '#f59e0b',
     params: { depth: 2700, wob: 75, rop: 8, torque: 24, hookload: 118, mud_in: 1.25, spp: 9500, shock: 158, gas: 0.08, rpm: 188 },
   },
+  {
+    id: 'casing_cementing',
+    label: 'Casing / Cementing Risk',
+    color: '#8b5cf6',
+    params: { depth: 2450, wob: 20, rop: 14, torque: 6, hookload: 78, mud_in: 1.92, spp: 1200, shock: 2, gas: 0.3, rpm: 60 },
+  },
 ];
 
 /**

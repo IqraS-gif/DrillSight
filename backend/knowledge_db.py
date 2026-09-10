@@ -229,32 +229,86 @@ class KnowledgeRepository:
             except Exception as e:
                 logger.warning(f"Text search via MongoDB failed ({e}), falling back to regex.")
 
-        # Fallback search
+        # Fallback search with token scoring & category heuristic
         all_items = self.get_all_knowledge()
-        results = []
-        q_lower = query_str.lower()
+        if not query_str:
+            if category:
+                return [it for it in all_items if it.get("category") == category][:limit]
+            return all_items[:limit]
 
+        q_lower = query_str.lower()
+        
+        # Stop words to ignore during token scoring
+        stopwords = {
+            "tell", "me", "about", "the", "a", "an", "is", "in", "of", "to", "for",
+            "with", "and", "or", "what", "how", "why", "can", "you", "does", "do",
+            "please", "give", "show", "any", "some", "this", "that", "these", "those"
+        }
+        import re
+        tokens = [w for w in re.findall(r"[a-z0-9_\-]+", q_lower) if len(w) >= 3 and w not in stopwords]
+
+        # Category keyword heuristics
+        cat_triggers = {
+            "stuck_pipe": ["stuck", "pipe", "sticking", "overpull", "packoff", "pack-off", "chert", "key-seat"],
+            "lost_circulation": ["loss", "losses", "lost", "circulation", "mud", "depleted", "thief"],
+            "kick_influx": ["kick", "influx", "gas", "sidpp", "sicp", "pit", "gain", "blowout"],
+            "excessive_vibration": ["vibration", "stick-slip", "whirl", "bha", "shock", "torsional"],
+            "wellbore_instability": ["instability", "shale", "sloughing", "collapse", "tight", "cavings"],
+            "formation_breakdown": ["breakdown", "fracture", "leak-off", "ballooning", "lot"],
+            "casing_cementing": ["casing", "cement", "cementing", "liner", "shoe", "wear"]
+        }
+
+        scored_items = []
         for item in all_items:
             if category and item.get("category") != category:
                 continue
 
-            if not q_lower:
-                results.append(item)
-                continue
-
-            # Check match in text fields
+            item_cat = item.get("category", "")
+            title = str(item.get("title", "")).lower()
+            keywords = [str(k).lower() for k in item.get("keywords", [])]
             searchable = " ".join([
-                str(item.get("title", "")),
+                title,
                 str(item.get("formation", "")),
                 str(item.get("well_reference", "")),
                 " ".join(item.get("symptoms_early_indicators", [])),
                 " ".join(item.get("root_causes", [])),
                 " ".join(item.get("mitigation_actions", [])),
-                " ".join(item.get("keywords", [])),
+                " ".join(keywords),
             ]).lower()
 
+            score = 0
+
+            # Exact full phrase match gets top score
             if q_lower in searchable:
-                results.append(item)
+                score += 100
+
+            # Token matches
+            for token in tokens:
+                if token in title:
+                    score += 25
+                elif any(token in kw for kw in keywords):
+                    score += 20
+                elif token in searchable:
+                    score += 10
+
+            # Category trigger matches
+            triggers = cat_triggers.get(item_cat, [])
+            for trig in triggers:
+                if trig in q_lower:
+                    score += 15
+
+            if score > 0:
+                scored_items.append((score, item))
+
+        scored_items.sort(key=lambda x: x[0], reverse=True)
+        results = [item for _, item in scored_items]
+
+        # If still no matches and no specific category filter, return contextual top items
+        if not results and not category:
+            for cat_name, triggers in cat_triggers.items():
+                if any(trig in q_lower for trig in triggers):
+                    results = [it for it in all_items if it.get("category") == cat_name]
+                    break
 
         return results[:limit]
 
