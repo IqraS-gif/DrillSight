@@ -7,7 +7,7 @@
  */
 
 import React, { useState, useRef, useEffect, useCallback, useId } from 'react';
-import { Mic, Send, Sparkles, Maximize2, Minimize2 } from 'lucide-react';
+import { Mic, Send, Sparkles, Maximize2, Minimize2, X } from 'lucide-react';
 import '../voiceorb.css';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -111,6 +111,7 @@ export default function VoiceOrb() {
   const [thinking, setThinking] = useState(false);
   const [listening, setListening] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const chatRef = useRef(null);
   const recognitionRef = useRef(null);
   const inputRef = useRef(null);
@@ -263,13 +264,15 @@ export default function VoiceOrb() {
           className="vorb-input"
           id={uid}
           name={uid}
+          checked={isOpen}
+          onChange={e => setIsOpen(e.target.checked)}
         />
 
         {/* Chat panel — expands when checked */}
         <div className={`vorb-panel${expanded ? ' vorb-panel--expanded' : ''}`}>
           {/* Header */}
           <div className="vorb-panel-header">
-            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none">
+            <svg className="vorb-header-icon" xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none">
               <path d="M3 14V10" stroke="currentColor" strokeWidth={2} strokeLinecap="round"/>
               <path d="M21 14V10" stroke="currentColor" strokeWidth={2} strokeLinecap="round"/>
               <path d="M16.5 18V8" stroke="currentColor" strokeWidth={2} strokeLinecap="round"/>
@@ -278,15 +281,26 @@ export default function VoiceOrb() {
             </svg>
             <span className="vorb-panel-title">KB Assistant</span>
             <span className="vorb-panel-source-badge">Grounded · KB</span>
-            <button
-              type="button"
-              className="vorb-expand-btn"
-              onClick={() => setExpanded(prev => !prev)}
-              title={expanded ? "Collapse to compact view" : "Expand to wide view"}
-              aria-label={expanded ? "Collapse to compact view" : "Expand to wide view"}
-            >
-              {expanded ? <Minimize2 size={13} /> : <Maximize2 size={13} />}
-            </button>
+            <div className="vorb-header-actions">
+              <button
+                type="button"
+                className="vorb-header-btn vorb-expand-btn"
+                onClick={() => setExpanded(prev => !prev)}
+                title={expanded ? "Collapse to compact view" : "Expand to wide view"}
+                aria-label={expanded ? "Collapse to compact view" : "Expand to wide view"}
+              >
+                {expanded ? <Minimize2 size={13} /> : <Maximize2 size={13} />}
+              </button>
+              <button
+                type="button"
+                className="vorb-header-btn vorb-close-btn"
+                onClick={() => setIsOpen(false)}
+                title="Close KB Assistant"
+                aria-label="Close KB Assistant"
+              >
+                <X size={14} />
+              </button>
+            </div>
           </div>
 
           {/* Messages */}
