@@ -16,6 +16,7 @@ if _parent_dir not in sys.path:
 
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, UploadFile, File, Header, Form
+from fastapi.responses import PlainTextResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List
@@ -147,8 +148,20 @@ def _apply_scenario_pins(result: dict, scenario_id: str) -> dict:
 
 
 # ── Routes ────────────────────────────────────────────────────────────────────
+# ── Minute / Minimal Health Checks (Bare minimum 2-byte payload 'ok') ────────
+@app.get("/ping", response_class=PlainTextResponse)
+@app.get("/healthz", response_class=PlainTextResponse)
+@app.get("/api/ping", response_class=PlainTextResponse)
+@app.get("/api/health/minimal", response_class=PlainTextResponse)
+def ping():
+    """Returns the absolute minimum payload ('ok', 2 bytes) for uptime monitors & keep-alive pings."""
+    return "ok"
+
+
 @app.get("/api/health")
-def health():
+def health(minimal: bool = False):
+    if minimal:
+        return {"ok": 1}
     return {"status": "ok", "pipeline_ready": pipeline.ready}
 
 
