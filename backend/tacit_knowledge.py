@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 import httpx
 
 load_dotenv()
+from groq_pool import groq_pool, execute_with_groq_failover
 
 logger = logging.getLogger("tacit_knowledge")
 logger.setLevel(logging.INFO)
@@ -121,24 +122,26 @@ CRITICAL MULTI-MODAL DIRECTIVE:
 """
 
 async def transcribe_audio_with_groq(audio_bytes: bytes, filename: str = "driller_voice.webm", api_key: Optional[str] = None) -> Optional[str]:
-    """Transcribes driller audio recording using Groq Whisper API (whisper-large-v3-turbo)."""
-    key = api_key or GROQ_API_KEY
-    if not key or not audio_bytes or len(audio_bytes) < 200:
+    """Transcribes driller audio recording using Groq Whisper API with multi-key failover."""
+    if not audio_bytes or len(audio_bytes) < 200:
         return None
     try:
         url = "https://api.groq.com/openai/v1/audio/transcriptions"
-        headers = {"Authorization": f"Bearer {key}"}
         files = {"file": (filename, audio_bytes, "audio/webm")}
         data = {"model": "whisper-large-v3-turbo"}
-        async with httpx.AsyncClient(timeout=25.0) as client:
-            resp = await client.post(url, headers=headers, files=files, data=data)
-            if resp.status_code == 200:
-                res = resp.json()
-                text = (res.get("text") or "").strip()
-                logger.info(f"Groq Whisper transcribed audio: {text}")
-                return text
-            else:
-                logger.warning(f"Groq Whisper transcription status {resp.status_code}: {resp.text}")
+        resp, _ = await execute_with_groq_failover(
+            url=url,
+            data_payload=data,
+            files_payload=files,
+            timeout=25.0
+        )
+        if resp is not None and resp.status_code == 200:
+            res = resp.json()
+            text = (res.get("text") or "").strip()
+            logger.info(f"Groq Whisper transcribed audio: {text}")
+            return text
+        elif resp is not None:
+            logger.warning(f"Groq Whisper transcription status {resp.status_code}: {resp.text}")
     except Exception as e:
         logger.warning(f"Audio transcription error: {e}")
     return None
@@ -155,9 +158,8 @@ async def extract_tacit_with_groq(
     has_video: bool = False,
     api_key: Optional[str] = None
 ) -> dict:
-    """Uses Groq LLM to convert multi-modal inputs/transcripts into structured drilling knowledge."""
-    key = api_key or GROQ_API_KEY
-    if not key:
+    """Uses Groq LLM with multi-key failover to convert multi-modal inputs/transcripts into structured drilling knowledge."""
+    if not groq_pool.get_keys() and not api_key:
         raise ValueError("GROQ_API_KEY not configured")
 
     user_prompt = "DRILLER MULTI-MODAL EVIDENCE & FIELD OBSERVATION:\n"
@@ -178,10 +180,6 @@ async def extract_tacit_with_groq(
     if notes:
         user_prompt += f"DRILLER WRITTEN NOTES / CONTEXT:\n{notes}\n"
 
-    headers = {
-        "Authorization": f"Bearer {key}",
-        "Content-Type": "application/json"
-    }
     payload = {
         "model": GROQ_MODEL,
         "messages": [
@@ -192,20 +190,26 @@ async def extract_tacit_with_groq(
         "max_tokens": 1400
     }
 
-    async with httpx.AsyncClient(timeout=30.0) as client:
-        resp = await client.post(GROQ_URL, headers=headers, json=payload)
-        if resp.status_code != 200:
-            raise RuntimeError(f"Groq API returned {resp.status_code}: {resp.text}")
-        
-        data = resp.json()
-        raw_text = data["choices"][0]["message"]["content"].strip()
-        cleaned = re.sub(r"^```(?:json)?\s*", "", raw_text, flags=re.MULTILINE)
-        cleaned = re.sub(r"\s*```$", "", cleaned, flags=re.MULTILINE).strip()
-        
-        match = re.search(r"\{.*\}", cleaned, re.DOTALL)
-        if match:
-            return json.loads(match.group(0))
-        return json.loads(cleaned)
+    resp, _ = await execute_with_groq_failover(
+        url=GROQ_URL,
+        headers={"Content-Type": "application/json"},
+        json_payload=payload,
+        timeout=30.0
+    )
+
+    if resp is None or resp.status_code != 200:
+        err_detail = resp.text if resp is not None else "All Groq keys failed or connection error"
+        raise RuntimeError(f"Groq API error: {err_detail}")
+    
+    data = resp.json()
+    raw_text = data["choices"][0]["message"]["content"].strip()
+    cleaned = re.sub(r"^```(?:json)?\s*", "", raw_text, flags=re.MULTILINE)
+    cleaned = re.sub(r"\s*```$", "", cleaned, flags=re.MULTILINE).strip()
+    
+    match = re.search(r"\{.*\}", cleaned, re.DOTALL)
+    if match:
+        return json.loads(match.group(0))
+    return json.loads(cleaned)
 
 
 # ── 4. Petroleum Heuristics Fallback ──────────────────────────────────────────

@@ -27,6 +27,7 @@ from pipeline import pipeline, PARAM_META, RISK_TYPE_META, WELL_GEO
 from knowledge_db import knowledge_repo
 from digitize import run_digitization_pipeline
 from tacit_knowledge import process_tacit_knowledge_capture
+from groq_pool import groq_pool, execute_with_groq_failover
 
 
 # ── Background training ────────────────────────────────────────────────────────
@@ -608,11 +609,11 @@ async def voice_query(req: VoiceQueryRequest):
             f"Mitigation: {actions or 'N/A'}\n\n"
         )
 
-    # 3. Call Groq for a grounded answer
-    groq_api_key = os.getenv("GROQ_API_KEY", "")
+    # 3. Call Groq for a grounded answer (with automatic key failover loop)
     groq_model = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+    available_keys = groq_pool.get_keys()
 
-    if groq_api_key:
+    if available_keys:
         try:
             system_prompt = (
                 "You are DrillSight's operations assistant. "
@@ -633,49 +634,47 @@ async def voice_query(req: VoiceQueryRequest):
                 f"Provide concise, easy-to-understand mitigation steps. STRICT LIMIT: Under 170 words total."
             )
 
-            async with httpx.AsyncClient(timeout=15.0) as client:
-                resp = await client.post(
-                    "https://api.groq.com/openai/v1/chat/completions",
-                    headers={
-                        "Authorization": f"Bearer {groq_api_key}",
-                        "Content-Type": "application/json",
-                    },
-                    json={
-                        "model": groq_model,
-                        "messages": [
-                            {"role": "system", "content": system_prompt},
-                            {"role": "user",   "content": user_msg},
-                        ],
-                        "max_tokens": 1000,
-                        "temperature": 0.3,
-                    },
-                )
-                if resp.status_code == 200:
-                    data = resp.json()
-                    answer = (data["choices"][0]["message"].get("content") or "").strip()
-                    if answer:
-                        # Enforce strict 170 words maximum
-                        words = answer.split()
-                        if len(words) > 170:
-                            trimmed_lines = []
-                            count = 0
-                            for line in answer.splitlines():
-                                line_words = line.split()
-                                if count + len(line_words) <= 170:
-                                    trimmed_lines.append(line)
-                                    count += len(line_words)
-                                else:
-                                    rem = 170 - count
-                                    if rem > 6:
-                                        trimmed_lines.append(" ".join(line_words[:rem]).rstrip(".,;:-") + "...")
-                                    break
-                            answer = "\n".join(trimmed_lines).strip()
-                        return {"status": "ok", "answer": answer, "sources": sources}
-                    print("[voice-query] Groq returned empty content, falling back to KB records.")
-                else:
-                    print(f"[voice-query] Groq HTTP {resp.status_code}: {resp.text}")
+            resp, used_key = await execute_with_groq_failover(
+                url="https://api.groq.com/openai/v1/chat/completions",
+                headers={"Content-Type": "application/json"},
+                json_payload={
+                    "model": groq_model,
+                    "messages": [
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user",   "content": user_msg},
+                    ],
+                    "max_tokens": 1000,
+                    "temperature": 0.3,
+                },
+                timeout=15.0,
+            )
+
+            if resp is not None and resp.status_code == 200:
+                data = resp.json()
+                answer = (data["choices"][0]["message"].get("content") or "").strip()
+                if answer:
+                    # Enforce strict 170 words maximum
+                    words = answer.split()
+                    if len(words) > 170:
+                        trimmed_lines = []
+                        count = 0
+                        for line in answer.splitlines():
+                            line_words = line.split()
+                            if count + len(line_words) <= 170:
+                                trimmed_lines.append(line)
+                                count += len(line_words)
+                            else:
+                                rem = 170 - count
+                                if rem > 6:
+                                    trimmed_lines.append(" ".join(line_words[:rem]).rstrip(".,;:-") + "...")
+                                break
+                        answer = "\n".join(trimmed_lines).strip()
+                    return {"status": "ok", "answer": answer, "sources": sources}
+                print("[voice-query] Groq returned empty content, falling back to KB records.")
+            elif resp is not None:
+                print(f"[voice-query] Groq failed across all keys with HTTP {resp.status_code}: {resp.text}")
         except Exception as ex:
-            print(f"[voice-query] Groq call failed: {ex}")
+            print(f"[voice-query] Groq execution error: {ex}")
 
     # 4. Fallback: build clean, readable bullet-pointed answer from KB data directly
     if results:

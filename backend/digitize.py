@@ -22,6 +22,7 @@ from typing import Optional
 from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
+from groq_pool import groq_pool, execute_with_groq_failover
 
 logger = logging.getLogger("drillinsight.digitize")
 
@@ -279,12 +280,9 @@ Output ONLY the JSON array, no markdown, no explanation."""
 
 
 async def extract_with_groq(text: str, source_filename: str, api_key: Optional[str] = None) -> list[dict]:
-    """Call Groq LLaMA to extract structured drilling KB items from document text."""
-    key = api_key or GROQ_API_KEY
-    if not key:
+    """Call Groq LLaMA to extract structured drilling KB items from document text with multi-key failover."""
+    if not groq_pool.get_keys() and not api_key:
         raise ValueError("GROQ_API_KEY is not configured")
-
-    import httpx
 
     # Trim to ~6000 chars to stay within context limits comfortably
     trimmed = text[:6000] if len(text) > 6000 else text
@@ -309,19 +307,14 @@ async def extract_with_groq(text: str, source_filename: str, api_key: Optional[s
             ]
         }
 
-        headers = {
-            "Authorization": f"Bearer {key}",
-            "Content-Type":  "application/json",
-        }
+        resp, _ = await execute_with_groq_failover(
+            url=GROQ_API_URL,
+            headers={"Content-Type": "application/json"},
+            json_payload=payload,
+            timeout=45.0,
+        )
 
-        try:
-            async with httpx.AsyncClient(timeout=45.0) as client:
-                resp = await client.post(GROQ_API_URL, json=payload, headers=headers)
-        except Exception as conn_err:
-            logger.warning(f"Groq connection error: {conn_err}")
-            raise ValueError(f"Groq network connection error: {conn_err}")
-
-        if resp.status_code == 200:
+        if resp is not None and resp.status_code == 200:
             data = resp.json()
             raw_text = data["choices"][0]["message"]["content"].strip()
             raw_text = re.sub(r"^```(?:json)?\s*", "", raw_text, flags=re.MULTILINE)
@@ -334,7 +327,7 @@ async def extract_with_groq(text: str, source_filename: str, api_key: Optional[s
             except json.JSONDecodeError as e:
                 logger.error(f"Groq JSON parse error with {model_name}: {e}\nRaw: {raw_text[:200]}")
                 last_error = f"Invalid JSON response: {e}"
-        else:
+        elif resp is not None:
             logger.warning(f"Groq model {model_name} returned status {resp.status_code}: {resp.text[:150]}")
             last_error = f"Groq API error {resp.status_code}: {resp.text[:150]}"
 
