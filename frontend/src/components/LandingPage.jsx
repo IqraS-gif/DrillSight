@@ -123,7 +123,7 @@ export default function LandingPage({
               </button>
 
               <a
-                href="https://drive.google.com/drive/folders/1I4hR4SGeFZUaRx5hINAQeHgK3zJ-NXdv"
+                href="https://youtu.be/Metg0k1e0tU"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="uiverse-watch-btn"
