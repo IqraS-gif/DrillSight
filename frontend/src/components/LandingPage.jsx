@@ -123,7 +123,7 @@ export default function LandingPage({
               </button>
 
               <a
-                href="https://youtu.be/Metg0k1e0tU"
+                href="https://youtu.be/Metg0k1e0tU?si=jGCb_NWixaogxxtV"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="uiverse-watch-btn"
